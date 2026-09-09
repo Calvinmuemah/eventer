@@ -45,12 +45,12 @@ export const pool = new Pool({
 });
 
 // Pool Lifecycle Logs
-pool.on('connect', (client) => {
+pool.on('connect', () => {
   console.log(`🔌 [Database] Client connection established [Host: ${safeInfo.host}:${safeInfo.port}, DB: ${safeInfo.database}] (Active pool connections: ${pool.totalCount})`);
 });
 
 pool.on('remove', () => {
-  console.log(`🔌 [Database] Client connection released & removed from pool (Remaining in pool: ${pool.totalCount})`);
+  console.log(`🔌 [Database] Client connection closed and removed from pool (Remaining in pool: ${pool.totalCount})`);
 });
 
 pool.on('error', (err) => {
@@ -82,7 +82,21 @@ export async function testConnection() {
 }
 
 export const db = {
-  query: (text, params) => pool.query(text, params),
+  query: async (text, params) => {
+    const start = Date.now();
+    try {
+      const res = await pool.query(text, params);
+      if (config.nodeEnv !== 'production') {
+        const duration = Date.now() - start;
+        const cleanQuery = text.replace(/\s+/g, ' ').trim().slice(0, 90);
+        console.log(`📊 [Database Query] ${cleanQuery}${cleanQuery.length >= 90 ? '...' : ''} (${duration}ms, rows: ${res.rowCount ?? 0})`);
+      }
+      return res;
+    } catch (err) {
+      console.error(`❌ [Database Query Error] ${err.message}`);
+      throw err;
+    }
+  },
   getClient: () => pool.connect(),
   pool,
   testConnection,

@@ -16,8 +16,10 @@ app.use(helmet());
 const allowedOrigins = [
   config.frontendUrl,
   'http://localhost:5173',
+  'http://localhost:5174',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
 ];
 
 app.use(
@@ -25,7 +27,11 @@ app.use(
     origin: (origin, callback) => {
       // allow requests with no origin (like mobile apps, curl, server-to-server)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+      if (
+        allowedOrigins.indexOf(origin) !== -1 || 
+        origin.endsWith('.vercel.app') || 
+        process.env.NODE_ENV !== 'production'
+      ) {
         return callback(null, true);
       }
       return callback(new Error('Blocked by CORS policy'));
