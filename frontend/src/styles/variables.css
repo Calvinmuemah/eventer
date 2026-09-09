@@ -1,0 +1,65 @@
+:root {
+  /* Core Brand Colors */
+  --color-primary: #081A2B;           /* Midnight Navy */
+  --color-primary-light: #102942;     /* Slightly lighter navy for cards / surfaces */
+  --color-primary-dark: #040D16;      /* Deepest midnight */
+  
+  --color-accent: #C9A227;            /* Rich Gold */
+  --color-accent-hover: #b08d1f;      /* Deep Gold */
+  --color-accent-subtle: rgba(201, 162, 39, 0.12);
+  --color-accent-border: rgba(201, 162, 39, 0.35);
+
+  --color-champagne: #E7D3A3;         /* Champagne */
+  --color-champagne-light: #F6EEDC;   /* Pale champagne wash */
+
+  --color-background: #FAF8F1;        /* Ivory */
+  --color-surface: #FFFFFF;           /* Crisp White */
+  --color-surface-subtle: #F3EFE6;    /* Subtle tinted ivory surface */
+  --color-surface-card: #FFFFFF;
+
+  --color-dark: #171717;              /* Rich Obsidian */
+  --color-dark-surface: #1E1E1E;
+  
+  --color-muted: #77736B;             /* Muted Earth Gray */
+  --color-muted-light: #9B978E;
+  --color-border: #E5DFC9;            /* Refined warm border */
+  --color-border-subtle: #EFEBE0;
+
+  /* State colors */
+  --color-success: #1E7B4D;
+  --color-success-bg: #EDF7F1;
+  --color-warning: #B37D14;
+  --color-warning-bg: #FCF7EB;
+  --color-error: #A82D2D;
+  --color-error-bg: #FDF1F1;
+  --color-info: #1A5276;
+  --color-info-bg: #EBF5FB;
+
+  /* Typography Font Stacks */
+  --font-serif: 'Cormorant Garamond', Garamond, Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows (Luxury subtle layered) */
+  --shadow-sm: 0 2px 4px rgba(8, 26, 43, 0.04), 0 1px 2px rgba(8, 26, 43, 0.06);
+  --shadow-md: 0 6px 18px rgba(8, 26, 43, 0.06), 0 2px 6px rgba(8, 26, 43, 0.04);
+  --shadow-lg: 0 16px 36px rgba(8, 26, 43, 0.09), 0 4px 12px rgba(8, 26, 43, 0.05);
+  --shadow-xl: 0 24px 50px rgba(8, 26, 43, 0.12), 0 8px 20px rgba(8, 26, 43, 0.08);
+  --shadow-gold: 0 4px 20px rgba(201, 162, 39, 0.25);
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout Containers */
+  --container-max: 1240px;
+  --container-narrow: 840px;
+}

@@ -1,0 +1,68 @@
+/* Responsive Typography Design Tokens */
+.font-display {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.font-h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.font-h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  line-height: 1.22;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.font-h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2vw, 1.75rem);
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.font-h4 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.font-body-large {
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 1.2vw, 1.2rem);
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+.font-body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.font-small {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.font-caption {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
