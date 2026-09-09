@@ -8,7 +8,18 @@ import paymentAssistanceRoutes from './paymentAssistance.routes.js';
 import contactRoutes from './contact.routes.js';
 import adminRoutes from './admin.routes.js';
 
+import { sendSuccess } from '../utils/apiResponse.js';
+
 const router = Router();
+
+// Root v1 status
+router.get('/', (req, res) => {
+  return sendSuccess(res, 'Eventer API is running', {
+    status: 'online',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // Health check
 router.get('/health', (req, res) => {

@@ -57,8 +57,8 @@ img {
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: clamp(0.75rem, 2vw, 1.75rem);
+  padding-right: clamp(0.75rem, 2vw, 1.75rem);
 }
 
 .container-narrow {
@@ -66,8 +66,35 @@ img {
   max-width: var(--container-narrow);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: clamp(0.75rem, 2vw, 1.75rem);
+  padding-right: clamp(0.75rem, 2vw, 1.75rem);
+}
+
+/* Page containers with reduced left and right margins */
+.homepage .container,
+.services-page .container,
+.service-detail-page .container,
+.how-it-works-page .container,
+.about-page .container,
+.gallery-page .container,
+.contact-page .container,
+.plan-event-page .container {
+  max-width: 1680px;
+  padding-left: clamp(0.75rem, 2vw, 1.75rem);
+  padding-right: clamp(0.75rem, 2vw, 1.75rem);
+}
+
+.homepage .container-narrow,
+.services-page .container-narrow,
+.service-detail-page .container-narrow,
+.how-it-works-page .container-narrow,
+.about-page .container-narrow,
+.gallery-page .container-narrow,
+.contact-page .container-narrow,
+.plan-event-page .container-narrow {
+  max-width: 1120px;
+  padding-left: clamp(0.75rem, 2vw, 1.75rem);
+  padding-right: clamp(0.75rem, 2vw, 1.75rem);
 }
 
 .section-padding {

@@ -60,6 +60,6 @@
   --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Layout Containers */
-  --container-max: 1240px;
-  --container-narrow: 840px;
+  --container-max: 1680px;
+  --container-narrow: 1120px;
 }

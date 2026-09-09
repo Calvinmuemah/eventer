@@ -223,7 +223,7 @@ export const PlanEventPage = () => {
       </section>
 
       {/* Main Form Container */}
-      <div className="container-narrow" style={{ marginTop: '-1.5rem' }}>
+      <div className="container" style={{ marginTop: '-1.5rem' }}>
         {/* If successfully submitted */}
         {submitSuccess ? (
           <motion.div 

@@ -6,6 +6,7 @@ import routes from './routes/index.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { generalApiLimiter } from './middleware/rateLimiter.js';
+import { sendSuccess } from './utils/apiResponse.js';
 
 const app = express();
 
@@ -45,6 +46,25 @@ app.use(
 // Body parsing with safe size limits
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+// Root status endpoints
+app.get('/', (req, res) => {
+  return sendSuccess(res, 'Eventer API is running', {
+    status: 'online',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    api: '/api/v1',
+  });
+});
+
+app.get('/api', (req, res) => {
+  return sendSuccess(res, 'Eventer API is running', {
+    status: 'online',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    api: '/api/v1',
+  });
+});
 
 // General rate limiter
 app.use('/api', generalApiLimiter);

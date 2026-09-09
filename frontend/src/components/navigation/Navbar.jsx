@@ -42,7 +42,7 @@ export const Navbar = () => {
     }}>
       <div style={{
         width: '100%',
-        padding: '0 clamp(1.5rem, 3.5vw, 3.5rem)',
+        padding: '0 clamp(0.75rem, 2vw, 1.75rem)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
