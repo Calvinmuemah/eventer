@@ -20,6 +20,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorState from '../components/common/ErrorState';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
+import { normalizeKenyanPhone, isValidKenyanPhone, KENYAN_PHONE_PLACEHOLDER } from '../utils/phone';
 
 const EVENT_TYPES = [
   'Wedding Reception',
@@ -32,11 +33,11 @@ const EVENT_TYPES = [
 ];
 
 const BUDGET_RANGES = [
-  'Under $2,500',
-  '$2,500 – $5,000',
-  '$5,000 – $10,000',
-  '$10,000 – $25,000',
-  '$25,000+',
+  'Under KSh 50,000',
+  'KSh 50,000 – KSh 150,000',
+  'KSh 150,000 – KSh 350,000',
+  'KSh 350,000 – KSh 750,000',
+  'KSh 750,000+',
   'Flexible / Open to Consultation',
 ];
 
@@ -58,7 +59,7 @@ export const PlanEventPage = () => {
     eventLocation: '',
     guestCount: '',
     serviceIds: [],
-    budgetRange: '$5,000 – $10,000',
+    budgetRange: 'KSh 150,000 – KSh 350,000',
     additionalRequirements: '',
     notes: '',
   });
@@ -120,8 +121,10 @@ export const PlanEventPage = () => {
     if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errs.email = 'A valid email address is required.';
     }
-    if (!formData.phone.trim() || formData.phone.length < 7) {
+    if (!formData.phone.trim()) {
       errs.phone = 'A valid contact phone number is required.';
+    } else if (!isValidKenyanPhone(formData.phone)) {
+      errs.phone = 'Please enter a valid Kenyan phone number (e.g. 0712 345 678 or 0112 345 678).';
     }
     if (!formData.eventType) errs.eventType = 'Please select an event type.';
     if (!formData.eventDate) errs.eventDate = 'Event date is required.';
@@ -162,7 +165,7 @@ export const PlanEventPage = () => {
       const payload = {
         fullName: formData.fullName.trim(),
         email: formData.email.trim(),
-        phone: formData.phone.trim(),
+        phone: normalizeKenyanPhone(formData.phone),
         eventType: formData.eventType,
         eventDate: formData.eventDate,
         eventLocation: formData.eventLocation.trim(),
@@ -313,6 +316,7 @@ export const PlanEventPage = () => {
               borderBottom: '1px solid var(--color-border)',
               backgroundColor: 'var(--color-surface-subtle)',
               overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch',
             }}>
               {steps.map((step) => {
                 const isActive = currentStep === step.num;
@@ -354,7 +358,7 @@ export const PlanEventPage = () => {
             </div>
 
             {/* Step Body */}
-            <div style={{ padding: '2.5rem 2rem' }}>
+            <div style={{ padding: 'clamp(1.25rem, 3vw, 2.5rem) clamp(0.75rem, 2vw, 2rem)' }}>
               {submitError && (
                 <div style={{
                   padding: '1rem',
@@ -376,12 +380,12 @@ export const PlanEventPage = () => {
                     01. Event & Contact Details
                   </h3>
                   <p style={{ color: 'var(--color-muted)', marginBottom: '2rem', fontSize: '0.925rem' }}>
-                    Provide contact information and key parameters for your upcoming event.
+                    Tell us where, when, and how you envision your gathering.
                   </p>
 
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
                     gap: '1.25rem',
                   }}>
                     <div className="form-group">
@@ -413,10 +417,13 @@ export const PlanEventPage = () => {
                       <input 
                         type="tel" 
                         className="form-input" 
-                        placeholder="+1 (555) 000-0000"
+                        placeholder={KENYAN_PHONE_PLACEHOLDER}
                         value={formData.phone}
                         onChange={(e) => handleChange('phone', e.target.value)}
                       />
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginTop: '0.25rem' }}>
+                        Enter 07... or 01... (+254 is added automatically)
+                      </div>
                       {errors.phone && <div className="form-error">{errors.phone}</div>}
                     </div>
 
@@ -495,7 +502,7 @@ export const PlanEventPage = () => {
                   ) : (
                     <div style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
                       gap: '1.25rem',
                     }}>
                       {services.map((service) => {
@@ -614,7 +621,7 @@ export const PlanEventPage = () => {
                     flexDirection: 'column',
                     gap: '1.25rem',
                   }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '1rem' }}>
                       <div>
                         <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--color-muted)' }}>Contact Name</div>
                         <div style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{formData.fullName}</div>
@@ -625,7 +632,7 @@ export const PlanEventPage = () => {
                       </div>
                       <div>
                         <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--color-muted)' }}>Phone</div>
-                        <div style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{formData.phone}</div>
+                        <div style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{normalizeKenyanPhone(formData.phone) || formData.phone}</div>
                       </div>
                       <div>
                         <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--color-muted)' }}>Event Date</div>

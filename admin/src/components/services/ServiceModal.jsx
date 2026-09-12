@@ -120,7 +120,7 @@ export const ServiceModal = ({ isOpen, onClose, onSave, service }) => {
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div className="admin-grid-2">
           <div>
             <label className="admin-label">Custom Slug (Optional)</label>
             <input

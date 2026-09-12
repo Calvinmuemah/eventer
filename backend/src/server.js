@@ -1,6 +1,7 @@
 import app from './app.js';
 import { config } from './config/env.js';
 import { pool, testConnection } from './db/index.js';
+import { authService } from './services/auth.service.js';
 
 let server;
 
@@ -9,6 +10,7 @@ if (!process.env.VERCEL) {
     console.log(`🚀 EVENTA API server running on port ${config.port} [${config.nodeEnv}]`);
     console.log(`🔗 API Base: http://localhost:${config.port}/api/v1`);
     await testConnection();
+    await authService.ensureDefaultAdmin();
   });
 
   const gracefulShutdown = async (signal) => {

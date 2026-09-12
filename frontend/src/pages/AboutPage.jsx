@@ -43,10 +43,10 @@ export const AboutPage = () => {
         <div className="container">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 4rem)',
             alignItems: 'center',
-            marginBottom: '6rem',
+            marginBottom: 'clamp(3rem, 6vw, 6rem)',
           }}>
             <div>
               <span className="badge-eyebrow">Our Story</span>
@@ -85,9 +85,9 @@ export const AboutPage = () => {
           {/* Mission & Vision */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2.5rem',
-            marginBottom: '6rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(1.5rem, 3vw, 2.5rem)',
+            marginBottom: 'clamp(3rem, 6vw, 6rem)',
           }}>
             <div className="card-luxury" style={{ padding: '2.5rem', backgroundColor: '#FFFFFF' }}>
               <div style={{

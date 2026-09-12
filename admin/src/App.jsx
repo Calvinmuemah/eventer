@@ -1,5 +1,8 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import AdminLandingPage from './pages/AdminLandingPage';
 import AdminLayout from './components/layout/AdminLayout';
 import DashboardPage from './pages/DashboardPage';
 import ServicesAdminPage from './pages/ServicesAdminPage';
@@ -12,18 +15,34 @@ import MessagesAdminPage from './pages/MessagesAdminPage';
 
 export const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<AdminLayout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="services" element={<ServicesAdminPage />} />
-        <Route path="event-requests" element={<EventRequestsAdminPage />} />
-        <Route path="quotes" element={<QuotesAdminPage />} />
-        <Route path="bookings" element={<BookingsAdminPage />} />
-        <Route path="payments" element={<PaymentsAdminPage />} />
-        <Route path="payment-assistance" element={<PaymentAssistanceAdminPage />} />
-        <Route path="messages" element={<MessagesAdminPage />} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        {/* Public Admin Landing & Login Page */}
+        <Route path="/login" element={<AdminLandingPage />} />
+
+        {/* Protected Admin Operations Routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<DashboardPage />} />
+          <Route path="services" element={<ServicesAdminPage />} />
+          <Route path="event-requests" element={<EventRequestsAdminPage />} />
+          <Route path="quotes" element={<QuotesAdminPage />} />
+          <Route path="bookings" element={<BookingsAdminPage />} />
+          <Route path="payments" element={<PaymentsAdminPage />} />
+          <Route path="payment-assistance" element={<PaymentAssistanceAdminPage />} />
+          <Route path="messages" element={<MessagesAdminPage />} />
+        </Route>
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AuthProvider>
   );
 };
 

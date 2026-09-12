@@ -92,10 +92,10 @@ export const BookingsAdminPage = () => {
                       {b.event_date ? new Date(b.event_date).toLocaleDateString() : 'TBD'}
                     </td>
                     <td>
-                      <div>Total: <strong>${parseFloat(b.total_amount).toFixed(2)}</strong></div>
-                      <div style={{ fontSize: '0.8rem', color: '#166534' }}>Paid: ${parseFloat(b.amount_paid).toFixed(2)}</div>
+                      <div>Total: <strong>KSh {parseFloat(b.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
+                      <div style={{ fontSize: '0.8rem', color: '#166534' }}>Paid: KSh {parseFloat(b.amount_paid).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                       <div style={{ fontSize: '0.8rem', color: parseFloat(b.balance) > 0 ? '#B45309' : '#166534', fontWeight: 600 }}>
-                        Balance: ${parseFloat(b.balance).toFixed(2)}
+                        Balance: KSh {parseFloat(b.balance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </div>
                     </td>
                     <td>

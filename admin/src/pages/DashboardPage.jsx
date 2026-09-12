@@ -79,13 +79,13 @@ export const DashboardPage = () => {
       {/* Metrics Row */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
         gap: '1.25rem',
       }}>
         <StatCard
           title="Total Revenue Settled"
-          value={`$${parseFloat(overview.total_revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
-          subtitle={`$${parseFloat(overview.total_balance_due || 0).toFixed(2)} balance pending`}
+          value={`KSh ${parseFloat(overview.total_revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+          subtitle={`KSh ${parseFloat(overview.total_balance_due || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} balance pending`}
           icon={DollarSign}
           color="accent"
         />
@@ -122,7 +122,7 @@ export const DashboardPage = () => {
       {/* 2-Column Tables */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
         gap: '2rem',
       }}>
         {/* Recent Event Requests */}
@@ -223,7 +223,7 @@ export const DashboardPage = () => {
                       <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>{b.event_type}</div>
                     </td>
                     <td>
-                      <strong>${parseFloat(b.total_amount).toFixed(2)}</strong>
+                      <strong>KSh {parseFloat(b.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
                     </td>
                     <td>
                       <StatusBadge status={b.booking_status} />

@@ -1,5 +1,6 @@
 import { paymentAssistanceRepository } from '../repositories/paymentAssistance.repository.js';
 import { bookingsRepository } from '../repositories/bookings.repository.js';
+import { normalizeKenyanPhone } from '../utils/phone.js';
 
 export const paymentAssistanceService = {
   async requestAssistance(data) {
@@ -14,7 +15,7 @@ export const paymentAssistanceService = {
       bookingReference: data.bookingReference,
       bookingId: booking ? booking.id : null,
       name: data.name,
-      phone: data.phone,
+      phone: normalizeKenyanPhone(data.phone),
       email: data.email,
       message: data.message,
     });

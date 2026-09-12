@@ -10,7 +10,8 @@ import {
   HelpCircle, 
   Mail, 
   ExternalLink,
-  Sparkles
+  Sparkles,
+  X
 } from 'lucide-react';
 
 export const Sidebar = ({ isOpen, onClose }) => {
@@ -29,46 +30,58 @@ export const Sidebar = ({ isOpen, onClose }) => {
     <aside className={`admin-sidebar ${isOpen ? 'open' : ''}`}>
       {/* Brand Header */}
       <div style={{
-        padding: '1.5rem',
+        padding: '1.25rem 1.5rem',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-between',
         gap: '0.75rem',
       }}>
-        <div style={{
-          width: '32px',
-          height: '32px',
-          borderRadius: '4px',
-          border: '1.5px solid var(--admin-accent)',
-          color: 'var(--admin-accent)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <Sparkles size={18} />
-        </div>
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
-            fontFamily: 'Cormorant Garamond, serif',
-            fontSize: '1.35rem',
-            fontWeight: 700,
-            letterSpacing: '0.1em',
-            color: '#FFFFFF',
-            lineHeight: 1,
-          }}>
-            EVENTA
-          </div>
-          <div style={{
-            fontSize: '0.65rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
+            width: '32px',
+            height: '32px',
+            borderRadius: '4px',
+            border: '1.5px solid var(--admin-accent)',
             color: 'var(--admin-accent)',
-            marginTop: '2px',
-            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-            Operations Console
+            <Sparkles size={18} />
+          </div>
+          <div>
+            <div style={{
+              fontFamily: 'Cormorant Garamond, serif',
+              fontSize: '1.2rem',
+              fontWeight: 700,
+              letterSpacing: '0.06em',
+              color: '#FFFFFF',
+              lineHeight: 1.1,
+            }}>
+              MC TITOE
+            </div>
+            <div style={{
+              fontSize: '0.58rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.14em',
+              color: 'var(--admin-accent)',
+              marginTop: '2px',
+              fontWeight: 700,
+            }}>
+              EVENTS & DESIGNS
+            </div>
           </div>
         </div>
+
+        <button
+          type="button"
+          className="admin-sidebar-close"
+          onClick={onClose}
+          aria-label="Close navigation"
+        >
+          <X size={18} />
+        </button>
       </div>
 
       {/* Navigation Links */}

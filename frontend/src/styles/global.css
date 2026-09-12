@@ -57,8 +57,8 @@ img {
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: clamp(0.75rem, 2vw, 1.75rem);
-  padding-right: clamp(0.75rem, 2vw, 1.75rem);
+  padding-left: clamp(0.5rem, 1vw, 1rem);
+  padding-right: clamp(0.5rem, 1vw, 1rem);
 }
 
 .container-narrow {
@@ -66,8 +66,8 @@ img {
   max-width: var(--container-narrow);
   margin-left: auto;
   margin-right: auto;
-  padding-left: clamp(0.75rem, 2vw, 1.75rem);
-  padding-right: clamp(0.75rem, 2vw, 1.75rem);
+  padding-left: clamp(0.5rem, 1vw, 1rem);
+  padding-right: clamp(0.5rem, 1vw, 1rem);
 }
 
 /* Page containers with reduced left and right margins */
@@ -79,9 +79,9 @@ img {
 .gallery-page .container,
 .contact-page .container,
 .plan-event-page .container {
-  max-width: 1680px;
-  padding-left: clamp(0.75rem, 2vw, 1.75rem);
-  padding-right: clamp(0.75rem, 2vw, 1.75rem);
+  max-width: 1840px;
+  padding-left: clamp(0.5rem, 1vw, 1rem);
+  padding-right: clamp(0.5rem, 1vw, 1rem);
 }
 
 .homepage .container-narrow,
@@ -92,19 +92,19 @@ img {
 .gallery-page .container-narrow,
 .contact-page .container-narrow,
 .plan-event-page .container-narrow {
-  max-width: 1120px;
-  padding-left: clamp(0.75rem, 2vw, 1.75rem);
-  padding-right: clamp(0.75rem, 2vw, 1.75rem);
+  max-width: 1240px;
+  padding-left: clamp(0.5rem, 1vw, 1rem);
+  padding-right: clamp(0.5rem, 1vw, 1rem);
 }
 
 .section-padding {
-  padding-top: clamp(4rem, 8vw, 7.5rem);
-  padding-bottom: clamp(4rem, 8vw, 7.5rem);
+  padding-top: clamp(2.75rem, 6vw, 7.5rem);
+  padding-bottom: clamp(2.75rem, 6vw, 7.5rem);
 }
 
 .section-padding-sm {
-  padding-top: clamp(2.5rem, 5vw, 4rem);
-  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-top: clamp(1.85rem, 4vw, 4rem);
+  padding-bottom: clamp(1.85rem, 4vw, 4rem);
 }
 
 /* Buttons */
@@ -304,6 +304,37 @@ img {
 .status-chip.assistance-requested {
   background-color: var(--color-info-bg);
   color: var(--color-info);
+}
+
+/* Animated Brand Shimmer Gradient */
+.brand-gradient-shimmer {
+  background: linear-gradient(
+    90deg,
+    #FFFFFF 0%,
+    #FFF8EB 22%,
+    #C9A227 48%,
+    #F6EEDC 65%,
+    #FFFFFF 88%
+  );
+  background-size: 200% auto;
+  color: #FFFFFF;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: brandShimmer 5s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes brandShimmer {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
 }
 
 /* Reduced motion preference */

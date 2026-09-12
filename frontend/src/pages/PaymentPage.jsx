@@ -15,6 +15,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorState from '../components/common/ErrorState';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
+import { normalizeKenyanPhone, KENYAN_PHONE_PLACEHOLDER } from '../utils/phone';
 
 export const PaymentPage = () => {
   const { id } = useParams();
@@ -91,6 +92,7 @@ export const PaymentPage = () => {
       setAssistanceError(null);
       await paymentsApi.requestAssistance({
         ...assistanceData,
+        phone: normalizeKenyanPhone(assistanceData.phone),
         bookingReference: paymentData?.bookingReference || id,
       });
       setAssistanceSuccess(true);
@@ -153,14 +155,14 @@ export const PaymentPage = () => {
       <div className="container" style={{ marginTop: '2.5rem' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
           gap: '2.5rem',
           alignItems: 'start',
         }}>
           {/* Left: Payment Options & Simulation */}
           <div className="card-luxury" style={{
             backgroundColor: '#FFFFFF',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 3vw, 2.5rem)',
             boxShadow: 'var(--shadow-xl)',
           }}>
             <h3 className="font-h3" style={{ color: 'var(--color-primary)', marginBottom: '1.25rem' }}>
@@ -282,7 +284,7 @@ export const PaymentPage = () => {
                   disabled={paying}
                   style={{ width: '100%', marginBottom: '1.25rem' }}
                 >
-                  {paying ? 'Processing Authorization...' : `PAY NOW ($${paymentData.balance.toFixed(2)})`}
+                  {paying ? 'Processing Authorization...' : `PAY NOW (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`}
                 </button>
               </>
             )}
@@ -351,11 +353,14 @@ export const PaymentPage = () => {
                       <input 
                         type="tel" 
                         className="form-input"
-                        placeholder="+1 (555) 000-0000"
+                        placeholder={KENYAN_PHONE_PLACEHOLDER}
                         value={assistanceData.phone}
                         onChange={(e) => setAssistanceData({ ...assistanceData, phone: e.target.value })}
                         required
                       />
+                      <div style={{ fontSize: '0.725rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
+                        Enter 07... or 01... (+254 is added automatically)
+                      </div>
                     </div>
                     <div className="form-group">
                       <label className="form-label" style={{ fontSize: '0.8rem' }}>Email Address *</label>
@@ -431,7 +436,7 @@ export const PaymentPage = () => {
                 {(paymentData.services || []).map((s, idx) => (
                   <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
                     <span>{s.service_name}</span>
-                    <span style={{ fontWeight: 500 }}>${parseFloat(s.price).toFixed(2)}</span>
+                    <span style={{ fontWeight: 500 }}>KSh {parseFloat(s.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 ))}
               </div>
@@ -446,11 +451,11 @@ export const PaymentPage = () => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
                 <span style={{ color: 'var(--color-muted)' }}>Total Amount</span>
-                <span style={{ fontWeight: 600 }}>${paymentData.totalAmount.toFixed(2)}</span>
+                <span style={{ fontWeight: 600 }}>KSh {paymentData.totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
                 <span style={{ color: 'var(--color-muted)' }}>Amount Paid</span>
-                <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>${paymentData.amountPaid.toFixed(2)}</span>
+                <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>KSh {paymentData.amountPaid.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div style={{
                 display: 'flex',
@@ -464,7 +469,7 @@ export const PaymentPage = () => {
               }}>
                 <span style={{ fontFamily: 'var(--font-serif)' }}>Balance Due</span>
                 <span style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-accent)' }}>
-                  ${paymentData.balance.toFixed(2)}
+                  KSh {paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
               </div>
             </div>

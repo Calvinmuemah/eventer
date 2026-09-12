@@ -62,7 +62,7 @@ export const QuotesAdminPage = () => {
                 <th>Client / Occasion</th>
                 <th>Subtotal</th>
                 <th>Discount</th>
-                <th>Total (USD)</th>
+                <th>Total (KSh)</th>
                 <th>Status</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
@@ -87,11 +87,11 @@ export const QuotesAdminPage = () => {
                       <div style={{ fontWeight: 600 }}>{q.customer_name}</div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--admin-text-muted)' }}>{q.event_type}</div>
                     </td>
-                    <td>${parseFloat(q.subtotal).toFixed(2)}</td>
-                    <td style={{ color: '#166534' }}>-${parseFloat(q.discount).toFixed(2)}</td>
+                    <td>KSh {parseFloat(q.subtotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ color: '#166534' }}>-KSh {parseFloat(q.discount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td>
                       <strong style={{ fontSize: '0.95rem', color: 'var(--admin-primary)' }}>
-                        ${parseFloat(q.total).toFixed(2)}
+                        KSh {parseFloat(q.total).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </strong>
                     </td>
                     <td>

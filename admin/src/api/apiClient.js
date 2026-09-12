@@ -10,9 +10,26 @@ export const apiClient = axios.create({
   },
 });
 
+// Attach Authorization Bearer token to all outgoing admin requests
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('mctitoe_admin_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('mctitoe_admin_token');
+      localStorage.removeItem('mctitoe_admin_user');
+      window.dispatchEvent(new Event('mctitoe_admin_unauthorized'));
+    }
     const message = 
       error.response?.data?.message || 
       error.message || 

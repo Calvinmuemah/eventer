@@ -52,7 +52,7 @@ export const PaymentsAdminPage = () => {
                 <th>Transaction Ref</th>
                 <th>Booking Reference</th>
                 <th>Client / Event</th>
-                <th>Amount (USD)</th>
+                <th>Amount (KSh)</th>
                 <th>Method / Provider</th>
                 <th>Status</th>
                 <th style={{ textAlign: 'right' }}>Timestamp</th>
@@ -82,7 +82,7 @@ export const PaymentsAdminPage = () => {
                     </td>
                     <td>
                       <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
-                        +${parseFloat(p.amount).toFixed(2)}
+                        +KSh {parseFloat(p.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </strong>
                     </td>
                     <td>

@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageSquare } from 'l
 import { contactApi } from '../api/contactApi';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
+import { normalizeKenyanPhone, isValidKenyanPhone, KENYAN_PHONE_PLACEHOLDER } from '../utils/phone';
 
 export const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +25,9 @@ export const ContactPage = () => {
     if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errs.email = 'A valid email address is required.';
     }
+    if (formData.phone.trim() && !isValidKenyanPhone(formData.phone)) {
+      errs.phone = 'Please enter a valid Kenyan phone number (e.g. 0712 345 678 or 0112 345 678).';
+    }
     if (!formData.subject.trim()) errs.subject = 'Subject is required.';
     if (!formData.message.trim() || formData.message.length < 5) {
       errs.message = 'Please provide a detailed message (at least 5 characters).';
@@ -38,7 +42,10 @@ export const ContactPage = () => {
     try {
       setSubmitting(true);
       setSubmitError(null);
-      await contactApi.send(formData);
+      await contactApi.send({
+        ...formData,
+        phone: formData.phone.trim() ? normalizeKenyanPhone(formData.phone) : '',
+      });
       setSuccess(true);
       setFormData({
         fullName: '',
@@ -92,8 +99,8 @@ export const ContactPage = () => {
         <div className="container">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '3.5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 3.5rem)',
             alignItems: 'start',
           }}>
             {/* Left: Contact Info */}
@@ -279,10 +286,14 @@ export const ContactPage = () => {
                     <input 
                       type="tel" 
                       className="form-input"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder={KENYAN_PHONE_PLACEHOLDER}
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginTop: '0.25rem' }}>
+                      Enter 07... or 01... (+254 is added automatically)
+                    </div>
+                    {errors.phone && <div className="form-error">{errors.phone}</div>}
                   </div>
                 </div>
 

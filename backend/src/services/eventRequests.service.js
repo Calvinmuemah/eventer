@@ -3,15 +3,16 @@ import { eventRequestsRepository } from '../repositories/eventRequests.repositor
 import { servicesRepository } from '../repositories/services.repository.js';
 import { quotesRepository } from '../repositories/quotes.repository.js';
 import { notFound, badRequest } from '../utils/apiError.js';
+import { normalizeKenyanPhone } from '../utils/phone.js';
 
-// Base pricing estimation per service for provisional quotation generation
+// Base pricing estimation per service in KSh for provisional quotation generation
 const ESTIMATED_PRICES = {
-  'mc': 450.00,
-  'public-address-system': 850.00,
-  'musical-instruments': 700.00,
-  'events-planning': 1200.00,
-  'decoration-lighting': 1500.00,
-  'more': 500.00,
+  'mc': 45000.00,
+  'public-address-system': 85000.00,
+  'musical-instruments': 70000.00,
+  'events-planning': 120000.00,
+  'decoration-lighting': 150000.00,
+  'more': 50000.00,
 };
 
 export const eventRequestsService = {
@@ -30,9 +31,10 @@ export const eventRequestsService = {
       const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
       const referenceCode = `EVT-${Date.now().toString().slice(-4)}-${randomSuffix}`;
 
-      // Insert event request
+      // Insert event request with normalized Kenyan phone
       const eventRequest = await eventRequestsRepository.create({
         ...data,
+        phone: normalizeKenyanPhone(data.phone),
         referenceCode,
       }, client);
 
@@ -43,7 +45,7 @@ export const eventRequestsService = {
       const quoteNumber = `QTE-${Date.now().toString().slice(-4)}-${randomSuffix}`;
       
       const quoteItems = services.map((s) => {
-        const unitPrice = ESTIMATED_PRICES[s.slug] || 500.00;
+        const unitPrice = ESTIMATED_PRICES[s.slug] || 50000.00;
         return {
           serviceId: s.id,
           serviceName: s.name,

@@ -267,10 +267,10 @@ export const QuotePage = () => {
                       {item.quantity}
                     </td>
                     <td style={{ padding: '1.25rem 1rem', textAlign: 'right', color: 'var(--color-dark)' }}>
-                      ${parseFloat(item.unit_price).toFixed(2)}
+                      KSh {parseFloat(item.unit_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td style={{ padding: '1.25rem 0 1.25rem 1rem', textAlign: 'right', fontWeight: 600, color: 'var(--color-primary)' }}>
-                      ${parseFloat(item.total_price).toFixed(2)}
+                      KSh {parseFloat(item.total_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                   </tr>
                 ))}
@@ -318,11 +318,11 @@ export const QuotePage = () => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
                 <span style={{ color: 'var(--color-muted)' }}>Subtotal</span>
-                <span style={{ fontWeight: 600 }}>${parseFloat(quote.subtotal).toFixed(2)}</span>
+                <span style={{ fontWeight: 600 }}>KSh {parseFloat(quote.subtotal).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem' }}>
                 <span style={{ color: 'var(--color-muted)' }}>Special Allowance / Discount</span>
-                <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>-${parseFloat(quote.discount).toFixed(2)}</span>
+                <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>-KSh {parseFloat(quote.discount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div style={{
                 display: 'flex',
@@ -333,9 +333,9 @@ export const QuotePage = () => {
                 marginTop: '0.5rem',
                 color: 'var(--color-primary)',
               }}>
-                <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 600 }}>Total (USD)</span>
+                <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 600 }}>Total (KSh)</span>
                 <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, color: 'var(--color-accent)' }}>
-                  ${parseFloat(quote.total).toFixed(2)}
+                  KSh {parseFloat(quote.total).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
               </div>
             </div>

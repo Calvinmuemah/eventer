@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { BRAND } from '../../constants/branding';
 
 export const MetaTags = ({ title, description }) => {
   useEffect(() => {
-    const fullTitle = title ? `${title} | EVENTA` : 'EVENTA | Luxury Event Staging & Production';
+    const fullTitle = title ? `${title} | ${BRAND.name}` : `${BRAND.name} | Bespoke Event Staging & Production`;
     document.title = fullTitle;
 
     if (description) {

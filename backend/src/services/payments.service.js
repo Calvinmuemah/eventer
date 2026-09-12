@@ -63,7 +63,7 @@ export const paymentsService = {
         bookingId: booking.id,
         transactionReference,
         amount: amountToPay,
-        currency: 'USD',
+        currency: 'KES',
         provider: 'mock_sandbox_gateway',
         paymentMethod,
         status: 'Paid',

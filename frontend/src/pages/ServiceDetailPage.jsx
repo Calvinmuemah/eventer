@@ -107,8 +107,8 @@ export const ServiceDetailPage = () => {
         <div className="container">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 4rem)',
             alignItems: 'start',
           }}>
             {/* Left Image and Media */}

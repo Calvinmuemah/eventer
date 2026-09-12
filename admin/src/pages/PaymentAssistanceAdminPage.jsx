@@ -79,7 +79,7 @@ export const PaymentAssistanceAdminPage = () => {
                       <strong style={{ color: 'var(--admin-primary)' }}>{r.booking_reference}</strong>
                       {r.balance !== null && (
                         <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>
-                          Balance: ${parseFloat(r.balance || 0).toFixed(2)}
+                          Balance: KSh {parseFloat(r.balance || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </div>
                       )}
                     </td>

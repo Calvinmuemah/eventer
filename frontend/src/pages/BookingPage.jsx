@@ -111,14 +111,14 @@ export const BookingPage = () => {
       <div className="container" style={{ marginTop: '2.5rem' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
           gap: '2rem',
           alignItems: 'start',
         }}>
           {/* Main Info */}
           <div className="card-luxury" style={{
             backgroundColor: '#FFFFFF',
-            padding: '2.5rem',
+            padding: 'clamp(1.25rem, 3vw, 2.5rem)',
             boxShadow: 'var(--shadow-xl)',
           }}>
             <h3 className="font-h3" style={{ color: 'var(--color-primary)', marginBottom: '1.5rem' }}>
@@ -178,7 +178,7 @@ export const BookingPage = () => {
                   }}
                 >
                   <span style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{service.service_name}</span>
-                  <span style={{ fontWeight: 600, color: 'var(--color-dark)' }}>${parseFloat(service.price).toFixed(2)}</span>
+                  <span style={{ fontWeight: 600, color: 'var(--color-dark)' }}>KSh {parseFloat(service.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
               ))}
             </div>
@@ -210,7 +210,7 @@ export const BookingPage = () => {
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>+${parseFloat(p.amount).toFixed(2)}</span>
+                        <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>+KSh {parseFloat(p.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         <div style={{ fontSize: '0.775rem', textTransform: 'uppercase', color: 'var(--color-muted)' }}>
                           {p.status}
                         </div>
@@ -236,11 +236,11 @@ export const BookingPage = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-muted)' }}>Total Contract Amount</span>
-                  <span style={{ fontWeight: 600 }}>${parseFloat(booking.total_amount).toFixed(2)}</span>
+                  <span style={{ fontWeight: 600 }}>KSh {parseFloat(booking.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-muted)' }}>Amount Settled</span>
-                  <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>${parseFloat(booking.amount_paid).toFixed(2)}</span>
+                  <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>KSh {parseFloat(booking.amount_paid).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
                 <div style={{
                   display: 'flex',
@@ -253,14 +253,14 @@ export const BookingPage = () => {
                 }}>
                   <span>Remaining Balance</span>
                   <span style={{ color: isFullyPaid ? 'var(--color-success)' : 'var(--color-accent)' }}>
-                    ${parseFloat(booking.balance).toFixed(2)}
+                    KSh {parseFloat(booking.balance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
               </div>
 
               {!isFullyPaid ? (
                 <Link to={`/payment/${booking.id}`} className="btn btn-primary" style={{ width: '100%' }}>
-                  <CreditCard size={18} /> Settle Payment (${parseFloat(booking.balance).toFixed(2)})
+                  <CreditCard size={18} /> Settle Payment (KSh {parseFloat(booking.balance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})
                 </Link>
               ) : (
                 <Link to={`/booking-confirmation/${booking.id}`} className="btn btn-navy" style={{ width: '100%' }}>

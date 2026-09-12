@@ -82,8 +82,32 @@ export const HomePage = () => {
             variants={staggerContainer}
             style={{ maxWidth: '820px' }}
           >
-            <motion.div variants={fadeInUp} className="badge-eyebrow">
-              Premier Event Production & Staging
+            <motion.div 
+              variants={fadeInUp} 
+              className="badge-eyebrow"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.6rem',
+                padding: '0.45rem 1.1rem',
+                border: '1px solid rgba(201, 162, 39, 0.45)',
+                background: 'rgba(8, 26, 43, 0.75)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: 'var(--radius-full)',
+              }}
+            >
+              <motion.span
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                style={{ display: 'inline-flex', color: 'var(--color-accent)' }}
+              >
+                <Sparkles size={14} />
+              </motion.span>
+              <span style={{ fontWeight: 700, letterSpacing: '0.14em', color: '#FFFFFF' }}>
+                MC TITOE EVENTS & DESIGNS
+              </span>
+              <span style={{ color: 'var(--color-accent)', opacity: 0.7 }}>•</span>
+              <span style={{ color: 'var(--color-champagne)' }}>Premier Production & Staging</span>
             </motion.div>
 
             <motion.h1 
@@ -196,7 +220,7 @@ export const HomePage = () => {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 330px), 1fr))',
               gap: '2rem',
             }}>
               {services.map((service) => (
@@ -222,8 +246,8 @@ export const HomePage = () => {
         <div className="container">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 4rem)',
             alignItems: 'center',
           }}>
             {/* Visual block */}
@@ -459,7 +483,7 @@ export const HomePage = () => {
         <div className="container">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
             gap: '3.5rem',
             alignItems: 'center',
           }}>
@@ -535,7 +559,7 @@ export const HomePage = () => {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
             gap: '1.5rem',
           }}>
             {[
@@ -605,7 +629,7 @@ export const HomePage = () => {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
             gap: '2rem',
           }}>
             {[

@@ -15,7 +15,7 @@ export const paymentsRepository = {
       data.bookingId,
       data.transactionReference,
       data.amount,
-      data.currency || 'USD',
+      data.currency || 'KES',
       data.provider || 'mock_provider',
       data.paymentMethod || 'card',
       data.status || 'Pending',

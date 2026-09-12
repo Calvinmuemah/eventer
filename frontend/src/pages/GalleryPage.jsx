@@ -152,8 +152,8 @@ export const GalleryPage = () => {
           {/* Image Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-            gap: '2rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(1.25rem, 3vw, 2rem)',
           }}>
             {filteredItems.map((item) => (
               <div

@@ -1,4 +1,5 @@
 import db from '../db/index.js';
+import { normalizeKenyanPhone } from '../utils/phone.js';
 
 export const contactRepository = {
   async create(data) {
@@ -12,7 +13,7 @@ export const contactRepository = {
     const values = [
       data.fullName,
       data.email,
-      data.phone || null,
+      data.phone ? normalizeKenyanPhone(data.phone) : null,
       data.subject,
       data.message,
     ];

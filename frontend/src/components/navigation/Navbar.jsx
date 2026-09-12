@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { BRAND } from '../../constants/branding';
 
 export const Navbar = () => {
@@ -42,7 +43,7 @@ export const Navbar = () => {
     }}>
       <div style={{
         width: '100%',
-        padding: '0 clamp(0.75rem, 2vw, 1.75rem)',
+        padding: '0 clamp(0.5rem, 1vw, 1rem)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -52,34 +53,71 @@ export const Navbar = () => {
         <Link to="/" style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '0.6rem',
+          gap: '0.75rem',
           textDecoration: 'none',
           flexShrink: 0,
         }}>
-          <div style={{
-            width: '34px',
-            height: '34px',
-            borderRadius: '4px',
-            border: '1.5px solid var(--color-accent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-accent)',
-            background: 'rgba(201, 162, 39, 0.08)',
-          }}>
-            <Sparkles size={18} />
+          {/* Animated luxury brand emblem */}
+          <motion.div 
+            whileHover={{ scale: 1.08, rotate: [0, -6, 6, 0] }}
+            whileTap={{ scale: 0.94 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '6px',
+              border: '1.5px solid var(--color-accent)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--color-accent)',
+              background: 'linear-gradient(135deg, rgba(201, 162, 39, 0.18) 0%, rgba(8, 26, 43, 0.8) 100%)',
+              boxShadow: '0 0 14px rgba(201, 162, 39, 0.22)',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Sparkles size={18} />
+            </motion.div>
+          </motion.div>
+
+          {/* Animated Typography Lockup */}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '0.2rem',
+              lineHeight: 1.05,
+            }}>
+              <span className="brand-gradient-shimmer" style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '1.4rem',
+                fontWeight: 700,
+                letterSpacing: '0.07em',
+                textTransform: 'uppercase',
+              }}>
+                MC TITOE
+              </span>
+              <span style={{ color: 'var(--color-accent)', fontSize: '1.4rem', fontWeight: 700 }}>.</span>
+            </div>
+            <span style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '0.58rem',
+              fontWeight: 700,
+              letterSpacing: '0.24em',
+              color: 'var(--color-champagne)',
+              textTransform: 'uppercase',
+              marginTop: '2px',
+              opacity: 0.92,
+            }}>
+              EVENTS & DESIGNS
+            </span>
           </div>
-          <span style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '1.75rem',
-            fontWeight: 700,
-            letterSpacing: '0.14em',
-            color: '#FFFFFF',
-            textTransform: 'uppercase',
-          }}>
-            {BRAND.name}
-            <span style={{ color: 'var(--color-accent)', marginLeft: '2px' }}>.</span>
-          </span>
         </Link>
 
         {/* Desktop Navigation & Actions - Far Right End */}
@@ -149,6 +187,9 @@ export const Navbar = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '1.25rem',
+          maxHeight: 'calc(100dvh - 80px)',
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
         }}>
           {navLinks.map((link) => (
             <NavLink

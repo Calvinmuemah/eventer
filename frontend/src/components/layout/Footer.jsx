@@ -17,8 +17,8 @@ export const Footer = () => {
       }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '3.5rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
+          gap: '2.5rem',
           marginBottom: '4rem',
         }}>
           {/* Brand Col */}
@@ -26,31 +26,48 @@ export const Footer = () => {
             <Link to="/" style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.6rem',
+              gap: '0.75rem',
               marginBottom: '1.25rem',
               textDecoration: 'none',
             }}>
               <div style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '4px',
+                width: '38px',
+                height: '38px',
+                borderRadius: '6px',
                 border: '1.5px solid var(--color-accent)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'var(--color-accent)',
+                background: 'rgba(201, 162, 39, 0.12)',
+                boxShadow: '0 0 14px rgba(201, 162, 39, 0.2)',
               }}>
-                <Sparkles size={16} />
+                <Sparkles size={18} />
               </div>
-              <span style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '1.75rem',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                color: '#FFFFFF',
-              }}>
-                {BRAND.name}
-              </span>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.2rem', lineHeight: 1.05 }}>
+                  <span className="brand-gradient-shimmer" style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                  }}>
+                    MC TITOE
+                  </span>
+                  <span style={{ color: 'var(--color-accent)', fontSize: '1.5rem', fontWeight: 700 }}>.</span>
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.22em',
+                  color: 'var(--color-champagne)',
+                  textTransform: 'uppercase',
+                  marginTop: '2px',
+                }}>
+                  EVENTS & DESIGNS
+                </span>
+              </div>
             </Link>
             <p style={{
               fontFamily: 'var(--font-sans)',
