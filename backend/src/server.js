@@ -7,7 +7,7 @@ let server;
 
 if (!process.env.VERCEL) {
   server = app.listen(config.port, async () => {
-    console.log(`🚀 EVENTA API server running on port ${config.port} [${config.nodeEnv}]`);
+    console.log(`🚀 MC TITOE EVENTS AND DESIGNS API server running on port ${config.port} [${config.nodeEnv}]`);
     console.log(`🔗 API Base: http://localhost:${config.port}/api/v1`);
     await testConnection();
     await authService.ensureDefaultAdmin();

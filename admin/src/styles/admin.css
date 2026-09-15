@@ -513,3 +513,189 @@ body {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   Executive Admin Landing Page Styles (Client-Grade Luxury UI)
+   ========================================================================== */
+.admin-landing-wrapper {
+  min-height: 100vh;
+  background-color: #071524;
+  background-image: 
+    radial-gradient(at 100% 0%, rgba(201, 162, 39, 0.12) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(18, 43, 69, 0.4) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(8, 26, 43, 0.95) 0px, transparent 100%);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.landing-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10B981;
+  position: relative;
+  display: inline-block;
+}
+
+.landing-pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid #10B981;
+  animation: pulseBeacon 2s infinite ease-out;
+}
+
+@keyframes pulseBeacon {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.landing-glass-card {
+  background: rgba(13, 31, 51, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 162, 39, 0.22);
+  border-radius: 14px;
+  box-shadow: 
+    0 20px 45px -10px rgba(0, 0, 0, 0.5),
+    0 0 35px -5px rgba(201, 162, 39, 0.08);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-glass-card:hover {
+  border-color: rgba(201, 162, 39, 0.4);
+  box-shadow: 
+    0 25px 55px -10px rgba(0, 0, 0, 0.6),
+    0 0 45px -5px rgba(201, 162, 39, 0.14);
+}
+
+.landing-feature-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.landing-feature-card:hover {
+  background: rgba(201, 162, 39, 0.05);
+  border-color: rgba(201, 162, 39, 0.3);
+  transform: translateY(-2px);
+}
+
+.landing-input-dark {
+  width: 100%;
+  background-color: rgba(8, 26, 43, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 0.925rem;
+  color: #FFFFFF;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.landing-input-dark::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.landing-input-dark:focus {
+  background-color: rgba(8, 26, 43, 0.95);
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25);
+}
+
+.landing-btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #071524;
+  background: linear-gradient(135deg, #D4AF37 0%, #C9A227 50%, #B38E1B 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(201, 162, 39, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-btn-gold:hover:not(:disabled) {
+  background: linear-gradient(135deg, #E2C258 0%, #D4AF37 50%, #C9A227 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(201, 162, 39, 0.45);
+}
+
+.landing-btn-gold:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.landing-gold-text {
+  background: linear-gradient(135deg, #FFF1CA 0%, #E7D3A3 40%, #C9A227 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.landing-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(4, 13, 22, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.landing-modal-card {
+  background: rgba(13, 31, 51, 0.96);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 40px -10px rgba(201, 162, 39, 0.2);
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  position: relative;
+  color: #FFFFFF;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.landing-step-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.25s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-step-card:hover {
+  background: rgba(201, 162, 39, 0.04);
+  border-color: rgba(201, 162, 39, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+

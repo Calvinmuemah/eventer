@@ -62,7 +62,7 @@ export const HowItWorksPage = () => {
     <div className="how-it-works-page" style={{ paddingBottom: '6rem' }}>
       <MetaTags 
         title={`How It Works | ${BRAND.name}`} 
-        description="Learn how EVENTA plans, stages, and coordinates unforgettable celebrations from initial inquiry to final encore."
+        description={`Learn how ${BRAND.name} plans, stages, and coordinates unforgettable celebrations from initial inquiry to final encore.`}
       />
 
       {/* Header Banner */}

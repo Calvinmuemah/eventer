@@ -7,7 +7,7 @@ export const PrivacyPage = () => {
     <div className="privacy-page" style={{ paddingBottom: '6rem' }}>
       <MetaTags 
         title={`Privacy Policy | ${BRAND.name}`} 
-        description="Privacy policy and data governance practices of EVENTA."
+        description={`Privacy policy and data governance practices of ${BRAND.name}.`}
       />
 
       <section style={{

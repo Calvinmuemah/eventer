@@ -54,7 +54,7 @@ export const BookingConfirmationPage = () => {
     <div className="booking-confirmation-page" style={{ paddingBottom: '6rem' }}>
       <MetaTags 
         title={`Confirmed: ${booking.booking_reference} | ${BRAND.name}`} 
-        description="Your event staging has been officially confirmed by EVENTA."
+        description={`Your event staging has been officially confirmed by ${BRAND.name}.`}
       />
 
       <section style={{

@@ -195,8 +195,8 @@ export const PlanEventPage = () => {
   return (
     <div className="plan-event-page" style={{ paddingBottom: '6rem' }}>
       <MetaTags 
-        title="Plan Your Event | Bespoke Event Production" 
-        description="Submit your event specifications and select services to receive an itemized quotation from EVENTA."
+        title={`Plan Your Event | ${BRAND.name}`} 
+        description={`Submit your event specifications and select services to receive an itemized quotation from ${BRAND.name}.`}
       />
 
       {/* Hero Header */}

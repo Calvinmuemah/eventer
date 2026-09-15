@@ -639,7 +639,7 @@ export const HomePage = () => {
                 role: "Director of Corporate Affairs, Horizon Forum",
               },
               {
-                quote: "From our initial meeting to the final dance, EVENTA turned our wedding reception into pure magic. The architectural lighting was breathtaking.",
+                quote: "From our initial meeting to the final dance, MC TITOE EVENTS AND DESIGNS turned our wedding reception into pure magic. The architectural lighting was breathtaking.",
                 author: "David & Julianne K.",
                 role: "Private Wedding Clients",
               },

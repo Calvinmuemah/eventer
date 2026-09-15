@@ -65,7 +65,7 @@ export const ContactPage = () => {
     <div className="contact-page" style={{ paddingBottom: '6rem' }}>
       <MetaTags 
         title={`Contact Concierge | ${BRAND.name}`} 
-        description="Connect with EVENTA event production coordinators for consultations, custom staging questions, and venue visits."
+        description={`Connect with ${BRAND.name} event production coordinators for consultations, custom staging questions, and venue visits.`}
       />
 
       {/* Header Banner */}
@@ -129,9 +129,64 @@ export const ContactPage = () => {
                     <Phone size={20} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600 }}>Phone Concierge</div>
+                    <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600 }}>Primary Phone</div>
                     <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-primary)', marginTop: '0.2rem' }}>
-                      {BRAND.contact.phoneFormatted}
+                      <a href={`tel:${BRAND.contact.phoneRaw}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        {BRAND.contact.phoneFormatted}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '4px',
+                    backgroundColor: 'rgba(37, 211, 102, 0.12)',
+                    color: '#25D366',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <MessageSquare size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600 }}>WhatsApp Business</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-primary)', marginTop: '0.2rem' }}>
+                      <a 
+                        href={BRAND.contact.whatsappLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{ color: '#16A34A', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                      >
+                        {BRAND.contact.whatsappFormatted} (Chat Now)
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                  <div style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '4px',
+                    backgroundColor: 'rgba(201, 162, 39, 0.12)',
+                    color: 'var(--color-accent)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <Phone size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600 }}>Production / Urgent Helpline</div>
+                    <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-primary)', marginTop: '0.2rem' }}>
+                      <a href={`tel:${BRAND.contact.helplineFormatted}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        {BRAND.contact.helplineFormatted}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -153,7 +208,9 @@ export const ContactPage = () => {
                   <div>
                     <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600 }}>Email Inquiries</div>
                     <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-primary)', marginTop: '0.2rem' }}>
-                      {BRAND.contact.email}
+                      <a href={`mailto:${BRAND.contact.email}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        {BRAND.contact.email}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -173,10 +230,9 @@ export const ContactPage = () => {
                     <MapPin size={20} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600 }}>Studio & Pavilion Location</div>
+                    <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600 }}>Physical Location</div>
                     <div style={{ fontSize: '0.95rem', color: 'var(--color-dark)', marginTop: '0.2rem', lineHeight: 1.5 }}>
-                      {BRAND.contact.address}<br />
-                      {BRAND.contact.city}
+                      {BRAND.contact.address}
                     </div>
                   </div>
                 </div>

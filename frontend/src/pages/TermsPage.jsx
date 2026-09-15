@@ -7,7 +7,7 @@ export const TermsPage = () => {
     <div className="terms-page" style={{ paddingBottom: '6rem' }}>
       <MetaTags 
         title={`Terms of Service | ${BRAND.name}`} 
-        description="Terms of service, quotation validity, and booking policies of EVENTA."
+        description={`Terms of service, quotation validity, deposit schedules, and cancellation policies of ${BRAND.name}.`}
       />
 
       <section style={{
@@ -47,31 +47,70 @@ export const TermsPage = () => {
           </p>
 
           <h3 className="font-h3" style={{ color: 'var(--color-primary)', marginBottom: '1rem' }}>
-            2. Booking Confirmation & Reservations
+            2. Booking Confirmation & Deposit Policy
           </h3>
-          <p style={{ marginBottom: '1.5rem', color: 'var(--color-muted)' }}>
-            A booking is formally confirmed once the quotation is accepted and the required deposit or payment schedule is satisfied. Acceptance secures technical crew allocation, sound and lighting inventory, and host reservations for the specified event date.
+          <p style={{ marginBottom: '1.25rem', color: 'var(--color-muted)' }}>
+            A reservation is formally locked in once the quotation is accepted and the required <strong>50% deposit</strong> is satisfied. This deposit secures technical crew allocation, sound and lighting gear, and Master of Ceremonies reservations for your event date.
           </p>
+          <div style={{
+            padding: '1rem 1.25rem',
+            backgroundColor: 'var(--color-champagne-light)',
+            borderLeft: '4px solid var(--color-accent)',
+            borderRadius: 'var(--radius-xs)',
+            marginBottom: '1.75rem',
+            fontSize: '0.9rem',
+          }}>
+            <strong>Payment Schedule:</strong> 50% deposit upon quotation acceptance to lock down the date. The remaining balance must be cleared at least <strong>48 hours prior</strong> to the event.
+          </div>
 
           <h3 className="font-h3" style={{ color: 'var(--color-primary)', marginBottom: '1rem' }}>
             3. Venue Access & Site Readiness
           </h3>
           <p style={{ marginBottom: '1.5rem', color: 'var(--color-muted)' }}>
-            The host or venue management must ensure adequate load-in access, appropriate electrical power distribution, and safe staging environments as mutually agreed during pre-production coordination.
+            The host or venue management must ensure adequate load-in access, safe electrical power distribution, and suitable staging environments in Mombasa or any event destination across Kenya as mutually agreed during pre-production coordination.
           </p>
 
           <h3 className="font-h3" style={{ color: 'var(--color-primary)', marginBottom: '1rem' }}>
-            4. Cancellations & Modifications
+            4. Event Cancellation & Postponement Policy
           </h3>
-          <p style={{ marginBottom: '1.5rem', color: 'var(--color-muted)' }}>
-            Modification requests submitted via our quotation portal or concierge team are accommodated subject to inventory availability and timeline feasibility. Cancellation policies are detailed in individual service agreement contracts.
+          <p style={{ marginBottom: '1.25rem', color: 'var(--color-muted)' }}>
+            If a client moves, reschedules, or cancels an event date, the following refund and credit structure applies based on the formal written notice provided:
           </p>
+
+          <div style={{
+            overflowX: 'auto',
+            marginBottom: '1.75rem',
+            border: '1px solid var(--color-border)',
+            borderRadius: 'var(--radius-xs)',
+          }}>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              fontSize: '0.9rem',
+              textAlign: 'left',
+            }}>
+              <thead>
+                <tr style={{ backgroundColor: 'var(--color-surface-subtle)', borderBottom: '1px solid var(--color-border)' }}>
+                  <th style={{ padding: '0.85rem 1.25rem', color: 'var(--color-primary)', fontWeight: 700 }}>Notice Provided</th>
+                  <th style={{ padding: '0.85rem 1.25rem', color: 'var(--color-primary)', fontWeight: 700 }}>Refund / Fee Structure</th>
+                </tr>
+              </thead>
+              <tbody>
+                {BRAND.cancellationPolicy.map((tier, idx) => (
+                  <tr key={idx} style={{ borderBottom: idx < BRAND.cancellationPolicy.length - 1 ? '1px solid var(--color-border-subtle)' : 'none' }}>
+                    <td style={{ padding: '0.85rem 1.25rem', fontWeight: 600, color: 'var(--color-primary)' }}>{tier.notice}</td>
+                    <td style={{ padding: '0.85rem 1.25rem', color: 'var(--color-muted)' }}>{tier.refund}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <h3 className="font-h3" style={{ color: 'var(--color-primary)', marginBottom: '1rem' }}>
             5. Contact Information
           </h3>
           <p style={{ color: 'var(--color-muted)' }}>
-            For contractual inquiries, reach our administrative desk at <a href={`mailto:${BRAND.contact.email}`} style={{ color: 'var(--color-primary)', fontWeight: 600 }}>{BRAND.contact.email}</a>.
+            For contractual inquiries, booking adjustments, or billing questions, reach our administrative desk at <a href={`mailto:${BRAND.contact.email}`} style={{ color: 'var(--color-primary)', fontWeight: 600 }}>{BRAND.contact.email}</a> or call <a href={`tel:${BRAND.contact.phoneRaw}`} style={{ color: 'var(--color-primary)', fontWeight: 600 }}>{BRAND.contact.phoneFormatted}</a>.
           </p>
         </div>
       </section>

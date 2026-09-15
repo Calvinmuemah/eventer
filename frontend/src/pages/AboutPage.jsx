@@ -9,7 +9,7 @@ export const AboutPage = () => {
     <div className="about-page" style={{ paddingBottom: '6rem' }}>
       <MetaTags 
         title={`About Us | ${BRAND.name}`} 
-        description="Learn about EVENTA, our philosophy of precision staging, acoustic mastery, and dedicated event hospitality."
+        description={`Learn about ${BRAND.name}, our philosophy of precision staging, acoustic mastery, and dedicated event hospitality.`}
       />
 
       {/* Header Banner */}

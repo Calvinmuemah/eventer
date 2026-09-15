@@ -2,6 +2,8 @@ import db from '../db/index.js';
 import { quotesRepository } from '../repositories/quotes.repository.js';
 import { bookingsRepository } from '../repositories/bookings.repository.js';
 import { notFound, badRequest } from '../utils/apiError.js';
+import { emailService } from './email.service.js';
+
 
 export const quotesService = {
   async getQuoteById(id) {
@@ -61,6 +63,27 @@ export const quotesService = {
       await client.query('COMMIT');
 
       const fullBooking = await bookingsRepository.findById(booking.id);
+
+      // Asynchronously send booking confirmation email to customer
+      if (fullBooking?.customer_email) {
+        emailService.sendBookingConfirmationEmail({
+          to: fullBooking.customer_email,
+          fullName: fullBooking.customer_name,
+          bookingReference: fullBooking.booking_reference,
+          quoteNumber: fullBooking.quote_number,
+          eventType: fullBooking.event_type,
+          eventDate: fullBooking.event_date,
+          eventLocation: fullBooking.event_location,
+          guestCount: fullBooking.guest_count,
+          totalAmount: fullBooking.total_amount,
+          amountPaid: fullBooking.amount_paid,
+          balance: fullBooking.balance,
+          bookingId: fullBooking.id,
+        }).catch((err) => {
+          console.warn('[QuotesService] Background email dispatch warning:', err.message);
+        });
+      }
+
       return {
         quote: updatedQuote,
         booking: fullBooking,

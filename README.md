@@ -1,4 +1,4 @@
-# EVENTA — Full-Stack Luxury Event Services Platform
+# MC TITOE EVENTS AND DESIGNS — Luxury Event Staging & Production Platform
 
 A full-stack web platform for luxury event planning, acoustic staging, Master of Ceremonies hosting, and production coordination.
 

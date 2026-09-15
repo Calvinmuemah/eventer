@@ -4,10 +4,12 @@ import { servicesRepository } from '../repositories/services.repository.js';
 import { quotesRepository } from '../repositories/quotes.repository.js';
 import { notFound, badRequest } from '../utils/apiError.js';
 import { normalizeKenyanPhone } from '../utils/phone.js';
+import { emailService } from './email.service.js';
+
 
 // Base pricing estimation per service in KSh for provisional quotation generation
 const ESTIMATED_PRICES = {
-  'mc': 45000.00,
+  'mc': 20000.00, // Starting rate (negotiable)
   'public-address-system': 85000.00,
   'musical-instruments': 70000.00,
   'events-planning': 120000.00,
@@ -77,6 +79,26 @@ export const eventRequestsService = {
       await client.query('COMMIT');
 
       const fullRequest = await eventRequestsRepository.findById(eventRequest.id);
+
+      // Asynchronously send branded confirmation email with quote details
+      if (fullRequest?.email) {
+        emailService.sendEventPlanningConfirmationEmail({
+          to: fullRequest.email,
+          fullName: fullRequest.full_name,
+          referenceCode: fullRequest.reference_code,
+          eventType: fullRequest.event_type,
+          eventDate: fullRequest.event_date,
+          eventLocation: fullRequest.event_location,
+          guestCount: fullRequest.guest_count,
+          services: fullRequest.services || [],
+          quoteId: quote.id,
+          quoteNumber: quote.quote_number,
+          totalAmount: quote.total,
+        }).catch((err) => {
+          console.warn('[EventRequestsService] Background email dispatch warning:', err.message);
+        });
+      }
+
       return {
         eventRequest: fullRequest,
         quoteId: quote.id,
