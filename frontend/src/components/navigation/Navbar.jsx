@@ -103,7 +103,6 @@ export const Navbar = () => {
               }}>
                 MC TITOE
               </span>
-              <span style={{ color: 'var(--color-accent)', fontSize: '1.4rem', fontWeight: 700 }}>.</span>
             </div>
             <span style={{
               fontFamily: 'var(--font-sans)',

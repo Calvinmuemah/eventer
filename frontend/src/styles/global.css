@@ -223,13 +223,23 @@ img {
   margin-bottom: 0.75rem;
 }
 
-.badge-eyebrow::before {
-  content: '';
-  display: inline-block;
-  width: 20px;
-  height: 1.5px;
-  background-color: var(--color-accent);
+.badge-eyebrow::before,
+.badge-eyebrow.no-dash::before,
+.hero-badge-pill::before {
+  display: none !important;
+  content: none !important;
 }
+
+.hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
 
 /* Form Styles */
 .form-group {

@@ -54,7 +54,6 @@ export const Footer = () => {
                   }}>
                     MC TITOE
                   </span>
-                  <span style={{ color: 'var(--color-accent)', fontSize: '1.5rem', fontWeight: 700 }}>.</span>
                 </div>
                 <span style={{
                   fontFamily: 'var(--font-sans)',
