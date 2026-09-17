@@ -70,15 +70,37 @@ export const AboutPage = () => {
             </div>
 
             <div style={{
+              position: 'relative',
               borderRadius: 'var(--radius-sm)',
               overflow: 'hidden',
               boxShadow: 'var(--shadow-xl)',
             }}>
               <img 
-                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80" 
-                alt="Event Execution" 
-                style={{ width: '100%', height: '440px', objectFit: 'cover' }}
+                src="/images/events/IMG-20260915-WA0008.jpg" 
+                alt="MC Titoe Live Ceremony Direction & Staging" 
+                style={{ width: '100%', height: '460px', objectFit: 'cover', objectPosition: 'center 25%' }}
               />
+              <div style={{
+                position: 'absolute',
+                bottom: '1rem',
+                left: '1rem',
+                right: '1rem',
+                padding: '0.85rem 1.15rem',
+                background: 'rgba(8, 26, 43, 0.88)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                borderRadius: 'var(--radius-xs)',
+                border: '1px solid rgba(201, 162, 39, 0.35)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+                <div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#FFFFFF' }}>MC Titoe on Stage</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-champagne)' }}>Live Ceremony Direction &amp; Guest Protocol</div>
+                </div>
+                <span style={{ fontSize: '0.675rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255, 255, 255, 0.65)', fontWeight: 600 }}>Production Archive</span>
+              </div>
             </div>
           </div>
 

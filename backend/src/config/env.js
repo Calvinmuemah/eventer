@@ -18,5 +18,11 @@ export const config = {
     fromAddress: process.env.EMAIL_FROM_ADDRESS || process.env.SMTP_USER || 'mctitoeeventsdesigns@gmail.com',
     adminNotificationEmail: process.env.ADMIN_NOTIFICATION_EMAIL || 'mctitoeeventsdesigns@gmail.com',
   },
+  paystack: {
+    secretKey: (process.env.PAYSTACK_SECRET_KEY || '').trim(),
+    publicKey: (process.env.PAYSTACK_PUBLIC_KEY || '').trim(),
+    currency: (process.env.PAYSTACK_CURRENCY || 'KES').trim().toUpperCase(),
+    webhookSecret: (process.env.PAYSTACK_WEBHOOK_SECRET || process.env.PAYSTACK_SECRET_KEY || '').trim(),
+  },
 };
 

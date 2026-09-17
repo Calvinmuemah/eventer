@@ -539,12 +539,12 @@ export const HomePage = () => {
               <img 
                 src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80" 
                 alt="Keynote and Gala Host"
-                style={{ width: '100%', height: '260px', objectFit: 'cover', borderRadius: 'var(--radius-xs)' }}
+                style={{ width: '100%', height: '260px', objectFit: 'cover', borderRadius: '16px' }}
               />
               <img 
                 src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" 
                 alt="Lighting Installation"
-                style={{ width: '100%', height: '260px', objectFit: 'cover', borderRadius: 'var(--radius-xs)', marginTop: '2rem' }}
+                style={{ width: '100%', height: '260px', objectFit: 'cover', borderRadius: '16px', marginTop: '2rem' }}
               />
             </div>
           </div>
@@ -575,52 +575,78 @@ export const HomePage = () => {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
             gap: '1.5rem',
           }}>
             {[
               {
-                url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80',
-                caption: 'Grand Banquet Table Styling',
+                url: '/images/events/IMG-20260915-WA0019.jpg',
+                category: 'Stage & Cultural Decor',
+                caption: 'Custom Backdrop & Traditional Artistry',
               },
               {
-                url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80',
-                caption: 'Digital Audio Mixing Console',
+                url: '/images/events/IMG-20260915-WA0008.jpg',
+                category: 'MC & Protocol',
+                caption: 'MC Titoe Directing Ceremony Pacing',
               },
               {
-                url: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=800&q=80',
-                caption: 'Concert Grand Piano Backline',
+                url: '/images/events/IMG-20260915-WA0011.jpg',
+                category: 'Guest Experience',
+                caption: 'High-Energy Celebration & Dance Pacing',
               },
               {
-                url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
-                caption: 'Ambient Canopy Lighting',
+                url: '/images/events/IMG-20260915-WA0020.jpg',
+                category: 'Sound & Acoustics',
+                caption: 'Live Vocal Address & Wireless PA',
               },
             ].map((img, i) => (
               <div 
                 key={i} 
+                className="card-luxury"
                 style={{
                   position: 'relative',
-                  height: '300px',
-                  borderRadius: 'var(--radius-xs)',
+                  height: '320px',
+                  borderRadius: '16px',
                   overflow: 'hidden',
                   backgroundColor: 'var(--color-primary)',
+                  boxShadow: 'var(--shadow-md)',
                 }}
               >
                 <img 
                   src={img.url} 
                   alt={img.caption}
                   loading="lazy"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover',
+                    objectPosition: 'center 20%',
+                    transition: 'transform 0.5s ease',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
                 />
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(8, 26, 43, 0.8) 0%, transparent 50%)',
+                  background: 'linear-gradient(to top, rgba(8, 26, 43, 0.92) 0%, rgba(8, 26, 43, 0.3) 45%, transparent 100%)',
                   display: 'flex',
-                  alignItems: 'flex-end',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
                   padding: '1.25rem',
+                  pointerEvents: 'none',
                 }}>
-                  <span style={{ color: '#FFFFFF', fontSize: '0.9rem', fontWeight: 500 }}>
+                  <span style={{ 
+                    fontSize: '0.7rem', 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '0.1em', 
+                    color: 'var(--color-accent)', 
+                    fontWeight: 600,
+                    marginBottom: '0.25rem',
+                  }}>
+                    {img.category}
+                  </span>
+                  <span style={{ color: '#FFFFFF', fontSize: '1rem', fontWeight: 600, lineHeight: 1.3 }}>
                     {img.caption}
                   </span>
                 </div>

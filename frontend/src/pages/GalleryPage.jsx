@@ -7,69 +7,98 @@ import { BRAND } from '../constants/branding';
 const GALLERY_ITEMS = [
   {
     id: 1,
-    title: 'Imperial Gala Banquet Staging',
-    category: 'galas',
-    imageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
-    description: 'Precision table geometry and warm ambient lighting for 250 corporate delegates.',
+    title: 'Custom Stage Backdrop & Cultural Decor',
+    category: 'lighting',
+    imageUrl: '/images/events/IMG-20260915-WA0019.jpg',
+    description: 'Bespoke dowry ceremony backdrop with artisanal calabash accents, woven basketry, and vibrant red runway draping.',
   },
   {
     id: 2,
+    title: 'Master of Ceremonies & Protocol Direction',
+    category: 'mc',
+    imageUrl: '/images/events/IMG-20260915-WA0008.jpg',
+    description: 'MC Titoe presiding over live dowry proceedings, guest pacing, and ceremonial introductions on the red carpet.',
+  },
+  {
+    id: 3,
+    title: 'High-Energy Celebration & Dance Pacing',
+    category: 'weddings',
+    imageUrl: '/images/events/IMG-20260915-WA0011.jpg',
+    description: 'Joyful family celebration, festive tinsel garlands, and rhythmic choreography orchestrated during live festivities.',
+  },
+  {
+    id: 4,
+    title: 'Concert PA Acoustics & Live Vocal Address',
+    category: 'sound',
+    imageUrl: '/images/events/IMG-20260915-WA0020.jpg',
+    description: 'Crisp wireless frequency management and acoustic clarity for keynote family speeches and musical numbers.',
+  },
+  {
+    id: 5,
+    title: 'Lead Event Director & Production Hospitality',
+    category: 'mc',
+    imageUrl: '/images/events/IMG-20260915-WA0018.jpg',
+    description: 'Calm, confident stage presence and on-site oversight ensuring every transition unfolds seamlessly.',
+  },
+  {
+    id: 6,
+    title: 'On-Site Staging & Acoustic Coordination',
+    category: 'sound',
+    imageUrl: '/images/events/IMG-20260915-WA0014.jpg',
+    description: 'Coordinated audio setup with wide-dispersion speakers and stage floral enhancements for outdoor venues.',
+  },
+  {
+    id: 7,
+    title: 'Imperial Gala Banquet Staging',
+    category: 'galas',
+    imageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
+    description: 'Precision table geometry and warm ambient lighting for corporate delegates.',
+  },
+  {
+    id: 8,
     title: 'Concert PA & Digital Acoustic Mixing',
     category: 'sound',
     imageUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80',
     description: 'Front-of-house 32-channel digital console with multi-zone delay management.',
   },
   {
-    id: 3,
+    id: 9,
     title: 'Keynote & Executive Host Podium',
     category: 'mc',
     imageUrl: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80',
     description: 'Bespoke stage lectern, RF frequency management, and pro presenter monitors.',
   },
   {
-    id: 4,
+    id: 10,
     title: 'Acoustic Grand Piano & Backline Stage',
     category: 'instruments',
     imageUrl: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=1200&q=80',
     description: 'Tour-grade backline staging calibrated for live jazz and classical ensembles.',
   },
   {
-    id: 5,
+    id: 11,
     title: 'Canopy Fairy Light & Chandelier Staging',
     category: 'lighting',
     imageUrl: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
     description: 'Atmospheric architectural lighting transforming a pavilion courtyard.',
   },
   {
-    id: 6,
+    id: 12,
     title: 'Private Estate Wedding Reception',
     category: 'weddings',
     imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
     description: 'Harmonized floral arrangements, sound distribution, and run-of-show direction.',
   },
-  {
-    id: 7,
-    title: 'Live Stage Performance Acoustics',
-    category: 'sound',
-    imageUrl: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80',
-    description: 'Coordinated stage audio and dynamic lighting cues.',
-  },
-  {
-    id: 8,
-    title: 'Atmospheric Ceiling Illumination',
-    category: 'lighting',
-    imageUrl: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80',
-    description: 'Warm LED uplighting and truss draping for evening receptions.',
-  },
 ];
 
 const CATEGORIES = [
   { id: 'all', label: 'All Disciplines' },
-  { id: 'galas', label: 'Corporate & Galas' },
-  { id: 'weddings', label: 'Weddings' },
+  { id: 'mc', label: 'MC & Hosting' },
+  { id: 'weddings', label: 'Weddings & Dowries' },
+  { id: 'lighting', label: 'Decor & Staging' },
   { id: 'sound', label: 'PA & Acoustics' },
+  { id: 'galas', label: 'Corporate & Galas' },
   { id: 'instruments', label: 'Backline & Instruments' },
-  { id: 'lighting', label: 'Lighting & Decor' },
 ];
 
 export const GalleryPage = () => {
@@ -163,7 +192,7 @@ export const GalleryPage = () => {
                 style={{
                   position: 'relative',
                   height: '340px',
-                  borderRadius: 'var(--radius-xs)',
+                  borderRadius: '16px',
                   overflow: 'hidden',
                   cursor: 'pointer',
                   backgroundColor: 'var(--color-primary)',
@@ -177,6 +206,7 @@ export const GalleryPage = () => {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    objectPosition: 'center 20%',
                     transition: 'transform 0.5s ease',
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
@@ -258,11 +288,13 @@ export const GalleryPage = () => {
                 >
                   <X size={20} />
                 </button>
-                <img 
-                  src={activeItem.imageUrl} 
-                  alt={activeItem.title} 
-                  style={{ width: '100%', maxHeight: '520px', objectFit: 'cover' }}
-                />
+                <div style={{ backgroundColor: '#071524', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img 
+                    src={activeItem.imageUrl} 
+                    alt={activeItem.title} 
+                    style={{ width: '100%', maxHeight: '65vh', objectFit: 'contain' }}
+                  />
+                </div>
                 <div style={{ padding: '1.75rem 2rem' }}>
                   <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
                     {activeItem.title}

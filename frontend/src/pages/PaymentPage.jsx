@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { 
   CreditCard, 
   ShieldCheck, 
@@ -29,6 +29,11 @@ export const PaymentPage = () => {
   const [selectedMethod, setSelectedMethod] = useState('card');
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState(null);
+
+  const [searchParams] = useSearchParams();
+  const paymentReference = searchParams.get('reference') || searchParams.get('trxref');
+  const [verifying, setVerifying] = useState(false);
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
 
   // Assistance modal/form
   const [showAssistance, setShowAssistance] = useState(false);
@@ -66,6 +71,30 @@ export const PaymentPage = () => {
     fetchDetails();
   }, [id]);
 
+  // Handle return from Paystack checkout redirect (auto-verification)
+  useEffect(() => {
+    if (paymentReference && id) {
+      const verifyPaystackPayment = async () => {
+        try {
+          setVerifying(true);
+          setPayError(null);
+          const res = await paymentsApi.verify(id, { reference: paymentReference });
+          if (res.success) {
+            setVerificationSuccess(true);
+            setTimeout(() => {
+              navigate(`/booking-confirmation/${id}`, { replace: true });
+            }, 1800);
+          }
+        } catch (err) {
+          setPayError(err.message || 'Payment verification could not be completed.');
+        } finally {
+          setVerifying(false);
+        }
+      };
+      verifyPaystackPayment();
+    }
+  }, [paymentReference, id, navigate]);
+
   const handlePay = async () => {
     try {
       setPaying(true);
@@ -75,7 +104,13 @@ export const PaymentPage = () => {
         amount: paymentData.balance,
       });
 
-      // Navigate to confirmation page
+      // If live Paystack gateway returned an authorization URL, redirect to Paystack
+      if (res.data?.authorizationUrl) {
+        window.location.href = res.data.authorizationUrl;
+        return;
+      }
+
+      // If sandbox simulation mode or direct settlement
       navigate(`/booking-confirmation/${id}`);
     } catch (err) {
       setPayError(err.message || 'Payment attempt was not completed.');
@@ -102,6 +137,39 @@ export const PaymentPage = () => {
       setAssistanceSubmitting(false);
     }
   };
+
+  if (verifying) {
+    return (
+      <div className="container" style={{ padding: '6rem 0' }}>
+        <LoadingSpinner label="Verifying payment authorization with Paystack... Please do not close or refresh this window." />
+      </div>
+    );
+  }
+
+  if (verificationSuccess) {
+    return (
+      <div className="container" style={{ padding: '6rem 0', textAlign: 'center' }}>
+        <div style={{
+          maxWidth: '540px',
+          margin: '0 auto',
+          padding: '3rem 2rem',
+          backgroundColor: '#FFFFFF',
+          borderRadius: '16px',
+          boxShadow: 'var(--shadow-xl)',
+          border: '1px solid var(--color-border)',
+        }}>
+          <CheckCircle2 size={54} style={{ color: 'var(--color-success)', margin: '0 auto 1.25rem' }} />
+          <h2 className="font-h2" style={{ color: 'var(--color-primary)', marginBottom: '0.75rem' }}>
+            Payment Verified!
+          </h2>
+          <p style={{ color: 'var(--color-muted)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+            Your transaction has been confirmed by Paystack. Preparing your official booking pass...
+          </p>
+          <LoadingSpinner label="Redirecting to confirmation..." />
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -208,9 +276,9 @@ export const PaymentPage = () => {
                 {/* Payment Methods Selection */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
                   {[
-                    { id: 'card', label: 'Credit / Debit Card (Visa, Mastercard, Amex)', icon: CreditCard, subtitle: 'Instant online authorization' },
-                    { id: 'mobile_money', label: 'M-Pesa / Mobile Money', icon: Smartphone, subtitle: 'Direct mobile prompt or manual paybill' },
-                    { id: 'bank_transfer', label: 'Direct Bank Wire Transfer', icon: Building2, subtitle: 'Corporate wire & bank receipt verification' },
+                    { id: 'paystack_mpesa', label: 'M-Pesa / Mobile Money (via Paystack)', icon: Smartphone, subtitle: 'Instant STK prompt or paybill directly to your mobile phone' },
+                    { id: 'paystack_card', label: 'Credit / Debit Card (Visa, Mastercard, Amex)', icon: CreditCard, subtitle: 'Secure, 256-bit SSL encrypted authorization via Paystack' },
+                    { id: 'bank_transfer', label: 'Direct Bank Wire Transfer', icon: Building2, subtitle: 'Corporate invoice & manual bank settlement' },
                   ].map((method) => {
                     const Icon = method.icon;
                     const isSelected = selectedMethod === method.id;
@@ -263,19 +331,40 @@ export const PaymentPage = () => {
                   })}
                 </div>
 
-                {/* Development / Sandbox Notice */}
-                <div style={{
-                  padding: '1rem 1.25rem',
-                  backgroundColor: 'var(--color-surface-subtle)',
-                  borderLeft: '4px solid var(--color-accent)',
-                  borderRadius: 'var(--radius-xs)',
-                  marginBottom: '2rem',
-                  fontSize: '0.85rem',
-                  color: 'var(--color-dark)',
-                  lineHeight: 1.5,
-                }}>
-                  <strong>Development Gateway Simulation:</strong> Live payment provider credentials (e.g. Stripe, M-Pesa Daraja) are not yet mounted. Submitting will simulate a verified sandbox transaction to confirm the booking in your ledger.
-                </div>
+                {/* Paystack Gateway Notice */}
+                {paymentData.gateway?.isSandbox ? (
+                  <div style={{
+                    padding: '1rem 1.25rem',
+                    backgroundColor: 'var(--color-surface-subtle)',
+                    borderLeft: '4px solid var(--color-accent)',
+                    borderRadius: 'var(--radius-xs)',
+                    marginBottom: '2rem',
+                    fontSize: '0.85rem',
+                    color: 'var(--color-dark)',
+                    lineHeight: 1.5,
+                  }}>
+                    <strong>Paystack Gateway Sandbox:</strong> Development simulation mode is currently active. Clicking Pay will simulate an approved transaction in your booking ledger. When you place your real Paystack keys in <code>backend/.env</code>, live M-Pesa &amp; Card checkouts will trigger automatically.
+                  </div>
+                ) : (
+                  <div style={{
+                    padding: '1rem 1.25rem',
+                    backgroundColor: 'rgba(22, 163, 74, 0.08)',
+                    borderLeft: '4px solid #16A34A',
+                    borderRadius: 'var(--radius-xs)',
+                    marginBottom: '2rem',
+                    fontSize: '0.85rem',
+                    color: '#14532D',
+                    lineHeight: 1.5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                  }}>
+                    <ShieldCheck size={24} style={{ color: '#16A34A', flexShrink: 0 }} />
+                    <div>
+                      <strong>Secured by Paystack:</strong> 256-bit bank-grade encryption. Supports instant M-Pesa STK push, Visa, Mastercard, American Express &amp; Direct Bank Wire.
+                    </div>
+                  </div>
+                )}
 
                 {/* Pay Button */}
                 <button
@@ -284,7 +373,10 @@ export const PaymentPage = () => {
                   disabled={paying}
                   style={{ width: '100%', marginBottom: '1.25rem' }}
                 >
-                  {paying ? 'Processing Authorization...' : `PAY NOW (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`}
+                  {paying 
+                    ? 'Connecting to Paystack...' 
+                    : `PAY WITH PAYSTACK (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
+                  }
                 </button>
               </>
             )}

@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+*/node_modules/
+.pnp
+.pnp.js
+
+# Environment variables and secrets
+.env
+.env.*
+*.env
+*.env.*
+!.env.example
+!*.env.example
+
+# Production build outputs
+dist/
+*/dist/
+build/
+*/build/
+out/
+.output/
+
+# Cache & Temp directories
+.cache/
+.vite/
+*/.vite/
+.eslintcache
+.stylelintcache
+.turbo/
+.parcel-cache/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Testing & Coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# OS and Editor files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Scratch & temporary agent files
+scratch/
+.system_generated/
