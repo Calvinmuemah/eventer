@@ -39,9 +39,10 @@ export const BRAND = {
     customPricingNote: 'Customized based on client requirements & event scale',
   },
   socials: [
-    { label: 'TikTok', handle: 'Tiogs', url: 'https://www.tiktok.com/@Tiogs' },
-    { label: 'YouTube', handle: 'Tiogs', url: 'https://www.youtube.com/@Tiogs' },
-    { label: 'Facebook', handle: 'Titoe tv', url: 'https://www.facebook.com/Titoetv' },
+    { label: 'Instagram', handle: '@titoe_julius', url: 'https://www.instagram.com/titoe_julius?stkn=cG1idDM4MmZuN3k5' },
+    { label: 'TikTok', handle: '@Tiogs', url: 'https://www.tiktok.com/@Tiogs' },
+    { label: 'Facebook', handle: 'Titoe Julius', url: 'https://www.facebook.com/share/1HAeMLk7Tm/' },
+    { label: 'YouTube', handle: '@Tiogs-01', url: 'https://www.youtube.com/@Tiogs-01' },
     { label: 'WhatsApp', handle: '0782 527 081', url: 'https://wa.me/254782527081' },
   ],
 };

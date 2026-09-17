@@ -12,11 +12,11 @@ export const config = {
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT || '465', 10),
     secure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT === '465',
-    user: process.env.SMTP_USER || '',
-    pass: process.env.SMTP_PASS || '',
+    user: (process.env.SMTP_USER || '').trim(),
+    pass: (process.env.SMTP_PASS || '').replace(/\s+/g, ''),
     fromName: process.env.EMAIL_FROM_NAME || 'MC TITOE EVENTS AND DESIGNS',
-    fromAddress: process.env.EMAIL_FROM_ADDRESS || process.env.SMTP_USER || 'info@mctitoeevents.com',
-    adminNotificationEmail: process.env.ADMIN_NOTIFICATION_EMAIL || 'admin@mctitoeevents.com',
+    fromAddress: process.env.EMAIL_FROM_ADDRESS || process.env.SMTP_USER || 'mctitoeeventsdesigns@gmail.com',
+    adminNotificationEmail: process.env.ADMIN_NOTIFICATION_EMAIL || 'mctitoeeventsdesigns@gmail.com',
   },
 };
 

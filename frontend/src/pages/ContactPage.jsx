@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, MessageSquare, ArrowUpRight } from 'lucide-react';
 import { contactApi } from '../api/contactApi';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
@@ -256,6 +256,42 @@ export const ContactPage = () => {
                     <div style={{ fontSize: '0.95rem', color: 'var(--color-dark)', marginTop: '0.2rem' }}>
                       {BRAND.contact.hours}
                     </div>
+                  </div>
+                </div>
+
+                {/* Direct Social Media Channels */}
+                <div style={{
+                  paddingTop: '1.25rem',
+                  borderTop: '1px solid rgba(8, 26, 43, 0.08)',
+                }}>
+                  <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-muted)', fontWeight: 600, marginBottom: '0.75rem' }}>
+                    Follow Our Channels
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    {BRAND.socials.map((social) => (
+                      <a
+                        key={social.label}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          padding: '0.4rem 0.85rem',
+                          borderRadius: '20px',
+                          backgroundColor: 'rgba(8, 26, 43, 0.04)',
+                          color: 'var(--color-primary)',
+                          fontSize: '0.825rem',
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                          border: '1px solid rgba(8, 26, 43, 0.1)',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        {social.label} <ArrowUpRight size={13} style={{ color: 'var(--color-accent)' }} />
+                      </a>
+                    ))}
                   </div>
                 </div>
               </div>
