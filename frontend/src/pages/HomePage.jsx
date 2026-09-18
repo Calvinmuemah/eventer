@@ -94,58 +94,42 @@ export const HomePage = () => {
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            style={{ maxWidth: '820px' }}
+            style={{ maxWidth: '840px' }}
           >
-            <motion.div 
-              variants={fadeInUp} 
-              className="hero-badge-pill"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.6rem',
-                padding: '0.45rem 1.1rem',
-                border: '1px solid rgba(201, 162, 39, 0.45)',
-                background: 'rgba(8, 26, 43, 0.75)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: 'var(--radius-full)',
-              }}
-            >
-              <motion.span
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-                style={{ display: 'inline-flex', color: 'var(--color-accent)' }}
-              >
-                <Sparkles size={14} />
-              </motion.span>
-              <span style={{ fontWeight: 700, letterSpacing: '0.14em', color: '#FFFFFF' }}>
-                MC TITOE EVENTS & DESIGNS
-              </span>
-              <span style={{ color: 'var(--color-accent)', opacity: 0.7 }}>•</span>
-              <span style={{ color: 'var(--color-champagne)' }}>Premier Production & Staging</span>
-            </motion.div>
-
             <motion.h1 
               variants={fadeInUp}
               className="font-display" 
               style={{
                 color: '#FFFFFF',
+                fontSize: 'clamp(2.5rem, 5.5vw, 4.4rem)',
+                lineHeight: 1.14,
+                letterSpacing: '-0.02em',
+                fontWeight: 700,
                 marginBottom: '1.5rem',
-                fontWeight: 600,
-                textShadow: '0 2px 14px rgba(0, 0, 0, 0.7)',
+                textShadow: '0 2px 20px rgba(0, 0, 0, 0.75)',
               }}
             >
-              {BRAND.tagline}
+              We Turn Your Vision Into an{' '}
+              <span style={{
+                background: 'linear-gradient(135deg, #FFF6D8 0%, var(--color-champagne) 50%, var(--color-accent) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: 'inline-block',
+              }}>
+                Unforgettable Event.
+              </span>
             </motion.h1>
 
             <motion.p 
               variants={fadeInUp}
               className="font-body-large"
               style={{
-                color: 'rgba(255, 255, 255, 0.92)',
+                color: 'rgba(255, 255, 255, 0.9)',
+                fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
                 marginBottom: '2.5rem',
                 maxWidth: '680px',
-                lineHeight: 1.7,
-                textShadow: '0 1px 10px rgba(0, 0, 0, 0.65)',
+                lineHeight: 1.75,
+                textShadow: '0 1px 12px rgba(0, 0, 0, 0.65)',
               }}
             >
               {BRAND.subTagline}
@@ -156,14 +140,14 @@ export const HomePage = () => {
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: '1rem',
+                gap: '1.25rem',
                 alignItems: 'center',
               }}
             >
-              <Link to="/plan-event" className="btn btn-primary btn-lg">
+              <Link to="/plan-event" className="btn btn-primary btn-lg" style={{ padding: '0.95rem 2rem' }}>
                 Plan Your Event <ArrowRight size={18} />
               </Link>
-              <Link to="/services" className="btn btn-outline-gold btn-lg">
+              <Link to="/services" className="btn btn-outline-gold btn-lg" style={{ padding: '0.95rem 2rem' }}>
                 Explore Services
               </Link>
             </motion.div>
