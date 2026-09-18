@@ -11,7 +11,9 @@ import {
   AlertCircle,
   Clock,
   PhoneCall,
-  Check
+  Check,
+  RotateCcw,
+  X
 } from 'lucide-react';
 import { paymentsApi } from '../api/paymentsApi';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -33,6 +35,22 @@ export const PaymentPage = () => {
   const [mpesaPhone, setMpesaPhone] = useState('');
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState(null);
+
+  // Safaricom M-Pesa regulatory limit (KSh 250,000 per transaction)
+  const [mpesaAmountOption, setMpesaAmountOption] = useState('max_limit'); // 'max_limit' | 'custom'
+  const [customMpesaAmount, setCustomMpesaAmount] = useState('250000');
+
+  // Real-time Safaricom M-Pesa STK Push state
+  const [stkModalOpen, setStkModalOpen] = useState(false);
+  const [stkReference, setStkReference] = useState(null);
+  const [stkAmount, setStkAmount] = useState(0);
+  const [stkPhone, setStkPhone] = useState('');
+  const [stkStatus, setStkStatus] = useState('waiting'); // 'waiting' | 'success' | 'failed' | 'timeout'
+  const [stkMessage, setStkMessage] = useState('');
+  const [stkCountdown, setStkCountdown] = useState(60);
+  const [manualChecking, setManualChecking] = useState(false);
+
+  // Sandbox simulation prompt fallback
   const [simulatedPromptOpen, setSimulatedPromptOpen] = useState(false);
   const [simulatedTimer, setSimulatedTimer] = useState(3);
 
@@ -87,11 +105,13 @@ export const PaymentPage = () => {
           setVerifying(true);
           setPayError(null);
           const res = await paymentsApi.verify(id, { reference: paymentReference });
-          if (res.success) {
+          if (res.success && (res.data?.status === 'success' || res.status === 'success')) {
             setVerificationSuccess(true);
             setTimeout(() => {
               navigate(`/booking-confirmation/${id}`, { replace: true });
             }, 1800);
+          } else {
+            setPayError(res.message || 'Payment was not approved.');
           }
         } catch (err) {
           setPayError(err.message || 'Payment verification could not be completed.');
@@ -102,6 +122,72 @@ export const PaymentPage = () => {
       verifyPaystackPayment();
     }
   }, [paymentReference, id, navigate]);
+
+  // Compute active M-Pesa payment amount
+  const getActiveMpesaAmount = () => {
+    if (!paymentData) return 0;
+    const balance = paymentData.balance || 0;
+    if (balance <= 250000) return balance;
+    if (mpesaAmountOption === 'max_limit') return 250000;
+    const parsed = parseFloat(customMpesaAmount);
+    return isNaN(parsed) || parsed <= 0 ? 250000 : Math.min(parsed, 250000);
+  };
+  const activeMpesaAmount = getActiveMpesaAmount();
+
+  // Real-time polling for Safaricom STK Push confirmation
+  useEffect(() => {
+    if (!stkModalOpen || !stkReference || stkStatus !== 'waiting') return;
+
+    let timerInterval = null;
+    let pollInterval = null;
+
+    // 1. 60-second countdown
+    timerInterval = setInterval(() => {
+      setStkCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerInterval);
+          clearInterval(pollInterval);
+          setStkStatus('timeout');
+          setStkMessage('The authorization prompt timed out. If you entered your PIN, click "Check Payment Status Now".');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // 2. Poll status every 3.5s
+    let isPolling = false;
+    pollInterval = setInterval(async () => {
+      if (isPolling) return;
+      isPolling = true;
+      try {
+        const res = await paymentsApi.verify(id, { reference: stkReference });
+        if (res.success && (res.data?.status === 'success' || res.status === 'success')) {
+          clearInterval(timerInterval);
+          clearInterval(pollInterval);
+          setStkStatus('success');
+          setStkMessage('Payment verified! Preparing your confirmed booking pass...');
+          setTimeout(() => {
+            navigate(`/booking-confirmation/${id}`, { replace: true });
+          }, 1800);
+        } else if (res.data && !res.data.isPending && res.data.status !== 'success') {
+          clearInterval(timerInterval);
+          clearInterval(pollInterval);
+          setStkStatus('failed');
+          setStkMessage(res.data.message || 'Payment was cancelled or declined on your mobile device.');
+        }
+      } catch (err) {
+        console.warn('[STK Polling check]', err.message);
+      } finally {
+        isPolling = false;
+      }
+    }, 3500);
+
+    return () => {
+      if (timerInterval) clearInterval(timerInterval);
+      if (pollInterval) clearInterval(pollInterval);
+    };
+  }, [stkModalOpen, stkReference, stkStatus, id, navigate]);
 
   const openAssistanceWithReason = (methodName) => {
     setShowAssistance(true);
@@ -123,27 +209,42 @@ export const PaymentPage = () => {
       setPayError(null);
 
       if (selectedMethod === 'paystack_mpesa' && !mpesaPhone.trim()) {
-        setPayError('Please enter your Safaricom M-Pesa mobile phone number to receive the prompt.');
+        setPayError('Please enter your Safaricom M-Pesa mobile phone number to receive the STK prompt.');
         return;
       }
 
       setPaying(true);
 
+      const amountToPay = selectedMethod === 'paystack_mpesa' ? activeMpesaAmount : paymentData.balance;
+
       const res = await paymentsApi.initiate(id, {
         paymentMethod: selectedMethod,
-        amount: paymentData.balance,
+        amount: amountToPay,
         phone: mpesaPhone ? normalizeKenyanPhone(mpesaPhone) : undefined,
       });
 
-      // If live Paystack gateway returned an authorization URL, redirect to Paystack
-      // (Backend has specified channels: ['mobile_money'] or ['card'] so Paystack opens the exact right screen!)
+      // 1. Direct Safaricom M-Pesa STK Push
+      if (res.data?.isDirectStkPush) {
+        setPaying(false);
+        setStkReference(res.data.reference);
+        setStkAmount(res.data.amount || amountToPay);
+        setStkPhone(res.data.phone || mpesaPhone);
+        setStkStatus('waiting');
+        setStkCountdown(60);
+        setStkMessage('');
+        setStkModalOpen(true);
+        return;
+      }
+
+      // 2. Bank Card - redirect to live Paystack card page
       if (res.data?.authorizationUrl) {
         window.location.href = res.data.authorizationUrl;
         return;
       }
 
-      // If simulated sandbox mode: show interactive prompt feedback
+      // 3. Fallback Sandbox simulation
       if (selectedMethod === 'paystack_mpesa') {
+        setPaying(false);
         setSimulatedPromptOpen(true);
         let countdown = 3;
         const interval = setInterval(() => {
@@ -157,12 +258,44 @@ export const PaymentPage = () => {
         return;
       }
 
-      // Card / Direct settlement fallback
       navigate(`/booking-confirmation/${id}`);
     } catch (err) {
       setPayError(err.message || 'Payment attempt was not completed.');
       setPaying(false);
     }
+  };
+
+  const handleManualCheck = async () => {
+    if (!stkReference) return;
+    try {
+      setManualChecking(true);
+      const res = await paymentsApi.verify(id, { reference: stkReference });
+      if (res.success && (res.data?.status === 'success' || res.status === 'success')) {
+        setStkStatus('success');
+        setStkMessage('Payment verified successfully!');
+        setTimeout(() => {
+          navigate(`/booking-confirmation/${id}`, { replace: true });
+        }, 1500);
+      } else if (res.data && !res.data.isPending && res.data.status !== 'success') {
+        setStkStatus('failed');
+        setStkMessage(res.data.message || 'Payment was cancelled or declined.');
+      } else {
+        setStkMessage('Still awaiting PIN entry on your mobile handset...');
+      }
+    } catch (err) {
+      setStkMessage(err.message || 'Could not verify status yet.');
+    } finally {
+      setManualChecking(false);
+    }
+  };
+
+  const handleRetryStk = () => {
+    setStkModalOpen(false);
+    setStkStatus('waiting');
+    setStkReference(null);
+    setTimeout(() => {
+      handlePay();
+    }, 100);
   };
 
   const handleAssistanceSubmit = async (e) => {
@@ -438,9 +571,89 @@ export const PaymentPage = () => {
                     border: '1px solid var(--color-border)',
                     marginBottom: '1.75rem',
                   }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       <Smartphone size={16} color="var(--color-accent)" /> M-Pesa Mobile Prompt Instructions
                     </h4>
+
+                    {/* Safaricom Regulatory Limit Alert if Balance > 250,000 */}
+                    {paymentData.balance > 250000 && (
+                      <div style={{
+                        padding: '0.9rem 1rem',
+                        backgroundColor: '#FFFBEB',
+                        border: '1px solid #FCD34D',
+                        borderRadius: 'var(--radius-xs)',
+                        marginBottom: '1rem',
+                        fontSize: '0.825rem',
+                        color: '#92400E',
+                        lineHeight: 1.5,
+                      }}>
+                        <div style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem', color: '#B45309' }}>
+                          <AlertCircle size={15} /> Safaricom M-Pesa Regulatory Limit (KSh 250,000)
+                        </div>
+                        Safaricom limits single mobile money transfers to a legal maximum of <strong>KSh 250,000.00</strong>. Your balance is <strong>KSh {paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>.
+                        
+                        <div style={{ marginTop: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                          <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', cursor: 'pointer' }}>
+                            <input
+                              type="radio"
+                              name="mpesaInstallment"
+                              checked={mpesaAmountOption === 'max_limit'}
+                              onChange={() => setMpesaAmountOption('max_limit')}
+                              style={{ marginTop: '2px' }}
+                            />
+                            <span>
+                              <strong>Pay Maximum M-Pesa Installment: KSh 250,000.00</strong>
+                              <br />
+                              <span style={{ color: 'var(--color-muted)', fontSize: '0.775rem' }}>
+                                Remaining balance: KSh {(paymentData.balance - 250000).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} can be cleared in a subsequent installment.
+                              </span>
+                            </span>
+                          </label>
+
+                          <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', cursor: 'pointer' }}>
+                            <input
+                              type="radio"
+                              name="mpesaInstallment"
+                              checked={mpesaAmountOption === 'custom'}
+                              onChange={() => setMpesaAmountOption('custom')}
+                              style={{ marginTop: '2px' }}
+                            />
+                            <span>
+                              <strong>Pay Custom Installment (up to KSh 250,000.00)</strong>
+                            </span>
+                          </label>
+
+                          {mpesaAmountOption === 'custom' && (
+                            <div style={{ marginLeft: '1.4rem', marginTop: '0.2rem' }}>
+                              <input
+                                type="number"
+                                min="100"
+                                max="250000"
+                                step="100"
+                                className="form-input"
+                                style={{ maxWidth: '200px', padding: '0.35rem 0.6rem', fontSize: '0.85rem' }}
+                                value={customMpesaAmount}
+                                onChange={(e) => setCustomMpesaAmount(e.target.value)}
+                                placeholder="Amount in KSh"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        <div style={{ marginTop: '0.75rem', paddingTop: '0.5rem', borderTop: '1px dashed #FCD34D', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+                          <span style={{ fontSize: '0.775rem', color: '#78350F' }}>Prefer paying the full balance in one transaction?</span>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedMethod('paystack_card')}
+                            className="btn btn-secondary btn-xs"
+                            style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem' }}
+                          >
+                            Switch to Bank Card →
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="form-group" style={{ marginBottom: '0.85rem' }}>
                       <label className="form-label" style={{ fontSize: '0.8rem' }}>M-Pesa Mobile Number *</label>
                       <input
@@ -456,7 +669,7 @@ export const PaymentPage = () => {
                     </div>
                     <ol style={{ fontSize: '0.825rem', color: 'var(--color-dark)', paddingLeft: '1.2rem', lineHeight: 1.5, margin: 0 }}>
                       <li>Click the button below to initiate the STK push.</li>
-                      <li>Check your phone screen for the prompt: <strong>Pay KSh {paymentData.balance.toLocaleString()} to MC TITOE EVENTS</strong>.</li>
+                      <li>Check your phone screen for the prompt: <strong>Pay KSh {activeMpesaAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} to MC TITOE EVENTS</strong>.</li>
                       <li>Enter your 4-digit M-Pesa secret PIN to authorize.</li>
                       <li>Upon confirmation, this page will automatically confirm your reservation.</li>
                     </ol>
@@ -554,7 +767,7 @@ export const PaymentPage = () => {
                     {paying 
                       ? 'Connecting to Payment Gateway...' 
                       : selectedMethod === 'paystack_mpesa'
-                        ? `PAY VIA M-PESA (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
+                        ? `PAY VIA M-PESA (KSh ${activeMpesaAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
                         : `PAY VIA BANK CARD (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
                     }
                   </button>
@@ -759,6 +972,310 @@ export const PaymentPage = () => {
         </div>
       </div>
 
+      {/* Real-time Safaricom M-Pesa STK Push Modal */}
+      {stkModalOpen && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: 'rgba(8, 26, 43, 0.85)',
+          backdropFilter: 'blur(8px)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '1rem',
+        }}>
+          <div style={{
+            maxWidth: '440px',
+            width: '100%',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '16px',
+            padding: '2.25rem 2rem',
+            textAlign: 'center',
+            boxShadow: 'var(--shadow-xl)',
+            position: 'relative',
+          }}>
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setStkModalOpen(false);
+                setPaying(false);
+              }}
+              style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--color-muted)',
+                padding: '0.25rem',
+              }}
+              aria-label="Close"
+            >
+              <X size={20} />
+            </button>
+
+            {/* WAITING STATE */}
+            {stkStatus === 'waiting' && (
+              <>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: '#DCFCE7',
+                  color: '#16A34A',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1.25rem',
+                  position: 'relative',
+                }}>
+                  <Smartphone size={32} />
+                </div>
+
+                <span className="badge-eyebrow" style={{ color: '#16A34A', marginBottom: '0.25rem' }}>
+                  Live Safaricom Prompt Dispatched
+                </span>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--color-primary)', margin: '0.25rem 0 0.5rem' }}>
+                  M-Pesa STK Prompt Sent!
+                </h3>
+
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-dark)', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                  A prompt has been sent to your Safaricom mobile phone:
+                  <br />
+                  <strong style={{ fontSize: '1.1rem', color: 'var(--color-primary)' }}>{stkPhone}</strong>
+                </p>
+
+                <div style={{
+                  padding: '0.85rem 1rem',
+                  backgroundColor: 'var(--color-surface-subtle)',
+                  borderRadius: '8px',
+                  border: '1px solid var(--color-border)',
+                  marginBottom: '1.25rem',
+                  textAlign: 'left',
+                  fontSize: '0.825rem',
+                }}>
+                  <div style={{ fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.4rem' }}>
+                    Quick Instructions:
+                  </div>
+                  <ol style={{ paddingLeft: '1.1rem', margin: 0, lineHeight: 1.6 }}>
+                    <li>Unlock your phone screen now.</li>
+                    <li>Check the popup: <strong>Pay KSh {stkAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} to MC TITOE EVENTS</strong>.</li>
+                    <li>Enter your secret 4-digit M-Pesa PIN and tap OK.</li>
+                  </ol>
+                </div>
+
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.35rem 0.75rem',
+                  backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                  color: '#B45309',
+                  borderRadius: '20px',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  marginBottom: '1.25rem',
+                }}>
+                  <Clock size={14} /> Awaiting authorization... {stkCountdown}s
+                </div>
+
+                {stkMessage && (
+                  <div style={{ fontSize: '0.8rem', color: 'var(--color-muted)', marginBottom: '1rem' }}>
+                    {stkMessage}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  <button
+                    type="button"
+                    onClick={handleManualCheck}
+                    className="btn btn-secondary btn-sm"
+                    disabled={manualChecking}
+                    style={{ width: '100%' }}
+                  >
+                    {manualChecking ? 'Checking status...' : 'I Entered My PIN — Check Status'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStkModalOpen(false);
+                      setPaying(false);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--color-muted)',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                      padding: '0.3rem',
+                    }}
+                  >
+                    Cancel / Change Phone Number
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* SUCCESS STATE */}
+            {stkStatus === 'success' && (
+              <>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: '#DCFCE7',
+                  color: '#16A34A',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1.25rem',
+                }}>
+                  <CheckCircle2 size={36} />
+                </div>
+
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
+                  Payment Verified!
+                </h3>
+                <p style={{ fontSize: '0.9rem', color: 'var(--color-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+                  Your payment of <strong>KSh {stkAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong> has been received and confirmed.
+                </p>
+                <LoadingSpinner label="Redirecting to your booking confirmation..." />
+              </>
+            )}
+
+            {/* FAILED STATE */}
+            {stkStatus === 'failed' && (
+              <>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--color-error-bg)',
+                  color: 'var(--color-error)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1.25rem',
+                }}>
+                  <AlertCircle size={36} />
+                </div>
+
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
+                  Authorization Not Completed
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+                  {stkMessage || 'The M-Pesa prompt was cancelled or not confirmed on your handset.'}
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  <button
+                    type="button"
+                    onClick={handleRetryStk}
+                    className="btn btn-primary btn-sm"
+                    style={{ width: '100%' }}
+                  >
+                    <RotateCcw size={14} /> Send STK Prompt Again
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStkModalOpen(false);
+                      setSelectedMethod('paystack_card');
+                    }}
+                    className="btn btn-secondary btn-sm"
+                    style={{ width: '100%' }}
+                  >
+                    Pay via Bank Card Instead
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setStkModalOpen(false)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--color-muted)',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                      padding: '0.3rem',
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* TIMEOUT STATE */}
+            {stkStatus === 'timeout' && (
+              <>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FEF3C7',
+                  color: '#D97706',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1.25rem',
+                }}>
+                  <Clock size={36} />
+                </div>
+
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
+                  Awaiting Confirmation
+                </h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--color-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+                  {stkMessage || 'If you already entered your PIN on your phone, click below to check status. Otherwise, you can resend the prompt.'}
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  <button
+                    type="button"
+                    onClick={handleManualCheck}
+                    className="btn btn-primary btn-sm"
+                    disabled={manualChecking}
+                    style={{ width: '100%' }}
+                  >
+                    {manualChecking ? 'Checking...' : 'Check Payment Status Now'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleRetryStk}
+                    className="btn btn-secondary btn-sm"
+                    style={{ width: '100%' }}
+                  >
+                    <RotateCcw size={14} /> Resend M-Pesa Prompt
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setStkModalOpen(false)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--color-muted)',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                      padding: '0.3rem',
+                    }}
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Simulated M-Pesa Prompt Modal (when testing in dev simulation mode) */}
       {simulatedPromptOpen && (
         <div style={{
@@ -798,7 +1315,7 @@ export const PaymentPage = () => {
               M-Pesa STK Prompt Sent!
             </h3>
             <p style={{ fontSize: '0.875rem', color: 'var(--color-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
-              Check your mobile phone (<strong>{mpesaPhone}</strong>) for the Safaricom STK prompt for <strong>KSh {paymentData.balance.toLocaleString()}</strong> to <strong>MC TITOE EVENTS</strong>.
+              Check your mobile phone (<strong>{mpesaPhone}</strong>) for the Safaricom STK prompt for <strong>KSh {activeMpesaAmount.toLocaleString()}</strong> to <strong>MC TITOE EVENTS</strong>.
             </p>
             <div style={{
               padding: '0.75rem',

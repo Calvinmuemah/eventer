@@ -101,7 +101,9 @@ export const paystackService = {
 
       if (!response.ok || !data.status) {
         console.error('[PaystackService ERROR] Initialize transaction failed:', data);
-        throw new Error(data.message || 'Paystack initialization failed.');
+        const err = new Error(data.message || 'Paystack initialization failed.');
+        err.statusCode = 400;
+        throw err;
       }
 
       return {
@@ -112,6 +114,87 @@ export const paystackService = {
       };
     } catch (err) {
       console.error('[PaystackService ERROR]', err.message);
+      if (!err.statusCode) err.statusCode = 400;
+      throw err;
+    }
+  },
+
+  /**
+   * Directly sends a Safaricom M-Pesa STK Push to the customer's phone handset
+   * @param {Object} params
+   * @param {string} params.email - Customer email
+   * @param {number} params.amount - Amount in KES
+   * @param {string} params.phone - Customer Safaricom phone number (+254...)
+   * @param {string} params.reference - Unique reference
+   * @param {Object} [params.metadata]
+   */
+  async chargeMobileMoney({ email, amount, phone, reference, metadata = {} }) {
+    if (!isPaystackConfigured()) {
+      console.log('\n[PaystackService] SIMULATION M-PESA STK PUSH to', phone);
+      return {
+        isSimulation: true,
+        reference,
+        status: 'pay_offline',
+        displayText: 'Please complete authorization process on your mobile phone',
+        message: 'Simulated STK prompt sent to ' + phone,
+      };
+    }
+
+    try {
+      const subunitAmount = Math.round(Number(amount) * 100);
+
+      // Ensure phone is E.164 (+254...)
+      const cleanedPhone = phone.replace(/[\s\-\(\)]/g, '').trim();
+      let formattedPhone = cleanedPhone;
+      if (cleanedPhone.startsWith('0')) {
+        formattedPhone = `+254${cleanedPhone.slice(1)}`;
+      } else if (cleanedPhone.startsWith('254')) {
+        formattedPhone = `+${cleanedPhone}`;
+      } else if (!cleanedPhone.startsWith('+')) {
+        formattedPhone = `+254${cleanedPhone}`;
+      }
+
+      const payload = {
+        email: email.trim(),
+        amount: subunitAmount,
+        currency: config.paystack.currency || 'KES',
+        reference,
+        metadata,
+        mobile_money: {
+          phone: formattedPhone,
+          provider: 'mpesa',
+        },
+      };
+
+      const response = await fetch('https://api.paystack.co/charge', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${config.paystack.secretKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.status) {
+        console.error('[PaystackService ERROR] Charge mobile money failed:', data);
+        const err = new Error(data.message || 'M-Pesa STK push request could not be completed.');
+        err.statusCode = 400;
+        throw err;
+      }
+
+      return {
+        isSimulation: false,
+        reference: data.data.reference,
+        status: data.data.status,
+        displayText: data.data.display_text || 'Please complete authorization process on your mobile phone',
+        accountReference: data.data.account_reference,
+        message: data.message,
+      };
+    } catch (err) {
+      console.error('[PaystackService chargeMobileMoney ERROR]', err.message);
+      if (!err.statusCode) err.statusCode = 400;
       throw err;
     }
   },
@@ -149,7 +232,9 @@ export const paystackService = {
       const result = await response.json();
 
       if (!response.ok || !result.status) {
-        throw new Error(result.message || 'Failed to verify Paystack transaction.');
+        const err = new Error(result.message || 'Failed to verify Paystack transaction.');
+        err.statusCode = 400;
+        throw err;
       }
 
       const txData = result.data;
@@ -171,6 +256,7 @@ export const paystackService = {
       };
     } catch (err) {
       console.error('[PaystackService verifyTransaction ERROR]', err.message);
+      if (!err.statusCode) err.statusCode = 400;
       throw err;
     }
   },

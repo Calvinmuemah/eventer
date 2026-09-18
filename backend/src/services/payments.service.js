@@ -79,9 +79,12 @@ export const paymentsService = {
       throw badRequest('This booking is already fully settled.');
     }
 
-    const amountToPay = paymentData.amount ? parseFloat(paymentData.amount) : currentBalance;
+    let amountToPay = paymentData.amount ? parseFloat(paymentData.amount) : currentBalance;
     if (isNaN(amountToPay) || amountToPay <= 0) {
       throw badRequest('Invalid payment amount requested.');
+    }
+    if (amountToPay > currentBalance) {
+      amountToPay = currentBalance;
     }
 
     const txRef =
@@ -94,29 +97,57 @@ export const paymentsService = {
 
     // Target specific Paystack payment channel based on user selection
     const method = (paymentData.paymentMethod || '').toLowerCase();
-    let channels = ['card', 'mobile_money', 'bank_transfer'];
-    if (method.includes('mpesa') || method.includes('mobile')) {
-      channels = ['mobile_money'];
-    } else if (method.includes('card')) {
-      channels = ['card'];
-    } else if (method.includes('bank')) {
-      channels = ['bank_transfer', 'bank'];
+    const isMpesa = method.includes('mpesa') || method.includes('mobile');
+    const isCard = method.includes('card');
+
+    // Safaricom M-Pesa regulatory limit check:
+    // Safaricom strictly caps single mobile money transactions at KSh 250,000.00
+    if (isMpesa && amountToPay > 250000) {
+      throw badRequest(
+        `Safaricom M-Pesa has a regulatory limit of KSh 250,000.00 per transaction. Your outstanding balance is KSh ${currentBalance.toLocaleString()}. Please choose 'Pay via Bank Card' for full payment, pay an installment up to KSh 250,000.00, or click 'Request Assistance'.`
+      );
     }
 
-    const paystackResult = await paystackService.initializeTransaction({
-      email: booking.customer_email || 'client@mctitoeevents.com',
-      amount: amountToPay,
-      reference: txRef,
-      callbackUrl,
-      channels,
-      metadata: {
-        bookingId: booking.id,
-        bookingReference: booking.booking_reference,
-        customerName: booking.customer_name,
-        eventType: booking.event_type,
-        requestedMethod: paymentData.paymentMethod || 'paystack',
-      },
-    });
+    // Safaricom phone required for direct STK Push
+    const phoneToUse = paymentData.phone || booking.customer_phone;
+    if (isMpesa && (!phoneToUse || !phoneToUse.trim())) {
+      throw badRequest('A valid Safaricom mobile phone number is required to receive the M-Pesa STK push.');
+    }
+
+    let paystackResult;
+    if (isMpesa) {
+      // Direct Safaricom M-Pesa STK Push
+      paystackResult = await paystackService.chargeMobileMoney({
+        email: booking.customer_email || 'client@mctitoeevents.com',
+        amount: amountToPay,
+        phone: phoneToUse,
+        reference: txRef,
+        metadata: {
+          bookingId: booking.id,
+          bookingReference: booking.booking_reference,
+          customerName: booking.customer_name,
+          customerPhone: phoneToUse,
+          eventType: booking.event_type,
+          requestedMethod: 'paystack_mpesa',
+        },
+      });
+    } else {
+      // Card / Other gateway channels
+      paystackResult = await paystackService.initializeTransaction({
+        email: booking.customer_email || 'client@mctitoeevents.com',
+        amount: amountToPay,
+        reference: txRef,
+        callbackUrl,
+        channels: isCard ? ['card'] : ['card', 'mobile_money', 'bank_transfer'],
+        metadata: {
+          bookingId: booking.id,
+          bookingReference: booking.booking_reference,
+          customerName: booking.customer_name,
+          eventType: booking.event_type,
+          requestedMethod: paymentData.paymentMethod || 'paystack_card',
+        },
+      });
+    }
 
     const client = await db.getClient();
     try {
@@ -131,7 +162,7 @@ export const paymentsService = {
             amount: amountToPay,
             currency: config.paystack.currency || 'KES',
             provider: 'paystack_sandbox_simulation',
-            paymentMethod: paymentData.paymentMethod || 'card',
+            paymentMethod: paymentData.paymentMethod || (isMpesa ? 'mpesa' : 'card'),
             status: 'Paid',
             providerResponse: {
               mode: 'sandbox_simulation',
@@ -180,6 +211,7 @@ export const paymentsService = {
 
         return {
           isSandbox: true,
+          isDirectStkPush: isMpesa,
           reference: txRef,
           authorizationUrl: null,
           booking: updatedBooking,
@@ -196,9 +228,12 @@ export const paymentsService = {
           amount: amountToPay,
           currency: config.paystack.currency || 'KES',
           provider: 'paystack',
-          paymentMethod: paymentData.paymentMethod || 'paystack',
+          paymentMethod: isMpesa ? 'mpesa' : (paymentData.paymentMethod || 'card'),
           status: 'Pending',
           providerResponse: {
+            channel: isMpesa ? 'mobile_money' : 'card',
+            phone: isMpesa ? phoneToUse : undefined,
+            displayText: paystackResult.displayText,
             accessCode: paystackResult.accessCode,
             authorizationUrl: paystackResult.authorizationUrl,
             timestamp: new Date().toISOString(),
@@ -209,9 +244,24 @@ export const paymentsService = {
 
       await client.query('COMMIT');
 
+      if (isMpesa) {
+        return {
+          isSandbox: false,
+          isDirectStkPush: true,
+          reference: txRef,
+          amount: amountToPay,
+          phone: phoneToUse,
+          displayText: paystackResult.displayText || 'Please complete authorization process on your mobile phone',
+          payment: pendingPayment,
+          message: 'M-Pesa STK push prompt has been dispatched to your handset.',
+        };
+      }
+
       return {
         isSandbox: false,
+        isDirectStkPush: false,
         reference: txRef,
+        amount: amountToPay,
         authorizationUrl: paystackResult.authorizationUrl,
         accessCode: paystackResult.accessCode,
         payment: pendingPayment,
@@ -240,8 +290,26 @@ export const paymentsService = {
 
     const verification = await paystackService.verifyTransaction(reference);
 
+    // If transaction is still awaiting PIN entry on handset or in progress
+    const pendingStatuses = ['pay_offline', 'pending', 'ongoing', 'processing', 'queued'];
+    if (pendingStatuses.includes(verification.status)) {
+      return {
+        success: false,
+        isPending: true,
+        status: verification.status,
+        message: verification.gatewayResponse || 'Awaiting PIN authorization on customer phone handset...',
+      };
+    }
+
+    // If transaction failed or was abandoned/cancelled
     if (!verification.success && verification.status !== 'success') {
-      throw badRequest(`Payment verification failed. Status: ${verification.status || 'declined'}`);
+      const failReason = verification.gatewayResponse || `Payment authorization was ${verification.status || 'declined'}.`;
+      return {
+        success: false,
+        isPending: false,
+        status: verification.status || 'failed',
+        message: failReason,
+      };
     }
 
     const client = await db.getClient();
@@ -250,6 +318,18 @@ export const paymentsService = {
 
       const existingPayment = await paymentsRepository.findByTransactionReference(reference);
       const paidAmount = verification.amount || parseFloat(existingPayment?.amount || booking.balance);
+
+      // Prevent double counting if already marked as Paid
+      if (existingPayment && existingPayment.status === 'Paid') {
+        await client.query('COMMIT');
+        return {
+          success: true,
+          isPending: false,
+          booking,
+          payment: existingPayment,
+          message: 'Payment has already been processed and confirmed.',
+        };
+      }
 
       let paymentRecord;
       if (existingPayment) {
@@ -266,7 +346,7 @@ export const paymentsService = {
         const updateRes = await client.query(updateQuery, [
           existingPayment.id,
           JSON.stringify(verification),
-          verification.channel || 'paystack',
+          verification.channel || existingPayment.payment_method || 'paystack',
         ]);
         paymentRecord = updateRes.rows[0];
       } else {
@@ -323,6 +403,7 @@ export const paymentsService = {
 
       return {
         success: true,
+        isPending: false,
         isSandbox: verification.isSimulation || false,
         booking: updatedBooking,
         payment: paymentRecord,
