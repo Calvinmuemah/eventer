@@ -10,7 +10,6 @@ import {
   HelpCircle, 
   Mail, 
   ExternalLink,
-  Sparkles,
   X
 } from 'lucide-react';
 
@@ -37,40 +36,26 @@ export const Sidebar = ({ isOpen, onClose, pendingAssistanceCount = 0 }) => {
         justifyContent: 'space-between',
         gap: '0.75rem',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div>
           <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '4px',
-            border: '1.5px solid var(--admin-accent)',
-            color: 'var(--admin-accent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            fontFamily: 'Cormorant Garamond, serif',
+            fontSize: '1.3rem',
+            fontWeight: 700,
+            letterSpacing: '0.06em',
+            color: '#FFFFFF',
+            lineHeight: 1.1,
           }}>
-            <Sparkles size={18} />
+            MC TITOE
           </div>
-          <div>
-            <div style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: '1.2rem',
-              fontWeight: 700,
-              letterSpacing: '0.06em',
-              color: '#FFFFFF',
-              lineHeight: 1.1,
-            }}>
-              MC TITOE
-            </div>
-            <div style={{
-              fontSize: '0.58rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.14em',
-              color: 'var(--admin-accent)',
-              marginTop: '2px',
-              fontWeight: 700,
-            }}>
-              EVENTS & DESIGNS
-            </div>
+          <div style={{
+            fontSize: '0.6rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.16em',
+            color: 'var(--admin-accent)',
+            marginTop: '3px',
+            fontWeight: 700,
+          }}>
+            EVENTS & DESIGNS
           </div>
         </div>
 

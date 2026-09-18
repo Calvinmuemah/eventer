@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, ExternalLink, Menu, LogOut, AlertCircle } from 'lucide-react';
+import { Menu, LogOut, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export const Topbar = ({ onToggleSidebar, pendingAssistanceCount = 0 }) => {
@@ -45,21 +45,6 @@ export const Topbar = ({ onToggleSidebar, pendingAssistanceCount = 0 }) => {
             <span className="admin-status-text">{pendingAssistanceCount} Assistance Due</span>
           </Link>
         )}
-
-        <div className="admin-status-pill">
-          <ShieldCheck size={14} />
-          <span className="admin-status-text">PostgreSQL Online</span>
-        </div>
-
-        <a
-          href="http://localhost:5173/plan-event"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="admin-btn admin-btn-outline admin-btn-sm admin-topbar-action"
-          title="Open Client Planner"
-        >
-          <span className="admin-btn-label">Planner</span> <ExternalLink size={13} />
-        </a>
 
         {/* Authenticated Admin Badge */}
         {user && (
