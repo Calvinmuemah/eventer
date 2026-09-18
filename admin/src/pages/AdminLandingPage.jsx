@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Sparkles, 
   Lock, 
   Mail, 
   Eye, 
   EyeOff, 
-  ExternalLink,
   AlertCircle,
   X
 } from 'lucide-react';
@@ -66,9 +64,6 @@ export const AdminLandingPage = () => {
     setTimeout(() => setDemoLoaded(false), 3000);
   };
 
-  // Resolve client frontend URL
-  const publicSiteUrl = import.meta.env.VITE_PUBLIC_URL || 'http://localhost:5173';
-
   return (
     <div className="admin-landing-wrapper">
       {/* Decorative subtle topographic wave lines (bottom-left) matching screenshot */}
@@ -95,7 +90,7 @@ export const AdminLandingPage = () => {
         <path d="M-50 160 C 10 80, 50 40, 110 70 C 160 90, 220 140, 280 210" stroke="#C9A227" strokeWidth="1.2" />
       </svg>
 
-      {/* Top Navigation Bar - KEPT AS IS WITH PROJECT COLORS */}
+      {/* Top Navigation Bar */}
       <header style={{
         padding: '1rem clamp(0.5rem, 1vw, 1rem)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
@@ -109,42 +104,27 @@ export const AdminLandingPage = () => {
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
       }}>
-        {/* Brand Crest */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+        {/* Brand Logo */}
+        <div>
           <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '8px',
-            border: '1.5px solid var(--admin-accent)',
-            color: 'var(--admin-accent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(201, 162, 39, 0.12)',
-            boxShadow: '0 0 20px rgba(201, 162, 39, 0.25)',
+            fontFamily: 'Cormorant Garamond, serif',
+            fontSize: '1.35rem',
+            fontWeight: 700,
+            letterSpacing: '0.06em',
+            color: '#FFFFFF',
+            lineHeight: 1.15,
           }}>
-            <Sparkles size={20} />
+            MC TITOE
           </div>
-          <div>
-            <div style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: '1.3rem',
-              fontWeight: 700,
-              letterSpacing: '0.06em',
-              color: '#FFFFFF',
-              lineHeight: 1.15,
-            }}>
-              MC TITOE
-            </div>
-            <div style={{
-              fontSize: '0.625rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.18em',
-              color: 'var(--admin-champagne)',
-              fontWeight: 700,
-            }}>
-              EVENTS & DESIGNS • OPERATIONS SUITE
-            </div>
+          <div style={{
+            fontSize: '0.625rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.18em',
+            color: 'var(--admin-champagne)',
+            fontWeight: 700,
+            marginTop: '2px',
+          }}>
+            EVENTS & DESIGNS
           </div>
         </div>
 
@@ -166,39 +146,6 @@ export const AdminLandingPage = () => {
             <span className="landing-pulse-dot" />
             <span style={{ display: 'inline-block' }}>Systems Live</span>
           </div>
-
-          <a
-            href={publicSiteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              color: 'rgba(255, 255, 255, 0.8)',
-              textDecoration: 'none',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              padding: '0.5rem 0.85rem',
-              borderRadius: '6px',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#FFFFFF';
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-              e.currentTarget.style.borderColor = 'rgba(201, 162, 39, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.04)';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-            }}
-          >
-            <span>Public Site</span>
-            <ExternalLink size={13} />
-          </a>
 
           {/* Login Button in Navbar */}
           <button
@@ -447,25 +394,11 @@ export const AdminLandingPage = () => {
 
             {/* Simple Clean Header */}
             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-              <div style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '8px',
-                border: '1.5px solid var(--admin-accent)',
-                color: 'var(--admin-accent)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(201, 162, 39, 0.1)',
-                marginBottom: '0.75rem',
-              }}>
-                <Lock size={18} />
-              </div>
               <h2 style={{
-                fontSize: '1.35rem',
+                fontSize: '1.45rem',
                 fontWeight: 700,
                 color: '#FFFFFF',
-                margin: '0 0 0.25rem',
+                margin: '0 0 0.35rem',
               }}>
                 Sign In
               </h2>
