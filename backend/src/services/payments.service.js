@@ -44,7 +44,7 @@ export const paymentsService = {
       availableMethods: [
         {
           id: 'paystack_mpesa',
-          name: 'M-Pesa / Mobile Money (via Paystack)',
+          name: 'M-Pesa / Mobile Money',
           icon: 'Smartphone',
           subtitle: 'Instant STK prompt or paybill directly to your mobile phone',
         },
@@ -92,11 +92,23 @@ export const paymentsService = {
       paymentData.callbackUrl ||
       `${config.frontendUrl}/payment/${booking.id}?reference=${txRef}`;
 
+    // Target specific Paystack payment channel based on user selection
+    const method = (paymentData.paymentMethod || '').toLowerCase();
+    let channels = ['card', 'mobile_money', 'bank_transfer'];
+    if (method.includes('mpesa') || method.includes('mobile')) {
+      channels = ['mobile_money'];
+    } else if (method.includes('card')) {
+      channels = ['card'];
+    } else if (method.includes('bank')) {
+      channels = ['bank_transfer', 'bank'];
+    }
+
     const paystackResult = await paystackService.initializeTransaction({
       email: booking.customer_email || 'client@mctitoeevents.com',
       amount: amountToPay,
       reference: txRef,
       callbackUrl,
+      channels,
       metadata: {
         bookingId: booking.id,
         bookingReference: booking.booking_reference,

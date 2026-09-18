@@ -1,8 +1,9 @@
 import React from 'react';
-import { ShieldCheck, ExternalLink, Menu, LogOut, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ShieldCheck, ExternalLink, Menu, LogOut, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
-export const Topbar = ({ onToggleSidebar }) => {
+export const Topbar = ({ onToggleSidebar, pendingAssistanceCount = 0 }) => {
   const { user, logout } = useAuth();
 
   return (
@@ -24,6 +25,27 @@ export const Topbar = ({ onToggleSidebar }) => {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.4rem, 1.2vw, 0.85rem)', flexShrink: 0 }}>
+        {pendingAssistanceCount > 0 && (
+          <Link
+            to="/payment-assistance"
+            className="admin-status-pill"
+            style={{
+              backgroundColor: 'rgba(239, 68, 68, 0.12)',
+              border: '1px solid rgba(239, 68, 68, 0.35)',
+              color: '#EF4444',
+              textDecoration: 'none',
+              fontWeight: 700,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+            }}
+            title="Clients requiring payment assistance"
+          >
+            <AlertCircle size={14} color="#EF4444" />
+            <span className="admin-status-text">{pendingAssistanceCount} Assistance Due</span>
+          </Link>
+        )}
+
         <div className="admin-status-pill">
           <ShieldCheck size={14} />
           <span className="admin-status-text">PostgreSQL Online</span>

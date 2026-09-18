@@ -9,7 +9,8 @@ import {
   Mail, 
   Plus, 
   ArrowRight,
-  RotateCcw
+  RotateCcw,
+  AlertCircle
 } from 'lucide-react';
 import { adminApi } from '../api/adminApi';
 import StatCard from '../components/common/StatCard';
@@ -57,6 +58,7 @@ export const DashboardPage = () => {
   }
 
   const { overview, recentRequests, recentBookings } = data;
+  const pendingAssistanceCount = parseInt(overview.pending_assistance || 0, 10);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -75,6 +77,52 @@ export const DashboardPage = () => {
           </button>
         </div>
       </div>
+
+      {/* Urgent Payment Assistance Alert Banner */}
+      {pendingAssistanceCount > 0 && (
+        <div style={{
+          padding: '1.25rem 1.5rem',
+          backgroundColor: 'rgba(239, 68, 68, 0.08)',
+          border: '1.5px solid rgba(239, 68, 68, 0.35)',
+          borderRadius: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(239, 68, 68, 0.15)',
+              color: '#EF4444',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <AlertCircle size={22} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, color: '#991B1B', fontSize: '1rem' }}>
+                {pendingAssistanceCount} Pending Payment Assistance Request{pendingAssistanceCount > 1 ? 's' : ''}
+              </div>
+              <div style={{ fontSize: '0.85rem', color: '#B91C1C' }}>
+                Clients have requested urgent guidance on paying via Bank Card or Wire. Review their notes and reach out.
+              </div>
+            </div>
+          </div>
+          <Link 
+            to="/payment-assistance" 
+            className="admin-btn admin-btn-sm" 
+            style={{ backgroundColor: '#EF4444', color: '#FFFFFF', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+          >
+            Review Inquiries <ArrowRight size={14} />
+          </Link>
+        </div>
+      )}
 
       {/* Metrics Row */}
       <div style={{

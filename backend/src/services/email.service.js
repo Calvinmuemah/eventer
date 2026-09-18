@@ -678,5 +678,117 @@ MC TITOE EVENTS AND DESIGNS
       html,
     });
   },
+
+  /**
+   * 4. Urgent notification when a client requests payment assistance (Bank card, wire instructions, etc.)
+   */
+  async sendPaymentAssistanceNotificationEmail({
+    name,
+    phone,
+    email,
+    bookingReference,
+    message,
+    balance = null,
+    eventType = null,
+    eventDate = null,
+  }) {
+    const clientName = name || 'Valued Client';
+    const cleanPhone = phone || 'N/A';
+    const cleanEmail = email || 'N/A';
+    const formattedBalance = balance !== null ? `KSh ${parseFloat(balance).toLocaleString()}` : 'Pending Quote / Ledger';
+    const adminUrl = config.adminUrl || 'http://localhost:5174';
+
+    // Format WhatsApp direct click link if Kenyan phone
+    const digitsOnly = cleanPhone.replace(/[^0-9]/g, '');
+    const waLink = digitsOnly ? `https://wa.me/${digitsOnly.startsWith('0') ? '254' + digitsOnly.slice(1) : digitsOnly}` : null;
+
+    // 1. Notify Admin (MC Titoe owner)
+    if (config.smtp.adminNotificationEmail) {
+      const adminSubject = `[URGENT: Payment Assistance Request] from ${clientName} (${bookingReference || 'General'})`;
+      const adminHtml = wrapHtmlTemplate({
+        title: adminSubject,
+        preheader: `Customer ${clientName} has requested assistance with bank card or wire payment for booking ${bookingReference}`,
+        contentHtml: `
+          <div class="greeting" style="color: #EF4444;">⚠️ Urgent: Payment Assistance Requested</div>
+          <p>A client has requested administrative support on completing their booking payment (Bank Card / Wire / M-Pesa assistance).</p>
+
+          <table class="details-table">
+            <tr><td class="label">Customer Name</td><td class="value"><strong>${clientName}</strong></td></tr>
+            <tr><td class="label">Booking Reference</td><td class="value"><strong style="color: #C9A227;">${bookingReference || 'N/A'}</strong></td></tr>
+            <tr><td class="label">Phone Number</td><td class="value"><a href="tel:${cleanPhone}">${cleanPhone}</a> ${waLink ? ` &bull; <a href="${waLink}" target="_blank" style="color: #10B981; font-weight: 600;">Chat on WhatsApp</a>` : ''}</td></tr>
+            <tr><td class="label">Email Address</td><td class="value"><a href="mailto:${cleanEmail}">${cleanEmail}</a></td></tr>
+            <tr><td class="label">Outstanding Balance</td><td class="value" style="color: #C9A227; font-weight: 700;">${formattedBalance}</td></tr>
+            ${eventType ? `<tr><td class="label">Event Type</td><td class="value">${eventType}</td></tr>` : ''}
+            ${eventDate ? `<tr><td class="label">Event Date</td><td class="value">${new Date(eventDate).toLocaleDateString()}</td></tr>` : ''}
+          </table>
+
+          <div class="badge-card" style="border-left: 4px solid #C9A227; background-color: #F8FAFC; margin-top: 16px;">
+            <h4 style="margin: 0 0 6px 0; color: #081A2B;">Customer Inquiry / Note:</h4>
+            <p style="margin: 0; color: #334155; font-style: italic;">"${message ? message.replace(/\n/g, '<br/>') : 'Customer requested assistance via payment portal.'}"</p>
+          </div>
+
+          <div class="btn-container" style="margin-top: 24px;">
+            <a href="${adminUrl}/payment-assistance" class="btn">View in Admin Operations</a>
+          </div>
+        `,
+      });
+
+      const adminText = `
+URGENT: Payment Assistance Requested
+Customer: ${clientName}
+Booking Ref: ${bookingReference || 'N/A'}
+Phone: ${cleanPhone}
+Email: ${cleanEmail}
+Balance: ${formattedBalance}
+Message: ${message || 'N/A'}
+
+Review in Admin: ${adminUrl}/payment-assistance
+      `.trim();
+
+      sendMailSafely({
+        to: config.smtp.adminNotificationEmail,
+        subject: adminSubject,
+        text: adminText,
+        html: adminHtml,
+      }).catch((err) => console.warn('[EmailService] Admin payment assistance notification error:', err.message));
+    }
+
+    // 2. Acknowledgment to the client if email is provided
+    if (cleanEmail && cleanEmail.includes('@') && cleanEmail !== config.smtp.adminNotificationEmail) {
+      const clientSubject = `Payment Assistance Received [${bookingReference || 'MC TITOE EVENTS'}]`;
+      const clientHtml = wrapHtmlTemplate({
+        title: clientSubject,
+        preheader: `Thank you ${clientName}. Our finance and concierge team has received your payment inquiry.`,
+        contentHtml: `
+          <div class="greeting">We Have Received Your Request</div>
+          <p>Dear <strong>${clientName}</strong>,</p>
+          <p>Thank you for reaching out regarding payment for booking reference <strong>${bookingReference || ''}</strong>. Our concierge and finance desk has received your note and will contact you directly to assist with your payment arrangement.</p>
+
+          <table class="details-table">
+            <tr><td class="label">Booking Reference</td><td class="value"><strong>${bookingReference || 'N/A'}</strong></td></tr>
+            <tr><td class="label">Pending Balance</td><td class="value" style="color: #C9A227; font-weight: 700;">${formattedBalance}</td></tr>
+            <tr><td class="label">Contact Phone</td><td class="value">${cleanPhone}</td></tr>
+          </table>
+
+          <p style="margin-top: 20px; font-size: 14px; color: #475569;">
+            If you require immediate real-time coordination, you may also reach our direct hotline at <strong>+254 721 784 682</strong> or WhatsApp at <strong>+254 782 527 081</strong>.
+          </p>
+
+          <p style="margin-top: 24px; font-size: 14px; color: #64748B;">
+            Warm regards,<br/>
+            <strong>MC Titoe Finance & Operations Desk</strong><br/>
+            MC TITOE EVENTS AND DESIGNS
+          </p>
+        `,
+      });
+
+      sendMailSafely({
+        to: cleanEmail,
+        subject: clientSubject,
+        text: `Dear ${clientName},\n\nWe have received your payment assistance request for booking ${bookingReference}. Our concierge will contact you at ${cleanPhone} shortly.\n\nWarm regards,\nMC TITOE EVENTS AND DESIGNS`,
+        html: clientHtml,
+      }).catch((err) => console.warn('[EmailService] Client payment assistance email error:', err.message));
+    }
+  },
 };
 

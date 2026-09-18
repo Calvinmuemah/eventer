@@ -8,7 +8,10 @@ import {
   Smartphone, 
   Building2, 
   ArrowRight, 
-  AlertCircle 
+  AlertCircle,
+  Clock,
+  PhoneCall,
+  Check
 } from 'lucide-react';
 import { paymentsApi } from '../api/paymentsApi';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -26,9 +29,12 @@ export const PaymentPage = () => {
   const [error, setError] = useState(null);
 
   // Payment state
-  const [selectedMethod, setSelectedMethod] = useState('card');
+  const [selectedMethod, setSelectedMethod] = useState('paystack_mpesa');
+  const [mpesaPhone, setMpesaPhone] = useState('');
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState(null);
+  const [simulatedPromptOpen, setSimulatedPromptOpen] = useState(false);
+  const [simulatedTimer, setSimulatedTimer] = useState(3);
 
   const [searchParams] = useSearchParams();
   const paymentReference = searchParams.get('reference') || searchParams.get('trxref');
@@ -54,10 +60,12 @@ export const PaymentPage = () => {
       const res = await paymentsApi.getDetails(id);
       setPaymentData(res.data);
       if (res.data) {
+        setMpesaPhone(res.data.customerPhone || '');
         setAssistanceData(prev => ({
           ...prev,
           name: res.data.customerName || '',
           email: res.data.customerEmail || '',
+          phone: res.data.customerPhone || '',
         }));
       }
     } catch (err) {
@@ -95,26 +103,64 @@ export const PaymentPage = () => {
     }
   }, [paymentReference, id, navigate]);
 
+  const openAssistanceWithReason = (methodName) => {
+    setShowAssistance(true);
+    setAssistanceData(prev => ({
+      ...prev,
+      name: paymentData?.customerName || prev.name || '',
+      email: paymentData?.customerEmail || prev.email || '',
+      phone: paymentData?.customerPhone || prev.phone || '',
+      message: `Hello MC Titoe team, I need assistance on how to proceed with payment via ${methodName} for booking reference ${paymentData?.bookingReference || id}. Please guide me on payment instructions / wire details.`,
+    }));
+    setTimeout(() => {
+      const el = document.getElementById('payment-assistance-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+  };
+
   const handlePay = async () => {
     try {
-      setPaying(true);
       setPayError(null);
+
+      if (selectedMethod === 'paystack_mpesa' && !mpesaPhone.trim()) {
+        setPayError('Please enter your Safaricom M-Pesa mobile phone number to receive the prompt.');
+        return;
+      }
+
+      setPaying(true);
+
       const res = await paymentsApi.initiate(id, {
         paymentMethod: selectedMethod,
         amount: paymentData.balance,
+        phone: mpesaPhone ? normalizeKenyanPhone(mpesaPhone) : undefined,
       });
 
       // If live Paystack gateway returned an authorization URL, redirect to Paystack
+      // (Backend has specified channels: ['mobile_money'] or ['card'] so Paystack opens the exact right screen!)
       if (res.data?.authorizationUrl) {
         window.location.href = res.data.authorizationUrl;
         return;
       }
 
-      // If sandbox simulation mode or direct settlement
+      // If simulated sandbox mode: show interactive prompt feedback
+      if (selectedMethod === 'paystack_mpesa') {
+        setSimulatedPromptOpen(true);
+        let countdown = 3;
+        const interval = setInterval(() => {
+          countdown -= 1;
+          setSimulatedTimer(countdown);
+          if (countdown <= 0) {
+            clearInterval(interval);
+            navigate(`/booking-confirmation/${id}`);
+          }
+        }, 1000);
+        return;
+      }
+
+      // Card / Direct settlement fallback
       navigate(`/booking-confirmation/${id}`);
     } catch (err) {
       setPayError(err.message || 'Payment attempt was not completed.');
-    } finally {
       setPaying(false);
     }
   };
@@ -246,8 +292,12 @@ export const PaymentPage = () => {
                 borderRadius: 'var(--radius-xs)',
                 marginBottom: '1.5rem',
                 fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}>
-                {payError}
+                <AlertCircle size={18} color="var(--color-error)" flexShrink={0} />
+                <span>{payError}</span>
               </div>
             )}
 
@@ -274,11 +324,29 @@ export const PaymentPage = () => {
             ) : (
               <>
                 {/* Payment Methods Selection */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.75rem' }}>
                   {[
-                    { id: 'paystack_mpesa', label: 'M-Pesa / Mobile Money (via Paystack)', icon: Smartphone, subtitle: 'Instant STK prompt or paybill directly to your mobile phone' },
-                    { id: 'paystack_card', label: 'Credit / Debit Card (Visa, Mastercard, Amex)', icon: CreditCard, subtitle: 'Secure, 256-bit SSL encrypted authorization via Paystack' },
-                    { id: 'bank_transfer', label: 'Direct Bank Wire Transfer', icon: Building2, subtitle: 'Corporate invoice & manual bank settlement' },
+                    { 
+                      id: 'paystack_mpesa', 
+                      label: 'M-Pesa / Mobile Money', 
+                      icon: Smartphone, 
+                      subtitle: 'Enter your phone number for real-time STK push PIN prompt',
+                      hasAssistanceBtn: false,
+                    },
+                    { 
+                      id: 'paystack_card', 
+                      label: 'Pay via Bank Card', 
+                      icon: CreditCard, 
+                      subtitle: 'Visa, Mastercard, American Express with 256-bit SSL encryption',
+                      hasAssistanceBtn: true,
+                    },
+                    { 
+                      id: 'bank_transfer', 
+                      label: 'Direct Bank Wire Transfer', 
+                      icon: Building2, 
+                      subtitle: 'Direct bank settlement, RTGS or invoice wire transfer',
+                      hasAssistanceBtn: true,
+                    },
                   ].map((method) => {
                     const Icon = method.icon;
                     const isSelected = selectedMethod === method.id;
@@ -294,199 +362,321 @@ export const PaymentPage = () => {
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
+                          justifyContent: 'space-between',
                           gap: '1rem',
                           transition: 'all 0.2s ease',
+                          flexWrap: 'wrap',
                         }}
                       >
-                        <div style={{
-                          width: '40px',
-                          height: '40px',
-                          borderRadius: '4px',
-                          backgroundColor: isSelected ? 'var(--color-accent)' : 'rgba(8, 26, 43, 0.06)',
-                          color: isSelected ? '#081A2B' : 'var(--color-primary)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                        }}>
-                          <Icon size={20} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.95rem' }}>
-                            {method.label}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, minWidth: '220px' }}>
+                          <div style={{
+                            width: '42px',
+                            height: '42px',
+                            borderRadius: '6px',
+                            backgroundColor: isSelected ? 'var(--color-accent)' : 'rgba(8, 26, 43, 0.06)',
+                            color: isSelected ? '#081A2B' : 'var(--color-primary)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                          }}>
+                            <Icon size={20} />
                           </div>
-                          <div style={{ fontSize: '0.8rem', color: 'var(--color-muted)' }}>
-                            {method.subtitle}
+                          <div>
+                            <div style={{ fontWeight: 700, color: 'var(--color-primary)', fontSize: '0.98rem' }}>
+                              {method.label}
+                            </div>
+                            <div style={{ fontSize: '0.8rem', color: 'var(--color-muted)' }}>
+                              {method.subtitle}
+                            </div>
                           </div>
                         </div>
-                        <div style={{
-                          width: '18px',
-                          height: '18px',
-                          borderRadius: '50%',
-                          border: isSelected ? '5px solid var(--color-accent)' : '2px solid var(--color-border)',
-                          backgroundColor: '#FFFFFF',
-                        }} />
+
+                        {/* Far end actions: Request Assistance button & radio */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          {method.hasAssistanceBtn && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openAssistanceWithReason(method.label);
+                              }}
+                              className="btn btn-secondary btn-xs"
+                              style={{
+                                padding: '0.35rem 0.75rem',
+                                fontSize: '0.75rem',
+                                whiteSpace: 'nowrap',
+                                borderRadius: '4px',
+                                textTransform: 'none',
+                                letterSpacing: 'normal',
+                              }}
+                              title="Click to request assistance with this payment method"
+                            >
+                              Request Assistance
+                            </button>
+                          )}
+                          <div style={{
+                            width: '18px',
+                            height: '18px',
+                            borderRadius: '50%',
+                            border: isSelected ? '5px solid var(--color-accent)' : '2px solid var(--color-border)',
+                            backgroundColor: '#FFFFFF',
+                            flexShrink: 0,
+                          }} />
+                        </div>
                       </div>
                     );
                   })}
                 </div>
 
-                {/* Paystack Gateway Notice */}
-                {paymentData.gateway?.isSandbox ? (
+                {/* Specific Method Prompt & Instructions */}
+                {selectedMethod === 'paystack_mpesa' && (
                   <div style={{
-                    padding: '1rem 1.25rem',
+                    padding: '1.25rem',
                     backgroundColor: 'var(--color-surface-subtle)',
-                    borderLeft: '4px solid var(--color-accent)',
                     borderRadius: 'var(--radius-xs)',
-                    marginBottom: '2rem',
-                    fontSize: '0.85rem',
-                    color: 'var(--color-dark)',
-                    lineHeight: 1.5,
+                    border: '1px solid var(--color-border)',
+                    marginBottom: '1.75rem',
                   }}>
-                    <strong>Paystack Gateway Sandbox:</strong> Development simulation mode is currently active. Clicking Pay will simulate an approved transaction in your booking ledger. When you place your real Paystack keys in <code>backend/.env</code>, live M-Pesa &amp; Card checkouts will trigger automatically.
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <Smartphone size={16} color="var(--color-accent)" /> M-Pesa Mobile Prompt Instructions
+                    </h4>
+                    <div className="form-group" style={{ marginBottom: '0.85rem' }}>
+                      <label className="form-label" style={{ fontSize: '0.8rem' }}>M-Pesa Mobile Number *</label>
+                      <input
+                        type="tel"
+                        className="form-input"
+                        placeholder={KENYAN_PHONE_PLACEHOLDER}
+                        value={mpesaPhone}
+                        onChange={(e) => setMpesaPhone(e.target.value)}
+                      />
+                      <div style={{ fontSize: '0.725rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
+                        Enter your active Safaricom line (e.g. 07... or 01...).
+                      </div>
+                    </div>
+                    <ol style={{ fontSize: '0.825rem', color: 'var(--color-dark)', paddingLeft: '1.2rem', lineHeight: 1.5, margin: 0 }}>
+                      <li>Click the button below to initiate the STK push.</li>
+                      <li>Check your phone screen for the prompt: <strong>Pay KSh {paymentData.balance.toLocaleString()} to MC TITOE EVENTS</strong>.</li>
+                      <li>Enter your 4-digit M-Pesa secret PIN to authorize.</li>
+                      <li>Upon confirmation, this page will automatically confirm your reservation.</li>
+                    </ol>
                   </div>
-                ) : (
+                )}
+
+                {selectedMethod === 'paystack_card' && (
                   <div style={{
-                    padding: '1rem 1.25rem',
-                    backgroundColor: 'rgba(22, 163, 74, 0.08)',
-                    borderLeft: '4px solid #16A34A',
+                    padding: '1.25rem',
+                    backgroundColor: 'var(--color-surface-subtle)',
                     borderRadius: 'var(--radius-xs)',
-                    marginBottom: '2rem',
-                    fontSize: '0.85rem',
-                    color: '#14532D',
-                    lineHeight: 1.5,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
+                    border: '1px solid var(--color-border)',
+                    marginBottom: '1.75rem',
                   }}>
-                    <ShieldCheck size={24} style={{ color: '#16A34A', flexShrink: 0 }} />
-                    <div>
-                      <strong>Secured by Paystack:</strong> 256-bit bank-grade encryption. Supports instant M-Pesa STK push, Visa, Mastercard, American Express &amp; Direct Bank Wire.
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <CreditCard size={16} color="var(--color-accent)" /> Bank Card Payment Instructions
+                    </h4>
+                    <p style={{ fontSize: '0.825rem', color: 'var(--color-dark)', lineHeight: 1.5, margin: '0 0 0.75rem 0' }}>
+                      You will be directed to the bank card checkout page. Enter your 16-digit card number, expiration date, and CVV. Your issuing bank may send a 3D-Secure One Time Password (OTP) via SMS to verify the transaction.
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--color-muted)' }}>
+                      <span>Need bank wire instructions or assistance?</span>
+                      <button
+                        type="button"
+                        onClick={() => openAssistanceWithReason('Pay via Bank Card')}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: 'var(--color-accent)',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          textDecoration: 'underline',
+                          padding: 0,
+                        }}
+                      >
+                        Request Assistance Here
+                      </button>
                     </div>
                   </div>
                 )}
 
-                {/* Pay Button */}
-                <button
-                  onClick={handlePay}
-                  className="btn btn-primary btn-lg"
-                  disabled={paying}
-                  style={{ width: '100%', marginBottom: '1.25rem' }}
-                >
-                  {paying 
-                    ? 'Connecting to Paystack...' 
-                    : `PAY WITH PAYSTACK (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
-                  }
-                </button>
+                {selectedMethod === 'bank_transfer' && (
+                  <div style={{
+                    padding: '1.25rem',
+                    backgroundColor: 'var(--color-surface-subtle)',
+                    borderRadius: 'var(--radius-xs)',
+                    border: '1px solid var(--color-border)',
+                    marginBottom: '1.75rem',
+                  }}>
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <Building2 size={16} color="var(--color-accent)" /> Direct Bank Wire Instructions
+                    </h4>
+                    <p style={{ fontSize: '0.825rem', color: 'var(--color-dark)', lineHeight: 1.5, margin: '0 0 0.75rem 0' }}>
+                      For corporate wire settlement or manual bank deposit, click below to request official banking coordinates and invoice documentation from our accounts desk.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => openAssistanceWithReason('Direct Bank Wire Transfer')}
+                      className="btn btn-secondary btn-sm"
+                      style={{ width: '100%' }}
+                    >
+                      Request Bank Wire Details &amp; Invoice
+                    </button>
+                  </div>
+                )}
+
+                {/* Gateway Security Notice */}
+                <div style={{
+                  padding: '1rem 1.25rem',
+                  backgroundColor: 'rgba(22, 163, 74, 0.08)',
+                  borderLeft: '4px solid #16A34A',
+                  borderRadius: 'var(--radius-xs)',
+                  marginBottom: '1.75rem',
+                  fontSize: '0.85rem',
+                  color: '#14532D',
+                  lineHeight: 1.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                }}>
+                  <ShieldCheck size={24} style={{ color: '#16A34A', flexShrink: 0 }} />
+                  <div>
+                    <strong>Bank-Grade Encrypted Gateway:</strong> Real-time checkout powered by Paystack. Supports instant Safaricom M-Pesa STK prompts, Visa, Mastercard &amp; direct bank cards.
+                  </div>
+                </div>
+
+                {/* Main Pay Button */}
+                {selectedMethod !== 'bank_transfer' && (
+                  <button
+                    onClick={handlePay}
+                    className="btn btn-primary btn-lg"
+                    disabled={paying}
+                    style={{ width: '100%', marginBottom: '1.5rem' }}
+                  >
+                    {paying 
+                      ? 'Connecting to Payment Gateway...' 
+                      : selectedMethod === 'paystack_mpesa'
+                        ? `PAY VIA M-PESA (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
+                        : `PAY VIA BANK CARD (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
+                    }
+                  </button>
+                )}
               </>
             )}
 
-            {/* Assistance Trigger */}
-            <div style={{ textAlign: 'center', borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
-              <button
-                type="button"
-                onClick={() => setShowAssistance(!showAssistance)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  color: 'var(--color-muted)',
-                  fontSize: '0.875rem',
-                  fontWeight: 600,
-                }}
-              >
-                <HelpCircle size={15} /> Need Help With Payment?
-              </button>
-            </div>
-
-            {/* Assistance Form Reveal */}
-            {showAssistance && (
-              <div style={{
-                marginTop: '1.5rem',
-                padding: '1.5rem',
-                backgroundColor: 'var(--color-surface-subtle)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 'var(--radius-xs)',
-              }}>
-                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
-                  Concierge Payment Assistance
-                </h4>
-                <p style={{ fontSize: '0.825rem', color: 'var(--color-muted)', marginBottom: '1rem' }}>
-                  If you require an alternate wire routing, split payment, or need our team to assist with corporate procurement:
-                </p>
-
-                {assistanceSuccess ? (
-                  <div style={{
-                    padding: '1rem',
-                    backgroundColor: 'var(--color-success-bg)',
-                    color: 'var(--color-success)',
+            {/* Assistance Section / Modal Anchor */}
+            <div id="payment-assistance-section" style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
+              <div style={{ textAlign: 'center' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowAssistance(!showAssistance)}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    color: 'var(--color-muted)',
                     fontSize: '0.875rem',
-                    borderRadius: 'var(--radius-xs)',
-                  }}>
-                    Your assistance request has been submitted. Our concierge will contact you promptly at {assistanceData.phone}.
-                  </div>
-                ) : (
-                  <form onSubmit={handleAssistanceSubmit}>
-                    {assistanceError && (
-                      <div className="form-error" style={{ marginBottom: '0.75rem' }}>{assistanceError}</div>
-                    )}
-                    <div className="form-group">
-                      <label className="form-label" style={{ fontSize: '0.8rem' }}>Name *</label>
-                      <input 
-                        type="text" 
-                        className="form-input"
-                        value={assistanceData.name}
-                        onChange={(e) => setAssistanceData({ ...assistanceData, name: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label" style={{ fontSize: '0.8rem' }}>Phone Number *</label>
-                      <input 
-                        type="tel" 
-                        className="form-input"
-                        placeholder={KENYAN_PHONE_PLACEHOLDER}
-                        value={assistanceData.phone}
-                        onChange={(e) => setAssistanceData({ ...assistanceData, phone: e.target.value })}
-                        required
-                      />
-                      <div style={{ fontSize: '0.725rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
-                        Enter 07... or 01... (+254 is added automatically)
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label" style={{ fontSize: '0.8rem' }}>Email Address *</label>
-                      <input 
-                        type="email" 
-                        className="form-input"
-                        value={assistanceData.email}
-                        onChange={(e) => setAssistanceData({ ...assistanceData, email: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label" style={{ fontSize: '0.8rem' }}>How can we assist? *</label>
-                      <textarea 
-                        className="form-textarea"
-                        rows="3"
-                        placeholder="e.g. Please issue an invoice with vendor Tax ID, or send M-Pesa manual paybill instructions..."
-                        value={assistanceData.message}
-                        onChange={(e) => setAssistanceData({ ...assistanceData, message: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <button 
-                      type="submit" 
-                      className="btn btn-secondary btn-sm"
-                      disabled={assistanceSubmitting}
-                      style={{ width: '100%' }}
-                    >
-                      {assistanceSubmitting ? 'Sending Request...' : 'Submit Assistance Request'}
-                    </button>
-                  </form>
-                )}
+                    fontWeight: 600,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <HelpCircle size={15} /> Need Help or Alternate Payment Arrangement?
+                </button>
               </div>
-            )}
+
+              {/* Assistance Form */}
+              {showAssistance && (
+                <div style={{
+                  marginTop: '1.25rem',
+                  padding: '1.5rem',
+                  backgroundColor: 'var(--color-surface-subtle)',
+                  border: '1.5px solid var(--color-accent)',
+                  borderRadius: 'var(--radius-xs)',
+                }}>
+                  <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--color-primary)', marginBottom: '0.35rem' }}>
+                    Concierge Payment Assistance
+                  </h4>
+                  <p style={{ fontSize: '0.825rem', color: 'var(--color-muted)', marginBottom: '1.25rem' }}>
+                    Submit your request and MC Titoe operations team will receive an urgent email notification to assist you with Bank Card, Wire, or custom arrangements.
+                  </p>
+
+                  {assistanceSuccess ? (
+                    <div style={{
+                      padding: '1.25rem',
+                      backgroundColor: 'var(--color-success-bg)',
+                      border: '1px solid var(--color-success)',
+                      color: 'var(--color-success)',
+                      fontSize: '0.9rem',
+                      borderRadius: 'var(--radius-xs)',
+                      lineHeight: 1.5,
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>
+                        <CheckCircle2 size={18} /> Request Submitted Successfully!
+                      </div>
+                      Our concierge desk and MC Titoe have been notified via email. We will reach out to you promptly at <strong>{assistanceData.phone}</strong>.
+                    </div>
+                  ) : (
+                    <form onSubmit={handleAssistanceSubmit}>
+                      {assistanceError && (
+                        <div className="form-error" style={{ marginBottom: '0.75rem' }}>{assistanceError}</div>
+                      )}
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.8rem' }}>Name *</label>
+                        <input 
+                          type="text" 
+                          className="form-input"
+                          value={assistanceData.name}
+                          onChange={(e) => setAssistanceData({ ...assistanceData, name: e.target.value })}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.8rem' }}>Phone Number *</label>
+                        <input 
+                          type="tel" 
+                          className="form-input"
+                          placeholder={KENYAN_PHONE_PLACEHOLDER}
+                          value={assistanceData.phone}
+                          onChange={(e) => setAssistanceData({ ...assistanceData, phone: e.target.value })}
+                          required
+                        />
+                        <div style={{ fontSize: '0.725rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
+                          Enter 07... or 01... (+254 is added automatically)
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.8rem' }}>Email Address *</label>
+                        <input 
+                          type="email" 
+                          className="form-input"
+                          value={assistanceData.email}
+                          onChange={(e) => setAssistanceData({ ...assistanceData, email: e.target.value })}
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.8rem' }}>How can we assist? *</label>
+                        <textarea 
+                          className="form-textarea"
+                          rows="3"
+                          value={assistanceData.message}
+                          onChange={(e) => setAssistanceData({ ...assistanceData, message: e.target.value })}
+                          required
+                        />
+                      </div>
+                      <button 
+                        type="submit" 
+                        className="btn btn-secondary btn-sm"
+                        disabled={assistanceSubmitting}
+                        style={{ width: '100%' }}
+                      >
+                        {assistanceSubmitting ? 'Dispatching Notification...' : 'Submit Assistance Request'}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right: Order Summary */}
@@ -568,6 +758,63 @@ export const PaymentPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Simulated M-Pesa Prompt Modal (when testing in dev simulation mode) */}
+      {simulatedPromptOpen && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: 'rgba(8, 26, 43, 0.85)',
+          backdropFilter: 'blur(8px)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '1rem',
+        }}>
+          <div style={{
+            maxWidth: '420px',
+            width: '100%',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '12px',
+            padding: '2rem',
+            textAlign: 'center',
+            boxShadow: 'var(--shadow-xl)',
+          }}>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              backgroundColor: '#DCFCE7',
+              color: '#16A34A',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1rem',
+            }}>
+              <Smartphone size={28} />
+            </div>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
+              M-Pesa STK Prompt Sent!
+            </h3>
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+              Check your mobile phone (<strong>{mpesaPhone}</strong>) for the Safaricom STK prompt for <strong>KSh {paymentData.balance.toLocaleString()}</strong> to <strong>MC TITOE EVENTS</strong>.
+            </p>
+            <div style={{
+              padding: '0.75rem',
+              backgroundColor: 'var(--color-surface-subtle)',
+              borderRadius: '6px',
+              fontSize: '0.8rem',
+              color: 'var(--color-dark)',
+              marginBottom: '1.25rem',
+            }}>
+              <Clock size={14} style={{ display: 'inline', marginRight: '4px' }} />
+              Simulated development response confirming in {simulatedTimer}s...
+            </div>
+            <LoadingSpinner label="Awaiting M-Pesa PIN confirmation..." />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

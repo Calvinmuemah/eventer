@@ -14,7 +14,7 @@ import {
   X
 } from 'lucide-react';
 
-export const Sidebar = ({ isOpen, onClose }) => {
+export const Sidebar = ({ isOpen, onClose, pendingAssistanceCount = 0 }) => {
   const links = [
     { to: '/', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/services', label: 'Services Catalogue', icon: Layers },
@@ -22,7 +22,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
     { to: '/quotes', label: 'Quotations', icon: FileText },
     { to: '/bookings', label: 'Bookings Ledger', icon: BookmarkCheck },
     { to: '/payments', label: 'Payments', icon: CreditCard },
-    { to: '/payment-assistance', label: 'Payment Assistance', icon: HelpCircle },
+    { to: '/payment-assistance', label: 'Payment Assistance', icon: HelpCircle, badge: pendingAssistanceCount },
     { to: '/messages', label: 'Client Messages', icon: Mail },
   ];
 
@@ -95,9 +95,25 @@ export const Sidebar = ({ isOpen, onClose }) => {
               end={link.to === '/'}
               className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               onClick={onClose}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
             >
-              <Icon size={18} />
-              <span>{link.label}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                <Icon size={18} />
+                <span>{link.label}</span>
+              </div>
+              {link.badge > 0 && (
+                <span style={{
+                  backgroundColor: '#EF4444',
+                  color: '#FFFFFF',
+                  fontSize: '0.7rem',
+                  fontWeight: 800,
+                  padding: '0.12rem 0.5rem',
+                  borderRadius: '9999px',
+                  boxShadow: '0 2px 6px rgba(239, 68, 68, 0.4)',
+                }}>
+                  {link.badge}
+                </span>
+              )}
             </NavLink>
           );
         })}
