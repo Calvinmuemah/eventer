@@ -528,7 +528,6 @@ body {
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   position: relative;
   overflow-x: hidden;
 }
@@ -560,32 +559,6 @@ body {
 
 .limitless-cta-pill:active {
   transform: translateY(0) scale(0.98);
-}
-
-/* Limitless Logos Bar */
-.limitless-logos-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: clamp(1.75rem, 4.5vw, 4rem);
-}
-
-.limitless-logo-item {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  transition: all 0.25s ease;
-  user-select: none;
-}
-
-.limitless-logo-item:hover {
-  color: var(--admin-champagne);
-  transform: translateY(-1px);
 }
 
 .landing-pulse-dot {
