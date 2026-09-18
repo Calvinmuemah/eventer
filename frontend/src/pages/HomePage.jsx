@@ -223,7 +223,7 @@ export const HomePage = () => {
               gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 330px), 1fr))',
               gap: '2rem',
             }}>
-              {services.map((service) => (
+              {services.slice(0, 5).map((service) => (
                 <ServiceCard key={service.id} service={service} />
               ))}
             </div>
