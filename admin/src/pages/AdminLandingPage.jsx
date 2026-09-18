@@ -6,25 +6,9 @@ import {
   Mail, 
   Eye, 
   EyeOff, 
-  ArrowRight, 
-  ShieldCheck, 
-  Layers, 
-  BookmarkCheck, 
-  FileText, 
-  CreditCard,
   ExternalLink,
-  Check,
   AlertCircle,
-  KeyRound,
-  X,
-  Volume2,
-  Mic2,
-  CalendarCheck,
-  Award,
-  Clock,
-  Radio,
-  Sliders,
-  Sparkle
+  X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -37,7 +21,6 @@ export const AdminLandingPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [demoLoaded, setDemoLoaded] = useState(false);
@@ -88,31 +71,31 @@ export const AdminLandingPage = () => {
 
   return (
     <div className="admin-landing-wrapper">
-      {/* Background ambient lighting */}
-      <div style={{
-        position: 'absolute',
-        top: '-10%',
-        right: '-5%',
-        width: '550px',
-        height: '550px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(201, 162, 39, 0.14) 0%, rgba(8, 26, 43, 0) 70%)',
-        filter: 'blur(50px)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: '15%',
-        left: '-5%',
-        width: '500px',
-        height: '500px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(18, 43, 69, 0.5) 0%, rgba(8, 26, 43, 0) 70%)',
-        filter: 'blur(60px)',
-        pointerEvents: 'none',
-      }} />
+      {/* Decorative subtle topographic wave lines (bottom-left) matching screenshot */}
+      <svg
+        style={{
+          position: 'absolute',
+          bottom: '-20px',
+          left: '-40px',
+          width: '460px',
+          height: '360px',
+          pointerEvents: 'none',
+          opacity: 0.12,
+          zIndex: 1,
+        }}
+        viewBox="0 0 460 360"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M-50 360 C 60 280, 150 240, 260 270 C 350 290, 400 340, 460 360" stroke="#C9A227" strokeWidth="1.2" />
+        <path d="M-50 320 C 50 240, 130 200, 230 230 C 320 250, 370 300, 430 330" stroke="#C9A227" strokeWidth="1.2" />
+        <path d="M-50 280 C 40 200, 110 160, 200 190 C 280 210, 340 260, 400 300" stroke="#C9A227" strokeWidth="1.2" />
+        <path d="M-50 240 C 30 160, 90 120, 170 150 C 240 170, 300 220, 360 270" stroke="#C9A227" strokeWidth="1.2" />
+        <path d="M-50 200 C 20 120, 70 80, 140 110 C 200 130, 260 180, 320 240" stroke="#C9A227" strokeWidth="1.2" />
+        <path d="M-50 160 C 10 80, 50 40, 110 70 C 160 90, 220 140, 280 210" stroke="#C9A227" strokeWidth="1.2" />
+      </svg>
 
-      {/* Top Navigation Bar with small margin alignment */}
+      {/* Top Navigation Bar - KEPT AS IS WITH PROJECT COLORS */}
       <header style={{
         padding: '1rem clamp(0.5rem, 1vw, 1rem)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
@@ -122,9 +105,9 @@ export const AdminLandingPage = () => {
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        backgroundColor: 'rgba(7, 21, 36, 0.88)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        backgroundColor: 'rgba(8, 26, 43, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
       }}>
         {/* Brand Crest */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
@@ -174,8 +157,8 @@ export const AdminLandingPage = () => {
             gap: '0.45rem',
             padding: '0.35rem 0.75rem',
             borderRadius: '9999px',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
+            backgroundColor: 'rgba(16, 185, 129, 0.12)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
             fontSize: '0.75rem',
             color: '#34D399',
             fontWeight: 600,
@@ -235,546 +218,207 @@ export const AdminLandingPage = () => {
         </div>
       </header>
 
-      {/* Main Informational Page Body with small margin alignment */}
+      {/* Main Centered Hero Section */}
       <main style={{
         flex: 1,
-        maxWidth: '1840px',
-        width: '100%',
-        margin: '0 auto',
-        padding: 'clamp(2rem, 3.5vw, 3.5rem) clamp(0.5rem, 1vw, 1rem)',
-        position: 'relative',
-        zIndex: 5,
         display: 'flex',
         flexDirection: 'column',
-        gap: 'clamp(3rem, 5vw, 4.5rem)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: 'clamp(2.5rem, 6vh, 5rem) clamp(1rem, 3vw, 2rem)',
+        position: 'relative',
+        zIndex: 10,
+        maxWidth: '1080px',
+        margin: '0 auto',
+        width: '100%',
       }}>
-        {/* Hero Section */}
-        <section style={{
-          textAlign: 'center',
-          maxWidth: '1000px',
-          margin: '0 auto',
-          padding: '1rem 0',
+        {/* Main Headline */}
+        <h1 style={{
+          fontSize: 'clamp(2.4rem, 5.4vw, 4.4rem)',
+          fontWeight: 800,
+          lineHeight: 1.12,
+          letterSpacing: '-0.035em',
+          color: '#FFFFFF',
+          marginBottom: '1.4rem',
+          maxWidth: '920px',
         }}>
-          {/* Badge */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.4rem 1rem',
-            borderRadius: '9999px',
-            backgroundColor: 'rgba(201, 162, 39, 0.12)',
-            border: '1px solid rgba(201, 162, 39, 0.3)',
-            color: 'var(--admin-champagne)',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.12em',
-            marginBottom: '1.5rem',
-          }}>
-            <ShieldCheck size={15} color="var(--admin-accent)" />
-            Enterprise Operations Command &bull; Mombasa Bamburi, Kenya
-          </div>
+          Unlimited event operations.<br />
+          One unified control center.
+        </h1>
 
-          <h1 style={{
-            fontFamily: 'Cormorant Garamond, serif',
-            fontSize: 'clamp(2.5rem, 5vw, 4.25rem)',
-            fontWeight: 700,
-            lineHeight: 1.12,
-            letterSpacing: '-0.02em',
-            marginBottom: '1.5rem',
-            color: '#FFFFFF',
-          }}>
-            MC TITOE EVENTS AND DESIGNS <br />
-            <span className="landing-gold-text">Comprehensive Staging & Operations Suite</span>
-          </h1>
-
-          <p style={{
-            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-            color: 'rgba(255, 255, 255, 0.8)',
-            lineHeight: 1.7,
-            marginBottom: '2.5rem',
-            maxWidth: '820px',
-            margin: '0 auto 2.5rem auto',
-          }}>
-            Kenya’s premier digital control suite for orchestrating high-profile corporate galas, VIP celebrations, sound acoustics, and master of ceremonies production. Built for automated client quotation generation in Kenyan Shillings (KSh), live inventory logistics, and real-time M-Pesa transaction reconciliation.
-          </p>
-
-          {/* Action CTAs */}
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1rem',
-            marginBottom: '3rem',
-          }}>
-            <button
-              type="button"
-              onClick={() => setLoginModalOpen(true)}
-              className="landing-btn-gold"
+        {/* Subtitle with Theme Gold Doodle Underline */}
+        <p style={{
+          fontSize: 'clamp(1.05rem, 1.9vw, 1.35rem)',
+          color: 'rgba(255, 255, 255, 0.85)',
+          lineHeight: 1.6,
+          maxWidth: '780px',
+          margin: '0 auto 2.6rem',
+          fontWeight: 400,
+        }}>
+          With MC Titoe Admin, coordinate client bookings, reconcile payments, dispatch itemized quotes, and supervise sound & MC setups for{' '}
+          <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', fontWeight: 600, color: '#FFFFFF' }}>
+            <span>flawless real-time execution.</span>
+            {/* Hand-drawn gold doodle curve */}
+            <svg
+              viewBox="0 0 280 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
               style={{
-                width: 'auto',
-                padding: '0.85rem 2rem',
-                fontSize: '1rem',
-                borderRadius: '8px',
+                position: 'absolute',
+                left: 0,
+                bottom: '-8px',
+                width: '100%',
+                height: '14px',
+                pointerEvents: 'none',
+                overflow: 'visible',
               }}
             >
-              <Lock size={17} />
-              <span>Access Operations Portal</span>
-            </button>
+              <path
+                d="M 4 12 C 55 3, 175 2, 276 9"
+                stroke="var(--admin-accent)"
+                strokeWidth="3.6"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 12 15 C 65 7, 195 6, 265 13"
+                stroke="var(--admin-champagne)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                opacity="0.8"
+              />
+            </svg>
+          </span>
+        </p>
 
-            <a
-              href={publicSiteUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.85rem 1.75rem',
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                color: '#FFFFFF',
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                e.currentTarget.style.borderColor = 'rgba(201, 162, 39, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-              }}
-            >
-              <span>Explore Public Client Platform</span>
-              <ExternalLink size={15} />
-            </a>
-          </div>
-
-          {/* Operational Metrics Strip */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 210px), 1fr))',
-            gap: '1rem',
-            textAlign: 'left',
-          }}>
-            {[
-              {
-                icon: Radio,
-                label: 'Operational Cluster',
-                val: 'Live & Active',
-                detail: 'PostgreSQL Pool Connection (Neon AWS)',
-              },
-              {
-                icon: Sliders,
-                label: 'Currency Architecture',
-                val: 'KES / KSh Standard',
-                detail: 'Provisional line-item costing & audits',
-              },
-              {
-                icon: CreditCard,
-                label: 'Payment Verification',
-                val: 'M-Pesa Real-Time',
-                detail: 'Automated receipt reconciliation',
-              },
-              {
-                icon: ShieldCheck,
-                label: 'Access Protocol',
-                val: '256-Bit TLS 1.3',
-                detail: 'Bcrypt hashing & JWT session guard',
-              },
-            ].map((metric, i) => {
-              const Icon = metric.icon;
-              return (
-                <div key={i} className="landing-feature-card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                    <Icon size={16} color="var(--admin-accent)" />
-                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'rgba(255, 255, 255, 0.6)' }}>
-                      {metric.label}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '0.2rem' }}>
-                    {metric.val}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>
-                    {metric.detail}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Section 2: Enterprise Operational Pillars */}
-        <section>
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h2 style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: 'clamp(2rem, 3.5vw, 2.75rem)',
-              fontWeight: 700,
-              color: '#FFFFFF',
-              marginBottom: '0.5rem',
-            }}>
-              Operational Pillars & Control Suites
-            </h2>
-            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.95rem', maxWidth: '650px', margin: '0 auto' }}>
-              Centralized administrative capabilities empowering MC Titoe Events to deliver flawless stage execution.
-            </p>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-            gap: '1.25rem',
-          }}>
-            {[
-              {
-                icon: BookmarkCheck,
-                badge: 'Workflow Dispatch',
-                title: 'Client Inquiries & CRM',
-                desc: 'Real-time triage of inbound website inquiries. Features automated acknowledgment emails via Nodemailer, Kenyan phone normalization (+254), and executive client follow-up queues.',
-              },
-              {
-                icon: FileText,
-                badge: 'Quotation Engine',
-                title: 'Itemized Proposals in KSh',
-                desc: 'Instantly computes estimates across MC appearances, PA equipment, stage lighting, and luxury decor. Issues 14-day formal quotations with unique EVT reference codes and customer portal links.',
-              },
-              {
-                icon: Layers,
-                badge: 'Equipment & Staging',
-                title: 'Hardware & Staging Catalog',
-                desc: 'Full-spectrum inventory management covering Yamaha digital consoles, Shure dual wireless UHF systems, ambient par cans, moving-head beams, hazers, and structural stage setups.',
-              },
-              {
-                icon: CreditCard,
-                badge: 'Financial Audit',
-                title: 'M-Pesa & Payment Ledger',
-                desc: 'Real-time transaction tracking for customer deposits, final balances, and payment assistance requests. Maintains a tamper-proof audit trail of verified receipts across Kenyan banks and mobile money.',
-              },
-            ].map((pillar, i) => {
-              const Icon = pillar.icon;
-              return (
-                <div key={i} className="landing-feature-card" style={{ padding: '1.75rem' }}>
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                    color: 'var(--admin-champagne)',
-                    backgroundColor: 'rgba(201, 162, 39, 0.1)',
-                    padding: '0.25rem 0.65rem',
-                    borderRadius: '4px',
-                    marginBottom: '1rem',
-                  }}>
-                    {pillar.badge}
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                    <div style={{
-                      width: '38px',
-                      height: '38px',
-                      borderRadius: '8px',
-                      backgroundColor: 'rgba(201, 162, 39, 0.15)',
-                      color: 'var(--admin-accent)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}>
-                      <Icon size={20} />
-                    </div>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#FFFFFF' }}>{pillar.title}</h3>
-                  </div>
-
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.68)', lineHeight: 1.6 }}>
-                    {pillar.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Section 3: The Production Lifecycle Workflow */}
-        <section style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.02)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '16px',
-          padding: 'clamp(2rem, 3.5vw, 3rem) clamp(1rem, 2vw, 2rem)',
-        }}>
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h2 style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: 'clamp(2rem, 3.5vw, 2.75rem)',
-              fontWeight: 700,
-              color: '#FFFFFF',
-              marginBottom: '0.5rem',
-            }}>
-              Event Lifecycle & Execution Workflow
-            </h2>
-            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.95rem' }}>
-              How client bookings seamlessly transition from digital brief to live stage execution.
-            </p>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
-            gap: '1.25rem',
-          }}>
-            {[
-              {
-                step: '01',
-                title: 'Client Specification',
-                desc: 'Client selects guest count, proposed date, event type, and desired sound & MC packages on the booking portal.',
-              },
-              {
-                step: '02',
-                title: 'Automated Quote & Email',
-                desc: 'Engine calculates itemized costs in KSh and dispatches branded email confirmations with quote links to client & admin.',
-              },
-              {
-                step: '03',
-                title: 'Review & Customization',
-                desc: 'Admin reviews venue acoustics, fine-tunes stage requirements, applies custom discounts, and conducts technical walkthrough.',
-              },
-              {
-                step: '04',
-                title: 'Settlement & Staging',
-                desc: 'Client accepts quote, locks in date with M-Pesa deposit, and production team dispatches audio engineers & MC.',
-              },
-            ].map((wf, idx) => (
-              <div key={idx} className="landing-step-card">
-                <div style={{
-                  fontSize: '2rem',
-                  fontWeight: 900,
-                  fontFamily: 'Cormorant Garamond, serif',
-                  color: 'var(--admin-accent)',
-                  opacity: 0.8,
-                  lineHeight: 1,
-                  marginBottom: '0.85rem',
-                }}>
-                  {wf.step}
-                </div>
-                <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '0.5rem' }}>
-                  {wf.title}
-                </h4>
-                <p style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.55 }}>
-                  {wf.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Section 4: Production Hardware & Staging Standards */}
-        <section>
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h2 style={{
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: 'clamp(2rem, 3.5vw, 2.75rem)',
-              fontWeight: 700,
-              color: '#FFFFFF',
-              marginBottom: '0.5rem',
-            }}>
-              Production Staging & Acoustic Standards
-            </h2>
-            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.95rem' }}>
-              High-end audiovisual equipment and bespoke event styling deployed for our clients.
-            </p>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
-            gap: '1.25rem',
-          }}>
-            {[
-              {
-                icon: Mic2,
-                title: 'Master of Ceremonies (MC)',
-                highlights: ['Corporate Protocol & Etiquette', 'Bilingual English & Swahili', 'Seamless Ceremony Pacing', 'Interactive Crowd Engagement'],
-              },
-              {
-                icon: Volume2,
-                title: 'Public Address & Audio',
-                highlights: ['Calibrated Line-Array Speakers', 'Yamaha / JBL Digital Mixers', 'Dual Shure UHF Wireless Mics', 'Acoustic Sound Optimization'],
-              },
-              {
-                icon: Sparkles,
-                title: 'Lighting & Stage Visuals',
-                highlights: ['Beam Moving-Head Lights', 'Ambient LED Par Can Uplighting', 'Hazer Atmosphere Machines', 'Heavy-Duty Stage Trussing'],
-              },
-              {
-                icon: Award,
-                title: 'Luxury Event Styling',
-                highlights: ['Thematic Stage Backdrops', 'VIP Arch & Floral Design', 'Luxury Tablescape Decor', 'Red Carpet & VIP Entries'],
-              },
-            ].map((spec, i) => {
-              const Icon = spec.icon;
-              return (
-                <div key={i} className="landing-feature-card" style={{ padding: '1.5rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '1rem' }}>
-                    <div style={{
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '6px',
-                      backgroundColor: 'rgba(201, 162, 39, 0.12)',
-                      color: 'var(--admin-accent)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}>
-                      <Icon size={18} />
-                    </div>
-                    <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#FFFFFF' }}>{spec.title}</h4>
-                  </div>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    {spec.highlights.map((item, idx) => (
-                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.72)' }}>
-                        <Check size={13} color="var(--admin-accent)" flexShrink={0} />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Section 5: Bottom Executive Call to Action Banner */}
-        <section style={{
-          background: 'linear-gradient(135deg, rgba(13, 31, 51, 0.9) 0%, rgba(8, 26, 43, 0.95) 100%)',
-          border: '1px solid rgba(201, 162, 39, 0.3)',
-          borderRadius: '16px',
-          padding: 'clamp(2.5rem, 4vw, 3.5rem) clamp(1rem, 2vw, 2.5rem)',
-          textAlign: 'center',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
-        }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            backgroundColor: 'rgba(201, 162, 39, 0.15)',
-            color: 'var(--admin-accent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 1.25rem',
-          }}>
-            <Lock size={22} />
-          </div>
-
-          <h2 style={{
-            fontFamily: 'Cormorant Garamond, serif',
-            fontSize: 'clamp(2.1rem, 4vw, 3rem)',
-            fontWeight: 700,
-            color: '#FFFFFF',
-            marginBottom: '0.85rem',
-          }}>
-            Ready to Coordinate Your Next Event Production?
-          </h2>
-
-          <p style={{
-            fontSize: '1rem',
-            color: 'rgba(255, 255, 255, 0.75)',
-            maxWidth: '650px',
-            margin: '0 auto 2rem auto',
-            lineHeight: 1.6,
-          }}>
-            Authorized administrators and event managers can sign in to view inbound client briefs, update staging line items, and audit verified transactions.
-          </p>
-
+        {/* Action Button - Clean Solid White Pill with Gold Hover Glow */}
+        <div>
           <button
             type="button"
             onClick={() => setLoginModalOpen(true)}
-            className="landing-btn-gold"
-            style={{
-              width: 'auto',
-              padding: '0.9rem 2.5rem',
-              fontSize: '1.05rem',
-              borderRadius: '8px',
-              margin: '0 auto',
-            }}
+            className="limitless-cta-pill"
           >
-            <Lock size={18} />
-            <span>Open Operations Login</span>
-            <ArrowRight size={18} />
+            <span>Access Admin Portal</span>
           </button>
-        </section>
-      </main>
+        </div>
 
-      {/* Corporate Information Ribbon */}
-      <div style={{
-        backgroundColor: 'rgba(255, 255, 255, 0.02)',
-        borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-        padding: '1rem clamp(0.5rem, 1vw, 1rem)',
-        textAlign: 'center',
-        position: 'relative',
-        zIndex: 5,
-      }}>
+        {/* 5 Carousel / Indicator Dots in Theme Colors */}
         <div style={{
-          maxWidth: '1840px',
-          margin: '0 auto',
           display: 'flex',
-          flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 'clamp(1rem, 2vw, 2.5rem)',
-          fontSize: '0.8rem',
-          color: 'rgba(255, 255, 255, 0.65)',
+          gap: '8px',
+          marginTop: '1.75rem',
+          marginBottom: '0.75rem',
         }}>
-          <span>📍 Headquarters: Mombasa Bamburi, Kenya</span>
-          <span>📞 Production Dispatch: +254 721 784 682 / +254 758 726 167 (WhatsApp: 0782 527 081)</span>
-          <span>✉️ Operations Desk: mctitoeeventsdesigns@gmail.com</span>
-          <span>🔒 Clearance: 256-Bit TLS 1.3 Certified</span>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--admin-accent)' }} />
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.35)' }} />
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.35)' }} />
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.35)' }} />
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.35)' }} />
         </div>
-      </div>
 
-      {/* Footer with small margin alignment */}
-      <footer style={{
-        padding: '1.5rem clamp(0.5rem, 1vw, 1rem)',
-        maxWidth: '1840px',
-        width: '100%',
-        margin: '0 auto',
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1rem',
-        fontSize: '0.775rem',
-        color: 'rgba(255, 255, 255, 0.4)',
-        position: 'relative',
-        zIndex: 5,
-      }}>
-        <div>
-          &copy; {new Date().getFullYear()} <strong>MC TITOE EVENTS AND DESIGNS</strong>. All Rights Reserved.
+        {/* Status Microcopy in Theme Champagne */}
+        <div style={{
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          color: 'var(--admin-champagne)',
+        }}>
+          AUTHORIZED ACCESS ONLY • TLS 1.3 SECURE
         </div>
-        <div>
-          Enterprise Operations Platform &bull; Release v2.4 (Kenya Edition)
+      </main>
+
+      {/* Bottom Brand / Capability Showcase Bar */}
+      <footer style={{
+        position: 'relative',
+        zIndex: 10,
+        padding: '2rem 1.5rem 2.5rem',
+        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+        backgroundColor: 'rgba(4, 13, 22, 0.65)',
+        backdropFilter: 'blur(10px)',
+      }}>
+        {/* Caption */}
+        <div style={{
+          textAlign: 'center',
+          fontSize: '0.725rem',
+          fontWeight: 700,
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: 'var(--admin-champagne)',
+          opacity: 0.85,
+          marginBottom: '1.5rem',
+        }}>
+          TRUSTED FOR PREMIER WEDDINGS, CONFERENCES & GALAS
+        </div>
+
+        {/* 5 Sleek Vector Brands / Tech Badges */}
+        <div className="limitless-logos-row">
+          {/* 1. M-PESA */}
+          <div className="limitless-logo-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+              <line x1="12" y1="18" x2="12.01" y2="18" />
+            </svg>
+            <span style={{ letterSpacing: '0.02em' }}>M-PESA</span>
+          </div>
+
+          {/* 2. PAYSTACK */}
+          <div className="limitless-logo-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="5" width="18" height="3" rx="1.5" fill="currentColor" />
+              <rect x="3" y="10.5" width="12" height="3" rx="1.5" fill="currentColor" />
+              <rect x="3" y="16" width="18" height="3" rx="1.5" fill="currentColor" />
+            </svg>
+            <span>paystack</span>
+          </div>
+
+          {/* 3. PIONEER PRO DJ */}
+          <div className="limitless-logo-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="9" />
+              <circle cx="12" cy="12" r="3" />
+              <line x1="12" y1="3" x2="12" y2="6" />
+              <line x1="12" y1="18" x2="12" y2="21" />
+            </svg>
+            <span>Pioneer DJ</span>
+          </div>
+
+          {/* 4. NEON CLOUD */}
+          <div className="limitless-logo-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+            </svg>
+            <span>Neon Cloud</span>
+          </div>
+
+          {/* 5. VERCEL */}
+          <div className="limitless-logo-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L23 21H1L12 2Z" />
+            </svg>
+            <span>Vercel</span>
+          </div>
         </div>
       </footer>
 
-      {/* Luxury Operations Login Modal */}
+      {/* Simple, Clean Login Modal in Project Theme Colors */}
       {loginModalOpen && (
-        <div 
-          className="landing-modal-backdrop"
-          onClick={() => setLoginModalOpen(false)}
-        >
-          <div 
+        <div className="landing-modal-backdrop" onClick={() => setLoginModalOpen(false)}>
+          <div
             className="landing-modal-card"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: '#081A2B',
+              border: '1px solid rgba(201, 162, 39, 0.3)',
+              borderRadius: '12px',
+              padding: '2rem',
+              maxWidth: '380px',
+              position: 'relative',
+            }}
           >
             {/* Close Button */}
             <button
@@ -782,117 +426,65 @@ export const AdminLandingPage = () => {
               onClick={() => setLoginModalOpen(false)}
               style={{
                 position: 'absolute',
-                top: '1.25rem',
-                right: '1.25rem',
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
+                top: '1rem',
+                right: '1rem',
+                background: 'none',
+                border: 'none',
+                color: 'rgba(255, 255, 255, 0.5)',
+                cursor: 'pointer',
+                padding: '0.25rem',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'rgba(255, 255, 255, 0.7)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                transition: 'color 0.2s',
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#FFFFFF';
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)';
-                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
-              }}
-              aria-label="Close login modal"
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#FFFFFF'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'; }}
+              aria-label="Close modal"
             >
-              <X size={16} />
+              <X size={18} />
             </button>
 
-            {/* Modal Header */}
+            {/* Simple Clean Header */}
             <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
               <div style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '12px',
-                backgroundColor: 'rgba(201, 162, 39, 0.12)',
-                border: '1px solid rgba(201, 162, 39, 0.3)',
+                width: '42px',
+                height: '42px',
+                borderRadius: '8px',
+                border: '1.5px solid var(--admin-accent)',
                 color: 'var(--admin-accent)',
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 0.85rem',
-                boxShadow: '0 0 20px rgba(201, 162, 39, 0.2)',
+                backgroundColor: 'rgba(201, 162, 39, 0.1)',
+                marginBottom: '0.75rem',
               }}>
-                <Lock size={22} />
+                <Lock size={18} />
               </div>
-
-              <h3 style={{
+              <h2 style={{
                 fontSize: '1.35rem',
                 fontWeight: 700,
                 color: '#FFFFFF',
-                letterSpacing: '-0.01em',
-                marginBottom: '0.25rem',
+                margin: '0 0 0.25rem',
               }}>
-                Sign In to Operations
-              </h3>
-              <p style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.65)' }}>
-                Enter your administrative credentials to manage MC Titoe live events.
+                Sign In
+              </h2>
+              <p style={{
+                fontSize: '0.825rem',
+                color: 'var(--admin-champagne)',
+                margin: 0,
+              }}>
+                MC Titoe Administrative Suite
               </p>
             </div>
 
-            {/* Quick Demo Access Pill */}
-            <div style={{
-              marginBottom: '1.25rem',
-              display: 'flex',
-              justifyContent: 'center',
-            }}>
-              <button
-                type="button"
-                onClick={handleApplyDemo}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  color: demoLoaded ? '#34D399' : 'var(--admin-champagne)',
-                  backgroundColor: demoLoaded ? 'rgba(16, 185, 129, 0.12)' : 'rgba(201, 162, 39, 0.1)',
-                  border: `1px solid ${demoLoaded ? 'rgba(16, 185, 129, 0.3)' : 'rgba(201, 162, 39, 0.25)'}`,
-                  padding: '0.4rem 0.85rem',
-                  borderRadius: '9999px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (!demoLoaded) e.currentTarget.style.backgroundColor = 'rgba(201, 162, 39, 0.18)';
-                }}
-                onMouseLeave={(e) => {
-                  if (!demoLoaded) e.currentTarget.style.backgroundColor = 'rgba(201, 162, 39, 0.1)';
-                }}
-                title="Click to auto-populate administrator credentials"
-              >
-                {demoLoaded ? (
-                  <>
-                    <Check size={13} />
-                    <span>Credentials Applied</span>
-                  </>
-                ) : (
-                  <>
-                    <KeyRound size={13} />
-                    <span>Quick Admin Access (kelvinmuemah855@gmail.com)</span>
-                  </>
-                )}
-              </button>
-            </div>
-
-            {/* Error Message */}
+            {/* Error Notification */}
             {error && (
               <div style={{
-                padding: '0.75rem 0.95rem',
+                padding: '0.65rem 0.85rem',
                 backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                border: '1px solid rgba(239, 68, 68, 0.35)',
-                borderRadius: '8px',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                borderRadius: '6px',
                 color: '#FCA5A5',
                 fontSize: '0.8rem',
                 marginBottom: '1rem',
@@ -905,29 +497,29 @@ export const AdminLandingPage = () => {
               </div>
             )}
 
-            {/* Login Form */}
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+            {/* Simple Clean Form */}
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
               <div>
                 <label style={{
                   display: 'block',
-                  fontSize: '0.8rem',
+                  fontSize: '0.78rem',
                   fontWeight: 600,
-                  color: 'var(--admin-champagne)',
-                  marginBottom: '0.4rem',
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  marginBottom: '0.35rem',
                 }}>
-                  Corporate Email Address
+                  Email
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
                     type="email"
                     className="landing-input-dark"
-                    placeholder="kelvinmuemah855@gmail.com"
+                    placeholder="name@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     style={{ paddingLeft: '2.4rem' }}
                   />
-                  <Mail size={16} style={{
+                  <Mail size={15} style={{
                     position: 'absolute',
                     left: '0.85rem',
                     top: '50%',
@@ -940,12 +532,12 @@ export const AdminLandingPage = () => {
               <div>
                 <label style={{
                   display: 'block',
-                  fontSize: '0.8rem',
+                  fontSize: '0.78rem',
                   fontWeight: 600,
-                  color: 'var(--admin-champagne)',
-                  marginBottom: '0.4rem',
+                  color: 'rgba(255, 255, 255, 0.8)',
+                  marginBottom: '0.35rem',
                 }}>
-                  Security Key / Password
+                  Password
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
@@ -957,7 +549,7 @@ export const AdminLandingPage = () => {
                     required
                     style={{ paddingLeft: '2.4rem', paddingRight: '2.4rem' }}
                   />
-                  <Lock size={16} style={{
+                  <Lock size={15} style={{
                     position: 'absolute',
                     left: '0.85rem',
                     top: '50%',
@@ -978,7 +570,6 @@ export const AdminLandingPage = () => {
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      padding: '0.2rem',
                     }}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
@@ -987,57 +578,41 @@ export const AdminLandingPage = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.78rem' }}>
-                <label style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  cursor: 'pointer',
-                }}>
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    style={{
-                      accentColor: 'var(--admin-accent)',
-                      width: '14px',
-                      height: '14px',
-                      cursor: 'pointer',
-                    }}
-                  />
-                  <span>Remember session</span>
-                </label>
-                <span style={{ color: 'rgba(255, 255, 255, 0.4)' }}>TLS 1.3 Encrypted</span>
-              </div>
-
+              {/* Submit Button in Project Gold */}
               <button
                 type="submit"
                 disabled={loading}
                 className="landing-btn-gold"
-                style={{ marginTop: '0.5rem', padding: '0.8rem' }}
+                style={{
+                  marginTop: '0.4rem',
+                  padding: '0.75rem',
+                }}
               >
-                {loading ? (
-                  <span>Verifying Authorization...</span>
-                ) : (
-                  <>
-                    <span>Authenticate & Enter Suite</span>
-                    <ArrowRight size={16} />
-                  </>
-                )}
+                {loading ? 'Signing in...' : 'Sign In'}
+              </button>
+
+              {/* Simple Demo Link */}
+              <button
+                type="button"
+                onClick={handleApplyDemo}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: demoLoaded ? '#34D399' : 'var(--admin-champagne)',
+                  fontSize: '0.76rem',
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  padding: '0.35rem 0 0',
+                  textDecoration: 'underline',
+                  opacity: 0.85,
+                  transition: 'opacity 0.2s',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+              >
+                {demoLoaded ? '✓ Demo credentials filled' : 'Fill demo credentials'}
               </button>
             </form>
-
-            <div style={{
-              marginTop: '1.5rem',
-              paddingTop: '1rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-              textAlign: 'center',
-              fontSize: '0.725rem',
-              color: 'rgba(255, 255, 255, 0.45)',
-            }}>
-              Restricted portal &bull; Authorized Mc Titoe Events Staff Only
-            </div>
           </div>
         </div>
       )}

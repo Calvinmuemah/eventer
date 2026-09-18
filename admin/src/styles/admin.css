@@ -519,16 +519,73 @@ body {
    ========================================================================== */
 .admin-landing-wrapper {
   min-height: 100vh;
-  background-color: #071524;
+  background-color: #040D16;
   background-image: 
-    radial-gradient(at 100% 0%, rgba(201, 162, 39, 0.12) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(18, 43, 69, 0.4) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(8, 26, 43, 0.95) 0px, transparent 100%);
+    radial-gradient(circle 800px at 85% 25%, rgba(201, 162, 39, 0.18) 0%, rgba(201, 162, 39, 0.05) 35%, transparent 65%),
+    radial-gradient(circle 750px at 15% 22%, rgba(18, 43, 69, 0.85) 0%, rgba(18, 43, 69, 0.35) 35%, transparent 65%),
+    radial-gradient(circle 600px at 50% 12%, rgba(231, 211, 163, 0.1) 0%, transparent 60%),
+    linear-gradient(180deg, #071726 0%, #081A2B 32%, #05121E 70%, #040D16 100%);
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   position: relative;
   overflow-x: hidden;
+}
+
+/* Limitless White Hero CTA Pill */
+.limitless-cta-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background-color: #FFFFFF;
+  color: #081A2B;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 0.95rem 2.75rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 255, 255, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.limitless-cta-pill:hover {
+  transform: translateY(-2px) scale(1.02);
+  background-color: #FFFFFF;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 0 30px rgba(201, 162, 39, 0.45);
+}
+
+.limitless-cta-pill:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Limitless Logos Bar */
+.limitless-logos-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(1.75rem, 4.5vw, 4rem);
+}
+
+.limitless-logo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.limitless-logo-item:hover {
+  color: var(--admin-champagne);
+  transform: translateY(-1px);
 }
 
 .landing-pulse-dot {
@@ -556,22 +613,22 @@ body {
 }
 
 .landing-glass-card {
-  background: rgba(13, 31, 51, 0.72);
+  background: rgba(18, 5, 38, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(201, 162, 39, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   box-shadow: 
     0 20px 45px -10px rgba(0, 0, 0, 0.5),
-    0 0 35px -5px rgba(201, 162, 39, 0.08);
+    0 0 35px -5px rgba(232, 21, 119, 0.15);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .landing-glass-card:hover {
-  border-color: rgba(201, 162, 39, 0.4);
+  border-color: rgba(255, 255, 255, 0.25);
   box-shadow: 
     0 25px 55px -10px rgba(0, 0, 0, 0.6),
-    0 0 45px -5px rgba(201, 162, 39, 0.14);
+    0 0 45px -5px rgba(232, 21, 119, 0.25);
 }
 
 .landing-feature-card {
@@ -583,14 +640,14 @@ body {
 }
 
 .landing-feature-card:hover {
-  background: rgba(201, 162, 39, 0.05);
-  border-color: rgba(201, 162, 39, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
 .landing-input-dark {
   width: 100%;
-  background-color: rgba(8, 26, 43, 0.75);
+  background-color: #040D16;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
   padding: 0.8rem 1rem;
@@ -606,7 +663,7 @@ body {
 }
 
 .landing-input-dark:focus {
-  background-color: rgba(8, 26, 43, 0.95);
+  background-color: #030A11;
   border-color: var(--admin-accent);
   box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25);
 }
@@ -621,7 +678,7 @@ body {
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: #071524;
+  color: #040D16;
   background: linear-gradient(135deg, #D4AF37 0%, #C9A227 50%, #B38E1B 100%);
   border: none;
   border-radius: 8px;
@@ -650,9 +707,9 @@ body {
 .landing-modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(4, 13, 22, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(4, 13, 22, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -661,15 +718,15 @@ body {
 }
 
 .landing-modal-card {
-  background: rgba(13, 31, 51, 0.96);
-  border: 1px solid rgba(201, 162, 39, 0.35);
+  background: #081A2B;
+  border: 1px solid rgba(201, 162, 39, 0.25);
   border-radius: 14px;
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.7),
-    0 0 40px -10px rgba(201, 162, 39, 0.2);
-  padding: clamp(1.75rem, 4vw, 2.5rem);
+    0 25px 60px -10px rgba(0, 0, 0, 0.8),
+    0 0 35px -5px rgba(201, 162, 39, 0.15);
+  padding: clamp(1.75rem, 4vw, 2.25rem);
   position: relative;
   color: #FFFFFF;
   animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
