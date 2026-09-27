@@ -31,15 +31,6 @@ const EVENT_TYPES = [
   'Other Custom Event',
 ];
 
-const BUDGET_RANGES = [
-  'Under KSh 50,000',
-  'KSh 50,000 – KSh 150,000',
-  'KSh 150,000 – KSh 350,000',
-  'KSh 350,000 – KSh 750,000',
-  'KSh 750,000+',
-  'Flexible / Open to Consultation',
-];
-
 export const PlanEventPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -58,7 +49,6 @@ export const PlanEventPage = () => {
     eventLocation: '',
     guestCount: '',
     serviceIds: [],
-    budgetRange: 'KSh 150,000 – KSh 350,000',
     additionalRequirements: '',
     notes: '',
   });
@@ -170,7 +160,7 @@ export const PlanEventPage = () => {
         eventLocation: formData.eventLocation.trim(),
         guestCount: parseInt(formData.guestCount, 10),
         serviceIds: formData.serviceIds,
-        budgetRange: formData.budgetRange,
+        budgetRange: formData.budgetRange || '',
         additionalRequirements: formData.additionalRequirements.trim(),
         notes: formData.notes.trim(),
       };
@@ -560,21 +550,8 @@ export const PlanEventPage = () => {
                     03. Event Requirements & Scope
                   </h3>
                   <p style={{ color: 'var(--color-muted)', marginBottom: '2rem', fontSize: '0.925rem' }}>
-                    Help us align on your expectations, technical constraints, and budget targets.
+                    Help us align on your technical constraints, schedule, and specific staging desires.
                   </p>
-
-                  <div className="form-group">
-                    <label className="form-label">Anticipated Budget Range</label>
-                    <select 
-                      className="form-select"
-                      value={formData.budgetRange}
-                      onChange={(e) => handleChange('budgetRange', e.target.value)}
-                    >
-                      {BUDGET_RANGES.map(range => (
-                        <option key={range} value={range}>{range}</option>
-                      ))}
-                    </select>
-                  </div>
 
                   <div className="form-group">
                     <label className="form-label">Additional Technical Requirements or Specific Desires</label>
