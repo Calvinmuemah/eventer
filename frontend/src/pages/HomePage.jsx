@@ -59,14 +59,20 @@ export const HomePage = () => {
         overflow: 'hidden',
         padding: '5rem 0',
       }}>
-        {/* Cinematic Backdrop Image - 70% Visibility */}
+        {/* Cinematic Backdrop Image - 100% Opacity */}
         <div style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: 'url("https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=2100&q=85")',
           backgroundSize: 'cover',
           backgroundPosition: 'center 40%',
-          opacity: 0.7,
+          opacity: 1,
+        }} />
+        {/* Dark Neutral Scrim Layer for High Text Visibility */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(90deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.58) 55%, rgba(0, 0, 0, 0.42) 100%)',
         }} />
 
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
