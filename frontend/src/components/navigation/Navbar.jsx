@@ -46,7 +46,7 @@ export const Navbar = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '80px',
+        height: '62px',
       }}>
         {/* Brand Typography - Far Left End */}
         <Link to="/" style={{
@@ -57,7 +57,7 @@ export const Navbar = () => {
         }}>
           <span className="brand-gradient-shimmer" style={{
             fontFamily: 'var(--font-serif)',
-            fontSize: '1.45rem',
+            fontSize: '1.25rem',
             fontWeight: 700,
             letterSpacing: '0.07em',
             textTransform: 'uppercase',
@@ -67,12 +67,12 @@ export const Navbar = () => {
           </span>
           <span style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '0.62rem',
+            fontSize: '0.54rem',
             fontWeight: 700,
-            letterSpacing: '0.24em',
+            letterSpacing: '0.22em',
             color: 'var(--color-champagne)',
             textTransform: 'uppercase',
-            marginTop: '3px',
+            marginTop: '2px',
             opacity: 0.95,
           }}>
             EVENTS & DESIGNS
@@ -85,14 +85,14 @@ export const Navbar = () => {
           style={{
             display: 'none',
             alignItems: 'center',
-            gap: '2.25rem',
+            gap: '2rem',
             marginLeft: 'auto',
           }}
         >
           <nav style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '1.75rem',
+            gap: '1.5rem',
           }}>
             {navLinks.map((link) => (
               <NavLink
@@ -100,12 +100,12 @@ export const Navbar = () => {
                 to={link.path}
                 style={({ isActive }) => ({
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   fontWeight: 500,
                   letterSpacing: '0.04em',
                   color: isActive ? 'var(--color-accent)' : 'rgba(255, 255, 255, 0.82)',
                   position: 'relative',
-                  padding: '0.4rem 0',
+                  padding: '0.25rem 0',
                   transition: 'color 0.2s ease',
                   whiteSpace: 'nowrap',
                 })}
@@ -115,8 +115,17 @@ export const Navbar = () => {
             ))}
           </nav>
 
-          <Link to="/plan-event" className="btn btn-primary btn-sm" style={{ flexShrink: 0 }}>
-            PLAN YOUR EVENT <ArrowRight size={14} />
+          <Link 
+            to="/plan-event" 
+            className="btn btn-primary btn-sm" 
+            style={{ 
+              flexShrink: 0, 
+              padding: '0.45rem 1rem', 
+              fontSize: '0.78rem',
+              letterSpacing: '0.04em',
+            }}
+          >
+            PLAN YOUR EVENT <ArrowRight size={13} />
           </Link>
         </div>
 
@@ -129,11 +138,11 @@ export const Navbar = () => {
             alignItems: 'center',
             justifyContent: 'center',
             color: '#FFFFFF',
-            padding: '0.5rem',
+            padding: '0.35rem',
           }}
           className="mobile-toggle"
         >
-          {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
@@ -142,11 +151,11 @@ export const Navbar = () => {
         <div style={{
           backgroundColor: 'var(--color-primary)',
           borderTop: '1px solid rgba(231, 211, 163, 0.1)',
-          padding: '1.75rem 1.5rem 2.25rem',
+          padding: '1.5rem 1.25rem 2rem',
           display: 'flex',
           flexDirection: 'column',
           gap: '1.25rem',
-          maxHeight: 'calc(100dvh - 80px)',
+          maxHeight: 'calc(100dvh - 62px)',
           overflowY: 'auto',
           WebkitOverflowScrolling: 'touch',
         }}>
