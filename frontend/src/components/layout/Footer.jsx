@@ -12,14 +12,13 @@ export const Footer = () => {
       marginTop: 'auto',
     }}>
       <div className="container" style={{
-        paddingTop: '5rem',
-        paddingBottom: '4rem',
+        paddingTop: '3.75rem',
+        paddingBottom: '2.5rem',
       }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
           gap: '2.5rem',
-          marginBottom: '4rem',
         }}>
           {/* Brand Col */}
           <div>
@@ -156,25 +155,29 @@ export const Footer = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Legal bar */}
-        <div style={{
-          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          paddingTop: '2rem',
+      {/* Slim Bottom Legal Bar */}
+      <div style={{
+        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+        backgroundColor: 'rgba(4, 15, 26, 0.65)',
+        padding: '0.85rem 0',
+      }}>
+        <div className="container" style={{
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '1rem',
-          fontSize: '0.825rem',
-          color: 'rgba(255, 255, 255, 0.45)',
+          gap: '0.75rem',
+          fontSize: '0.8rem',
+          color: 'rgba(255, 255, 255, 0.5)',
         }}>
           <div>
             © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
           </div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <Link to="/privacy" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Privacy Policy</Link>
-            <Link to="/terms" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Terms of Service</Link>
+            <Link to="/privacy" style={{ color: 'rgba(255, 255, 255, 0.6)', textDecoration: 'none' }}>Privacy Policy</Link>
+            <Link to="/terms" style={{ color: 'rgba(255, 255, 255, 0.6)', textDecoration: 'none' }}>Terms of Service</Link>
           </div>
         </div>
       </div>
