@@ -12,27 +12,27 @@ export const Footer = () => {
       marginTop: 'auto',
     }}>
       <div className="container" style={{
-        paddingTop: '3.75rem',
-        paddingBottom: '2.5rem',
+        paddingTop: '2.25rem',
+        paddingBottom: '1.75rem',
       }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
-          gap: '2.5rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
+          gap: '1.75rem',
         }}>
           {/* Brand Col */}
           <div>
             <Link to="/" style={{
               display: 'inline-flex',
               alignItems: 'center',
-              marginBottom: '1.25rem',
+              marginBottom: '0.75rem',
               textDecoration: 'none',
             }}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.2rem', lineHeight: 1.05 }}>
                   <span className="brand-gradient-shimmer" style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: '1.5rem',
+                    fontSize: '1.25rem',
                     fontWeight: 700,
                     letterSpacing: '0.08em',
                   }}>
@@ -41,7 +41,7 @@ export const Footer = () => {
                 </div>
                 <span style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '0.62rem',
+                  fontSize: '0.54rem',
                   fontWeight: 700,
                   letterSpacing: '0.22em',
                   color: 'var(--color-champagne)',
@@ -54,25 +54,25 @@ export const Footer = () => {
             </Link>
             <p style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '0.925rem',
-              lineHeight: 1.65,
+              fontSize: '0.825rem',
+              lineHeight: 1.5,
               color: 'rgba(255, 255, 255, 0.65)',
-              marginBottom: '1.75rem',
+              marginBottom: '1rem',
               maxWidth: '300px',
             }}>
               {BRAND.footerTagline}
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.875rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--color-champagne)' }}>
-                <Phone size={15} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.8rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-champagne)' }}>
+                <Phone size={14} />
                 <span>{BRAND.contact.phoneFormatted}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--color-champagne)' }}>
-                <Mail size={15} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-champagne)' }}>
+                <Mail size={14} />
                 <span>{BRAND.contact.email}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(255, 255, 255, 0.65)' }}>
-                <MapPin size={15} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255, 255, 255, 0.65)' }}>
+                <MapPin size={14} />
                 <span>{BRAND.contact.address}</span>
               </div>
             </div>
@@ -82,20 +82,20 @@ export const Footer = () => {
           <div>
             <h4 style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: '1.2rem',
+              fontSize: '1.05rem',
               color: '#FFFFFF',
               letterSpacing: '0.04em',
-              marginBottom: '1.25rem',
+              marginBottom: '0.65rem',
             }}>
               Services
             </h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.9rem' }}>
-              <li><Link to="/services/mc" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Master of Ceremonies (MC)</Link></li>
-              <li><Link to="/services/public-address-system" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Public Address System</Link></li>
-              <li><Link to="/services/musical-instruments" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Musical Instruments & Backline</Link></li>
-              <li><Link to="/services/events-planning" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Event Architecture & Planning</Link></li>
-              <li><Link to="/services/decoration-lighting" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Decoration & Architectural Lighting</Link></li>
-              <li><Link to="/services/more" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Custom & Specialized Staging</Link></li>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.825rem' }}>
+              <li><Link to="/services/mc" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Master of Ceremonies (MC)</Link></li>
+              <li><Link to="/services/public-address-system" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Public Address System</Link></li>
+              <li><Link to="/services/musical-instruments" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Musical Instruments & Backline</Link></li>
+              <li><Link to="/services/events-planning" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Event Architecture & Planning</Link></li>
+              <li><Link to="/services/decoration-lighting" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Decoration & Architectural Lighting</Link></li>
+              <li><Link to="/services/more" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Custom & Specialized Staging</Link></li>
             </ul>
           </div>
 
@@ -103,19 +103,19 @@ export const Footer = () => {
           <div>
             <h4 style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: '1.2rem',
+              fontSize: '1.05rem',
               color: '#FFFFFF',
               letterSpacing: '0.04em',
-              marginBottom: '1.25rem',
+              marginBottom: '0.65rem',
             }}>
               Company
             </h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.9rem' }}>
-              <li><Link to="/about" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>About Us</Link></li>
-              <li><Link to="/how-it-works" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>How It Works</Link></li>
-              <li><Link to="/gallery" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Portfolio & Gallery</Link></li>
-              <li><Link to="/plan-event" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Plan Your Event</Link></li>
-              <li><Link to="/contact" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Contact Concierge</Link></li>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.825rem' }}>
+              <li><Link to="/about" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>About Us</Link></li>
+              <li><Link to="/how-it-works" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>How It Works</Link></li>
+              <li><Link to="/gallery" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Portfolio & Gallery</Link></li>
+              <li><Link to="/plan-event" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Plan Your Event</Link></li>
+              <li><Link to="/contact" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Contact Concierge</Link></li>
             </ul>
           </div>
 
@@ -123,14 +123,14 @@ export const Footer = () => {
           <div>
             <h4 style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: '1.2rem',
+              fontSize: '1.05rem',
               color: '#FFFFFF',
               letterSpacing: '0.04em',
-              marginBottom: '1.25rem',
+              marginBottom: '0.65rem',
             }}>
               Connect
             </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.9rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.825rem' }}>
               {BRAND.socials.map((social) => (
                 <a 
                   key={social.label}
@@ -140,15 +140,16 @@ export const Footer = () => {
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
+                    gap: '0.35rem',
                     color: 'rgba(255, 255, 255, 0.7)',
+                    textDecoration: 'none',
                   }}
                 >
-                  {social.label} <ArrowUpRight size={13} style={{ color: 'var(--color-accent)' }} />
+                  {social.label} <ArrowUpRight size={12} style={{ color: 'var(--color-accent)' }} />
                 </a>
               ))}
             </div>
-            <div style={{ marginTop: '1.75rem' }}>
+            <div style={{ marginTop: '1rem' }}>
               <Link to="/plan-event" className="btn btn-outline-gold btn-sm" style={{ width: '100%' }}>
                 Request Quotation
               </Link>
@@ -161,21 +162,21 @@ export const Footer = () => {
       <div style={{
         borderTop: '1px solid rgba(255, 255, 255, 0.08)',
         backgroundColor: 'rgba(4, 15, 26, 0.65)',
-        padding: '0.85rem 0',
+        padding: '0.65rem 0',
       }}>
         <div className="container" style={{
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '0.75rem',
-          fontSize: '0.8rem',
+          gap: '0.5rem',
+          fontSize: '0.75rem',
           color: 'rgba(255, 255, 255, 0.5)',
         }}>
           <div>
             © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
           </div>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', gap: '1.25rem' }}>
             <Link to="/privacy" style={{ color: 'rgba(255, 255, 255, 0.6)', textDecoration: 'none' }}>Privacy Policy</Link>
             <Link to="/terms" style={{ color: 'rgba(255, 255, 255, 0.6)', textDecoration: 'none' }}>Terms of Service</Link>
           </div>
