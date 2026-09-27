@@ -169,7 +169,22 @@ export const Footer = () => {
           color: 'rgba(255, 255, 255, 0.5)',
         }}>
           <div>
-            © {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+            © Copyright {new Date().getFullYear()}. Designed by{' '}
+            <a 
+              href="https://calvin-muemah.vercel.app/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                color: 'var(--color-champagne)',
+                textDecoration: 'none',
+                fontWeight: 600,
+                transition: 'color 0.2s ease',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--color-accent)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--color-champagne)'; }}
+            >
+              Calfrah Creations
+            </a>
           </div>
           <div style={{ display: 'flex', gap: '1.25rem' }}>
             <Link to="/privacy" style={{ color: 'rgba(255, 255, 255, 0.6)', textDecoration: 'none' }}>Privacy Policy</Link>
