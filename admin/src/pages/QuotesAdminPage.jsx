@@ -58,6 +58,7 @@ export const QuotesAdminPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th>Quote Number</th>
                 <th>Client / Occasion</th>
                 <th>Subtotal</th>
@@ -70,13 +71,14 @@ export const QuotesAdminPage = () => {
             <tbody>
               {quotes.length === 0 ? (
                 <tr>
-                  <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
                     No quotations generated yet.
                   </td>
                 </tr>
               ) : (
-                quotes.map((q) => (
+                quotes.map((q, index) => (
                   <tr key={q.id}>
+                    <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                     <td>
                       <strong>{q.quote_number}</strong>
                       <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>

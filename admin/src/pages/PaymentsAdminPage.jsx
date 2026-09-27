@@ -49,6 +49,7 @@ export const PaymentsAdminPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th>Transaction Ref</th>
                 <th>Booking Reference</th>
                 <th>Client / Event</th>
@@ -61,13 +62,14 @@ export const PaymentsAdminPage = () => {
             <tbody>
               {payments.length === 0 ? (
                 <tr>
-                  <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
                     No payment transactions recorded yet.
                   </td>
                 </tr>
               ) : (
-                payments.map((p) => (
+                payments.map((p, index) => (
                   <tr key={p.id}>
+                    <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                     <td>
                       <strong>{p.transaction_reference}</strong>
                     </td>

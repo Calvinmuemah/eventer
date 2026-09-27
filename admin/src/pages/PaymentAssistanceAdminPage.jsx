@@ -104,6 +104,7 @@ export const PaymentAssistanceAdminPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th>Booking Ref</th>
                 <th>Client Details</th>
                 <th>Inquiry / Notes</th>
@@ -114,18 +115,19 @@ export const PaymentAssistanceAdminPage = () => {
             <tbody>
               {filteredRequests.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
+                  <td colSpan="6" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
                     No payment assistance inquiries found.
                   </td>
                 </tr>
               ) : (
-                filteredRequests.map((r) => {
+                filteredRequests.map((r, index) => {
                   const phoneDigits = (r.phone || '').replace(/[^0-9]/g, '');
                   const waNumber = phoneDigits.startsWith('0') ? '254' + phoneDigits.slice(1) : phoneDigits;
                   const waUrl = phoneDigits ? `https://wa.me/${waNumber}?text=${encodeURIComponent(`Hello ${r.name}, this is MC Titoe Events regarding your booking ${r.booking_reference}. We received your payment assistance request.`)}` : null;
 
                   return (
                     <tr key={r.id}>
+                      <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                       <td>
                         <strong style={{ color: 'var(--admin-primary)', fontSize: '0.95rem' }}>{r.booking_reference}</strong>
                         {r.balance !== null && (

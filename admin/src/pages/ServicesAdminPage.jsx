@@ -96,6 +96,7 @@ export const ServicesAdminPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th style={{ width: '80px' }}>Image</th>
                 <th>Service Name & Slug</th>
                 <th>Description</th>
@@ -105,8 +106,9 @@ export const ServicesAdminPage = () => {
               </tr>
             </thead>
             <tbody>
-              {services.map((service) => (
+              {services.map((service, index) => (
                 <tr key={service.id}>
+                  <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                   <td>
                     <div style={{
                       width: '60px',

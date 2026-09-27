@@ -58,6 +58,7 @@ export const BookingsAdminPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th>Booking Ref</th>
                 <th>Client & Venue</th>
                 <th>Event Date</th>
@@ -70,13 +71,14 @@ export const BookingsAdminPage = () => {
             <tbody>
               {bookings.length === 0 ? (
                 <tr>
-                  <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
                     No bookings recorded in ledger yet.
                   </td>
                 </tr>
               ) : (
-                bookings.map((b) => (
+                bookings.map((b, index) => (
                   <tr key={b.id}>
+                    <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                     <td>
                       <strong>{b.booking_reference}</strong>
                       <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>

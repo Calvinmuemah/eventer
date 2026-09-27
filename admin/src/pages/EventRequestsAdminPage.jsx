@@ -58,6 +58,7 @@ export const EventRequestsAdminPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th>Reference</th>
                 <th>Client Contact</th>
                 <th>Event Specs</th>
@@ -69,13 +70,14 @@ export const EventRequestsAdminPage = () => {
             <tbody>
               {requests.length === 0 ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
+                  <td colSpan="7" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
                     No client requests recorded yet.
                   </td>
                 </tr>
               ) : (
-                requests.map((req) => (
+                requests.map((req, index) => (
                   <tr key={req.id}>
+                    <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                     <td>
                       <strong>{req.reference_code}</strong>
                       <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>

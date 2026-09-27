@@ -57,6 +57,7 @@ export const MessagesAdminPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th style={{ width: '40px' }}>Read</th>
                 <th>Sender</th>
                 <th>Subject</th>
@@ -67,13 +68,14 @@ export const MessagesAdminPage = () => {
             <tbody>
               {messages.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
+                  <td colSpan="6" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--admin-text-muted)' }}>
                     No contact inquiries received yet.
                   </td>
                 </tr>
               ) : (
-                messages.map((m) => (
+                messages.map((m, index) => (
                   <tr key={m.id} style={{ backgroundColor: m.is_read ? 'transparent' : 'rgba(201, 162, 39, 0.04)' }}>
+                    <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                     <td>
                       <button
                         onClick={() => handleToggleRead(m.id, m.is_read)}

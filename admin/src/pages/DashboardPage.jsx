@@ -192,6 +192,7 @@ export const DashboardPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th>Reference</th>
                 <th>Client</th>
                 <th>Event Date</th>
@@ -201,13 +202,14 @@ export const DashboardPage = () => {
             <tbody>
               {recentRequests.length === 0 ? (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center', color: 'var(--admin-text-muted)', padding: '2rem' }}>
+                  <td colSpan="5" style={{ textAlign: 'center', color: 'var(--admin-text-muted)', padding: '2rem' }}>
                     No event requests yet.
                   </td>
                 </tr>
               ) : (
-                recentRequests.map((req) => (
+                recentRequests.map((req, index) => (
                   <tr key={req.id}>
+                    <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                     <td>
                       <strong>{req.reference_code}</strong>
                     </td>
@@ -247,6 +249,7 @@ export const DashboardPage = () => {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: '45px' }}>#</th>
                 <th>Booking Ref</th>
                 <th>Client</th>
                 <th>Amount</th>
@@ -256,13 +259,14 @@ export const DashboardPage = () => {
             <tbody>
               {recentBookings.length === 0 ? (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center', color: 'var(--admin-text-muted)', padding: '2rem' }}>
+                  <td colSpan="5" style={{ textAlign: 'center', color: 'var(--admin-text-muted)', padding: '2rem' }}>
                     No bookings created yet.
                   </td>
                 </tr>
               ) : (
-                recentBookings.map((b) => (
+                recentBookings.map((b, index) => (
                   <tr key={b.id}>
+                    <td style={{ color: 'var(--admin-text-muted)', fontWeight: 600 }}>{index + 1}</td>
                     <td>
                       <strong>{b.booking_reference}</strong>
                     </td>
