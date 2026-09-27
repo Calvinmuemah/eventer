@@ -149,11 +149,6 @@ export const Footer = () => {
                 </a>
               ))}
             </div>
-            <div style={{ marginTop: '1rem' }}>
-              <Link to="/plan-event" className="btn btn-outline-gold btn-sm" style={{ width: '100%' }}>
-                Request Quotation
-              </Link>
-            </div>
           </div>
         </div>
       </div>
