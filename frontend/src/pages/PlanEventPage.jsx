@@ -410,9 +410,6 @@ export const PlanEventPage = () => {
                         value={formData.phone}
                         onChange={(e) => handleChange('phone', e.target.value)}
                       />
-                      <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginTop: '0.25rem' }}>
-                        Enter 07... or 01... (+254 is added automatically)
-                      </div>
                       {errors.phone && <div className="form-error">{errors.phone}</div>}
                     </div>
 

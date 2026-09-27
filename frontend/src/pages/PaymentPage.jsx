@@ -636,11 +636,11 @@ export const PaymentPage = () => {
                           <span style={{ fontSize: '0.775rem', color: '#78350F' }}>Prefer paying the full balance in one transaction?</span>
                           <button
                             type="button"
-                            onClick={() => setSelectedMethod('paystack_card')}
+                            onClick={() => setSelectedMethod('bank_transfer')}
                             className="btn btn-secondary btn-xs"
                             style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem' }}
                           >
-                            Switch to Bank Card →
+                            Switch to Bank Wire Transfer →
                           </button>
                         </div>
                       </div>
@@ -655,9 +655,6 @@ export const PaymentPage = () => {
                         value={mpesaPhone}
                         onChange={(e) => setMpesaPhone(e.target.value)}
                       />
-                      <div style={{ fontSize: '0.725rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
-                        Enter your active Safaricom line (e.g. 07... or 01...).
-                      </div>
                     </div>
                     <ol style={{ fontSize: '0.825rem', color: 'var(--color-dark)', paddingLeft: '1.2rem', lineHeight: 1.5, margin: 0 }}>
                       <li>Click the button below to initiate the STK push.</li>
@@ -808,9 +805,6 @@ export const PaymentPage = () => {
                           onChange={(e) => setAssistanceData({ ...assistanceData, phone: e.target.value })}
                           required
                         />
-                        <div style={{ fontSize: '0.725rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
-                          Enter 07... or 01... (+254 is added automatically)
-                        </div>
                       </div>
                       <div className="form-group">
                         <label className="form-label" style={{ fontSize: '0.8rem' }}>Email Address *</label>
