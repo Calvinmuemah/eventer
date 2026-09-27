@@ -9,7 +9,6 @@ import {
   Users, 
   CheckSquare, 
   Square, 
-  Sparkles, 
   FileText, 
   Send 
 } from 'lucide-react';
@@ -671,7 +670,7 @@ export const PlanEventPage = () => {
                                 color: 'var(--color-primary)',
                               }}
                             >
-                              <Sparkles size={13} style={{ color: 'var(--color-accent)' }} />
+                              <Check size={13} style={{ color: 'var(--color-accent)' }} />
                               {s.name}
                             </span>
                           ) : null;

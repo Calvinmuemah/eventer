@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Check, Calendar, MapPin, Sparkles, Phone, ArrowRight, FileCheck } from 'lucide-react';
+import { Check, Calendar, MapPin, Phone, ArrowRight, FileCheck } from 'lucide-react';
 import { bookingsApi } from '../api/bookingsApi';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorState from '../components/common/ErrorState';
@@ -192,7 +192,7 @@ export const BookingConfirmationPage = () => {
                     color: 'var(--color-primary)',
                   }}
                 >
-                  <Sparkles size={14} style={{ color: 'var(--color-accent)' }} />
+                  <Check size={14} style={{ color: 'var(--color-accent)' }} />
                   {service.service_name}
                 </div>
               ))}

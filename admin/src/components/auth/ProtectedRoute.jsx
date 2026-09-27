@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import AdminLandingPage from '../../pages/AdminLandingPage';
-import { Sparkles } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -29,7 +29,7 @@ export const ProtectedRoute = ({ children }) => {
           justifyContent: 'center',
           animation: 'pulse 1.5s infinite',
         }}>
-          <Sparkles size={24} />
+          <ShieldCheck size={24} />
         </div>
         <div style={{ fontSize: '0.95rem', color: 'var(--admin-champagne)', fontWeight: 600 }}>
           Verifying MC Titoe Security Credentials...

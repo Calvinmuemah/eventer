@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { servicesApi } from '../api/servicesApi';
 import ServiceCard from '../components/services/ServiceCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';

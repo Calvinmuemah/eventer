@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Phone, Mail, MapPin, ArrowUpRight } from 'lucide-react';
+import { Phone, Mail, MapPin, ArrowUpRight } from 'lucide-react';
 import { BRAND } from '../../constants/branding';
 
 export const Footer = () => {
@@ -26,24 +26,9 @@ export const Footer = () => {
             <Link to="/" style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.75rem',
               marginBottom: '1.25rem',
               textDecoration: 'none',
             }}>
-              <div style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '6px',
-                border: '1.5px solid var(--color-accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--color-accent)',
-                background: 'rgba(201, 162, 39, 0.12)',
-                boxShadow: '0 0 14px rgba(201, 162, 39, 0.2)',
-              }}>
-                <Sparkles size={18} />
-              </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.2rem', lineHeight: 1.05 }}>
                   <span className="brand-gradient-shimmer" style={{

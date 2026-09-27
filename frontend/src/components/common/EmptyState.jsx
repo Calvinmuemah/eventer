@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
+import { Inbox } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const EmptyState = ({ 
@@ -26,7 +26,7 @@ export const EmptyState = ({
         color: 'var(--color-accent)',
         marginBottom: '1.25rem',
       }}>
-        <Sparkles size={24} />
+        <Inbox size={24} />
       </div>
       <h4 style={{
         fontFamily: 'var(--font-serif)',

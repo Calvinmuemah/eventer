@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Sparkles, FileText, CreditCard, Music, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle2, FileText, CreditCard, Music, ShieldCheck } from 'lucide-react';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
 import { fadeInUp, staggerContainer } from '../animations/variants';
@@ -42,7 +42,7 @@ export const HowItWorksPage = () => {
         'Digital change requests and adjustment notes',
         'Direct consultation with an event director',
       ],
-      icon: Sparkles,
+      icon: CheckCircle2,
     },
     {
       num: '04',

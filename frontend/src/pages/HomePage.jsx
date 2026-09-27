@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
-  Sparkles, 
   ShieldCheck, 
   Mic2, 
   Music, 
@@ -183,7 +182,7 @@ export const HomePage = () => {
               <span>Turnkey Event Architecture</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <Sparkles size={20} style={{ color: 'var(--color-accent)' }} />
+              <ShieldCheck size={20} style={{ color: 'var(--color-accent)' }} />
               <span>Transparent Tailored Quotations</span>
             </div>
           </div>
@@ -504,8 +503,15 @@ export const HomePage = () => {
                   'Warm ambient pin-spotting and chandelier illumination',
                   'Dedicated on-site production director',
                 ].map((point, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.925rem' }}>
-                    <Sparkles size={16} style={{ color: 'var(--color-accent)' }} />
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.925rem' }}>
+                    <span style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--color-accent)',
+                      display: 'inline-block',
+                      flexShrink: 0,
+                    }} />
                     <span>{point}</span>
                   </div>
                 ))}

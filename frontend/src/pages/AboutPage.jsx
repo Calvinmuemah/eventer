@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Shield, Compass, HeartHandshake, ArrowRight, Award } from 'lucide-react';
+import { Target, Shield, Compass, HeartHandshake, ArrowRight, Award } from 'lucide-react';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
 
@@ -145,7 +145,7 @@ export const AboutPage = () => {
                 justifyContent: 'center',
                 marginBottom: '1.25rem',
               }}>
-                <Sparkles size={22} />
+                <Target size={22} />
               </div>
               <h3 className="font-h3" style={{ color: 'var(--color-primary)', marginBottom: '0.75rem' }}>
                 Our Vision
