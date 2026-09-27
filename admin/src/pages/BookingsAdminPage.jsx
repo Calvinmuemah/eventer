@@ -130,7 +130,7 @@ export const BookingsAdminPage = () => {
                     <td style={{ textAlign: 'right' }}>
                       <div style={{ display: 'inline-flex', gap: '0.4rem' }}>
                         <a
-                          href={`http://localhost:5173/booking/${b.id}`}
+                          href={`https://eventer-iota.vercel.app/booking/${b.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="admin-btn admin-btn-outline admin-btn-sm"
@@ -139,7 +139,7 @@ export const BookingsAdminPage = () => {
                           Ledger <ExternalLink size={11} />
                         </a>
                         <a
-                          href={`http://localhost:5173/booking-confirmation/${b.id}`}
+                          href={`https://eventer-iota.vercel.app/booking-confirmation/${b.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="admin-btn admin-btn-outline admin-btn-sm"

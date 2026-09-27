@@ -113,7 +113,7 @@ export const QuotesAdminPage = () => {
                     </td>
                     <td style={{ textAlign: 'right' }}>
                       <a
-                        href={`http://localhost:5173/quote/${q.id}`}
+                        href={`https://eventer-iota.vercel.app/quote/${q.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="admin-btn admin-btn-outline admin-btn-sm"

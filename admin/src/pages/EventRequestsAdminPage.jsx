@@ -132,7 +132,7 @@ export const EventRequestsAdminPage = () => {
                     <td style={{ textAlign: 'right' }}>
                       {req.quote_id ? (
                         <a
-                          href={`http://localhost:5173/quote/${req.quote_id}`}
+                          href={`https://eventer-iota.vercel.app/quote/${req.quote_id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="admin-btn admin-btn-outline admin-btn-sm"

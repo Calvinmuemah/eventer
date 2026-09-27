@@ -110,7 +110,7 @@ export const Sidebar = ({ isOpen, onClose, pendingAssistanceCount = 0 }) => {
         borderTop: '1px solid rgba(255, 255, 255, 0.1)',
       }}>
         <a 
-          href="http://localhost:5173" 
+          href="https://eventer-iota.vercel.app/" 
           target="_blank" 
           rel="noopener noreferrer"
           style={{

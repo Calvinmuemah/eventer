@@ -159,7 +159,7 @@ export const ServicesAdminPage = () => {
                   <td style={{ textAlign: 'right' }}>
                     <div style={{ display: 'inline-flex', gap: '0.5rem' }}>
                       <a
-                        href={`http://localhost:5173/services/${service.slug}`}
+                        href={`https://eventer-iota.vercel.app/services/${service.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="admin-btn admin-btn-outline admin-btn-sm"
