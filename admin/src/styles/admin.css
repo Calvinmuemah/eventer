@@ -33,6 +33,10 @@
   padding: 0;
 }
 
+html {
+  font-size: 14.5px;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   background-color: var(--admin-bg);
@@ -67,7 +71,7 @@ body {
 }
 
 .admin-topbar {
-  height: 70px;
+  height: 64px;
   background-color: #FFFFFF;
   border-bottom: 1px solid var(--admin-border);
   display: flex;
@@ -80,7 +84,7 @@ body {
 }
 
 .admin-content {
-  padding: 2rem clamp(0.5rem, 1vw, 1rem);
+  padding: 1.5rem clamp(0.5rem, 1vw, 1rem);
   flex: 1;
   max-width: 1840px;
   width: 100%;
@@ -89,14 +93,14 @@ body {
 
 /* Typography */
 .admin-title {
-  font-size: clamp(1.25rem, 3.5vw, 1.65rem);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-weight: 700;
   color: var(--admin-primary);
   letter-spacing: -0.02em;
 }
 
 .admin-subtitle {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--admin-text-muted);
   margin-top: 0.2rem;
 }
@@ -132,7 +136,7 @@ body {
   background-color: var(--admin-surface);
   border: 1px solid var(--admin-border);
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1.25rem;
   box-shadow: var(--shadow-sm);
 }
 
@@ -155,7 +159,7 @@ body {
 
 .admin-table th {
   background-color: #F8FAFC;
-  padding: 0.85rem 1.25rem;
+  padding: 0.75rem 1.15rem;
   font-weight: 600;
   color: var(--admin-text-muted);
   text-transform: uppercase;
@@ -166,7 +170,7 @@ body {
 }
 
 .admin-table td {
-  padding: 1rem 1.25rem;
+  padding: 0.85rem 1.15rem;
   border-bottom: 1px solid var(--admin-border-subtle);
   color: var(--admin-text-main);
   vertical-align: middle;
