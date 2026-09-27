@@ -143,10 +143,10 @@ export const HomePage = () => {
                 alignItems: 'center',
               }}
             >
-              <Link to="/plan-event" className="btn btn-primary btn-lg" style={{ padding: '0.95rem 2rem' }}>
-                Plan Your Event <ArrowRight size={18} />
+              <Link to="/plan-event" className="btn btn-primary btn-lg">
+                Plan Your Event <ArrowRight size={15} />
               </Link>
-              <Link to="/services" className="btn btn-outline-gold btn-lg" style={{ padding: '0.95rem 2rem' }}>
+              <Link to="/services" className="btn btn-outline-gold btn-lg">
                 Explore Services
               </Link>
             </motion.div>
