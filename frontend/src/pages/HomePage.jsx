@@ -516,19 +516,22 @@ export const HomePage = () => {
             </div>
 
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              position: 'relative',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.5)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
             }}>
               <img 
-                src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80" 
+                src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=85" 
                 alt="Keynote and Gala Host"
-                style={{ width: '100%', height: '260px', objectFit: 'cover', borderRadius: '16px' }}
-              />
-              <img 
-                src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" 
-                alt="Lighting Installation"
-                style={{ width: '100%', height: '260px', objectFit: 'cover', borderRadius: '16px', marginTop: '2rem' }}
+                style={{
+                  width: '100%',
+                  height: 'clamp(300px, 42vw, 460px)',
+                  objectFit: 'cover',
+                  objectPosition: 'center 25%',
+                  display: 'block',
+                }}
               />
             </div>
           </div>
