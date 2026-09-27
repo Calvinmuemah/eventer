@@ -54,41 +54,6 @@ const GALLERY_ITEMS = [
     imageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
     description: 'Precision table geometry and warm ambient lighting for corporate delegates.',
   },
-  {
-    id: 8,
-    title: 'Concert PA & Digital Acoustic Mixing',
-    category: 'sound',
-    imageUrl: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1200&q=80',
-    description: 'Front-of-house 32-channel digital console with multi-zone delay management.',
-  },
-  {
-    id: 9,
-    title: 'Keynote & Executive Host Podium',
-    category: 'mc',
-    imageUrl: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80',
-    description: 'Bespoke stage lectern, RF frequency management, and pro presenter monitors.',
-  },
-  {
-    id: 10,
-    title: 'Acoustic Grand Piano & Backline Stage',
-    category: 'instruments',
-    imageUrl: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=1200&q=80',
-    description: 'Tour-grade backline staging calibrated for live jazz and classical ensembles.',
-  },
-  {
-    id: 11,
-    title: 'Canopy Fairy Light & Chandelier Staging',
-    category: 'lighting',
-    imageUrl: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
-    description: 'Atmospheric architectural lighting transforming a pavilion courtyard.',
-  },
-  {
-    id: 12,
-    title: 'Private Estate Wedding Reception',
-    category: 'weddings',
-    imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
-    description: 'Harmonized floral arrangements, sound distribution, and run-of-show direction.',
-  },
 ];
 
 const CATEGORIES = [
@@ -99,7 +64,7 @@ const CATEGORIES = [
   { id: 'sound', label: 'PA & Acoustics' },
   { id: 'galas', label: 'Corporate & Galas' },
   { id: 'instruments', label: 'Backline & Instruments' },
-];
+].filter(cat => cat.id === 'all' || GALLERY_ITEMS.some(item => item.category === cat.id));
 
 export const GalleryPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
