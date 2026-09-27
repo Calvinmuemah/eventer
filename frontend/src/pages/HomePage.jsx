@@ -59,33 +59,14 @@ export const HomePage = () => {
         overflow: 'hidden',
         padding: '5rem 0',
       }}>
-        {/* Cinematic Backdrop Image with Luxury Gradients */}
+        {/* Cinematic Backdrop Image - 100% Visibility */}
         <div style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: 'url("https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=2100&q=85")',
           backgroundSize: 'cover',
           backgroundPosition: 'center 40%',
-          opacity: 0.42,
-          filter: 'brightness(0.95) contrast(1.08) saturate(1.15)',
-        }} />
-        {/* Directional Luxury Mask: deeper on the left for text, open on the right for event visuals */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(90deg, rgba(8, 26, 43, 0.88) 0%, rgba(8, 26, 43, 0.72) 50%, rgba(8, 26, 43, 0.45) 100%), linear-gradient(180deg, rgba(8, 26, 43, 0.65) 0%, transparent 40%, rgba(4, 13, 22, 0.95) 100%)',
-        }} />
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(circle at 80% 30%, rgba(201, 162, 39, 0.2) 0%, transparent 60%)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(4, 13, 22, 0.5) 100%)',
-          pointerEvents: 'none',
+          opacity: 1,
         }} />
 
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
@@ -105,7 +86,7 @@ export const HomePage = () => {
                 letterSpacing: '-0.02em',
                 fontWeight: 700,
                 marginBottom: '1.5rem',
-                textShadow: '0 2px 20px rgba(0, 0, 0, 0.75)',
+                textShadow: '0 2px 24px rgba(0, 0, 0, 0.9), 0 4px 40px rgba(0, 0, 0, 0.9)',
               }}
             >
               We Turn Your Vision Into an{' '}
@@ -128,7 +109,7 @@ export const HomePage = () => {
                 marginBottom: '2.5rem',
                 maxWidth: '680px',
                 lineHeight: 1.75,
-                textShadow: '0 1px 12px rgba(0, 0, 0, 0.65)',
+                textShadow: '0 2px 14px rgba(0, 0, 0, 0.85), 0 4px 24px rgba(0, 0, 0, 0.9)',
               }}
             >
               {BRAND.subTagline}
