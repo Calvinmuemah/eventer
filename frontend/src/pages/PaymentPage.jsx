@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { 
-  CreditCard, 
   ShieldCheck, 
   HelpCircle, 
   CheckCircle2, 
@@ -467,13 +466,6 @@ export const PaymentPage = () => {
                       hasAssistanceBtn: false,
                     },
                     { 
-                      id: 'paystack_card', 
-                      label: 'Pay via Bank Card', 
-                      icon: CreditCard, 
-                      subtitle: 'Visa, Mastercard, American Express with 256-bit SSL encryption',
-                      hasAssistanceBtn: true,
-                    },
-                    { 
                       id: 'bank_transfer', 
                       label: 'Direct Bank Wire Transfer', 
                       icon: Building2, 
@@ -676,41 +668,6 @@ export const PaymentPage = () => {
                   </div>
                 )}
 
-                {selectedMethod === 'paystack_card' && (
-                  <div style={{
-                    padding: '1.25rem',
-                    backgroundColor: 'var(--color-surface-subtle)',
-                    borderRadius: 'var(--radius-xs)',
-                    border: '1px solid var(--color-border)',
-                    marginBottom: '1.75rem',
-                  }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <CreditCard size={16} color="var(--color-accent)" /> Bank Card Payment Instructions
-                    </h4>
-                    <p style={{ fontSize: '0.825rem', color: 'var(--color-dark)', lineHeight: 1.5, margin: '0 0 0.75rem 0' }}>
-                      You will be directed to the bank card checkout page. Enter your 16-digit card number, expiration date, and CVV. Your issuing bank may send a 3D-Secure One Time Password (OTP) via SMS to verify the transaction.
-                    </p>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', fontSize: '0.8rem', color: 'var(--color-muted)' }}>
-                      <span>Need bank wire instructions or assistance?</span>
-                      <button
-                        type="button"
-                        onClick={() => openAssistanceWithReason('Pay via Bank Card')}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          color: 'var(--color-accent)',
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          textDecoration: 'underline',
-                          padding: 0,
-                        }}
-                      >
-                        Request Assistance Here
-                      </button>
-                    </div>
-                  </div>
-                )}
-
                 {selectedMethod === 'bank_transfer' && (
                   <div style={{
                     padding: '1.25rem',
@@ -752,7 +709,7 @@ export const PaymentPage = () => {
                 }}>
                   <ShieldCheck size={24} style={{ color: '#16A34A', flexShrink: 0 }} />
                   <div>
-                    <strong>Bank-Grade Encrypted Gateway:</strong> Real-time checkout powered by Paystack. Supports instant Safaricom M-Pesa STK prompts, Visa, Mastercard &amp; direct bank cards.
+                    <strong>Secure Encrypted Gateway:</strong> Real-time checkout powered by Paystack. Supports instant Safaricom M-Pesa STK prompts and direct wire settlement.
                   </div>
                 </div>
 
@@ -766,9 +723,7 @@ export const PaymentPage = () => {
                   >
                     {paying 
                       ? 'Connecting to Payment Gateway...' 
-                      : selectedMethod === 'paystack_mpesa'
-                        ? `PAY VIA M-PESA (KSh ${activeMpesaAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
-                        : `PAY VIA BANK CARD (KSh ${paymentData.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
+                      : `PAY VIA M-PESA (KSh ${activeMpesaAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`
                     }
                   </button>
                 )}

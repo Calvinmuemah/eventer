@@ -372,7 +372,7 @@ export const QuotePage = () => {
                 onClick={handleAccept}
                 className="btn btn-primary btn-lg"
               >
-                Proceed to Payment <ArrowRight size={18} />
+                Proceed to Payment <ArrowRight size={15} />
               </button>
             ) : (
               <button
@@ -380,7 +380,7 @@ export const QuotePage = () => {
                 className="btn btn-primary btn-lg"
                 disabled={accepting}
               >
-                {accepting ? 'Confirming...' : 'ACCEPT QUOTATION & BOOK'} <ArrowRight size={18} />
+                {accepting ? 'Confirming...' : 'ACCEPT QUOTATION & PAY NOW'} <ArrowRight size={15} />
               </button>
             )}
           </div>

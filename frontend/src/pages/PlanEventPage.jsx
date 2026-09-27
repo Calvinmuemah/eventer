@@ -285,7 +285,7 @@ export const PlanEventPage = () => {
             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               {submitSuccess.quoteId && (
                 <Link to={`/quote/${submitSuccess.quoteId}`} className="btn btn-primary btn-lg">
-                  View Your Quotation Now <ArrowRight size={18} />
+                  View Your Quotation and Pay Now <ArrowRight size={15} />
                 </Link>
               )}
               <Link to="/" className="btn btn-secondary btn-lg">
