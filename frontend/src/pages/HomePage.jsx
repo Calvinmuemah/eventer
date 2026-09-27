@@ -582,40 +582,15 @@ export const HomePage = () => {
             ].map((img, i) => (
               <div 
                 key={i} 
-                className="card-luxury"
-                style={{
-                  position: 'relative',
-                  height: '320px',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  backgroundColor: 'var(--color-primary)',
-                  boxShadow: 'var(--shadow-md)',
-                }}
+                className="card-luxury home-gallery-card"
               >
                 <img 
                   src={img.url} 
                   alt={img.caption}
                   loading="lazy"
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover',
-                    objectPosition: 'center 20%',
-                    transition: 'transform 0.5s ease',
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                  className="home-gallery-img"
                 />
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(8, 26, 43, 0.92) 0%, rgba(8, 26, 43, 0.3) 45%, transparent 100%)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  padding: '1.25rem',
-                  pointerEvents: 'none',
-                }}>
+                <div className="home-gallery-overlay">
                   <span style={{ 
                     fontSize: '0.7rem', 
                     textTransform: 'uppercase', 
@@ -633,6 +608,46 @@ export const HomePage = () => {
               </div>
             ))}
           </div>
+
+          <style>{`
+            .home-gallery-card {
+              position: relative;
+              height: 320px;
+              border-radius: 16px;
+              overflow: hidden;
+              background-color: var(--color-primary);
+              box-shadow: var(--shadow-md);
+              cursor: pointer;
+            }
+            .home-gallery-img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: center 20%;
+              transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+              display: block;
+            }
+            .home-gallery-card:hover .home-gallery-img {
+              transform: scale(1.06);
+            }
+            .home-gallery-overlay {
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(to top, rgba(4, 13, 22, 0.95) 0%, rgba(8, 26, 43, 0.6) 50%, transparent 100%);
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-end;
+              padding: 1.25rem;
+              opacity: 0;
+              transform: translateY(8px);
+              transition: opacity 0.35s ease, transform 0.35s ease;
+              pointer-events: none;
+            }
+            .home-gallery-card:hover .home-gallery-overlay {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          `}</style>
         </div>
       </section>
 

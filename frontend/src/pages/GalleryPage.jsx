@@ -188,51 +188,28 @@ export const GalleryPage = () => {
               <div
                 key={item.id}
                 onClick={() => setActiveItem(item)}
-                className="card-luxury"
-                style={{
-                  position: 'relative',
-                  height: '340px',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  backgroundColor: 'var(--color-primary)',
-                }}
+                className="card-luxury gallery-card"
               >
                 <img 
                   src={item.imageUrl} 
                   alt={item.title}
                   loading="lazy"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'center 20%',
-                    transition: 'transform 0.5s ease',
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                  className="gallery-card-img"
                 />
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to top, rgba(8, 26, 43, 0.85) 0%, transparent 60%)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  padding: '1.5rem',
-                }}>
+                <div className="gallery-card-overlay">
                   <h4 style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: '1.25rem',
+                    fontSize: '1.2rem',
                     color: '#FFFFFF',
-                    marginBottom: '0.25rem',
+                    marginBottom: '0.35rem',
+                    lineHeight: 1.3,
                   }}>
                     {item.title}
                   </h4>
                   <p style={{
                     fontSize: '0.825rem',
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    lineHeight: 1.4,
+                    color: 'rgba(255, 255, 255, 0.88)',
+                    lineHeight: 1.45,
                   }}>
                     {item.description}
                   </p>
@@ -240,6 +217,46 @@ export const GalleryPage = () => {
               </div>
             ))}
           </div>
+
+          <style>{`
+            .gallery-card {
+              position: relative;
+              height: 340px;
+              border-radius: 16px;
+              overflow: hidden;
+              cursor: pointer;
+              background-color: var(--color-primary);
+            }
+            .gallery-card-img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: center 20%;
+              transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+              display: block;
+            }
+            .gallery-card:hover .gallery-card-img {
+              transform: scale(1.06);
+            }
+            .gallery-card-overlay {
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(to top, rgba(4, 13, 22, 0.95) 0%, rgba(8, 26, 43, 0.7) 50%, transparent 100%);
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-end;
+              padding: 1.5rem;
+              opacity: 0;
+              transform: translateY(10px);
+              transition: opacity 0.35s ease, transform 0.35s ease;
+              pointer-events: none;
+            }
+            .gallery-card:hover .gallery-card-overlay,
+            .gallery-card:focus-visible .gallery-card-overlay {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          `}</style>
 
           {/* Lightbox Modal */}
           {activeItem && (
