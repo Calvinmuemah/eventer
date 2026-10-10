@@ -245,8 +245,8 @@ export const HomePage = () => {
                 boxShadow: 'var(--shadow-xl)',
               }}>
                 <img 
-                  src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80" 
-                  alt="Atmospheric Event Production"
+                  src="/images/events/stage-lighting-night-concert.jpg" 
+                  alt="Live Concert Stage Production and Atmospheric Lighting"
                   style={{ width: '100%', height: '480px', objectFit: 'cover' }}
                 />
               </div>
@@ -516,8 +516,8 @@ export const HomePage = () => {
               border: '1px solid rgba(255, 255, 255, 0.12)',
             }}>
               <img 
-                src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=85" 
-                alt="Keynote and Gala Host"
+                src="/images/events/IMG-20260915-WA0008.jpg" 
+                alt="MC Titoe Keynote and Master of Ceremonies"
                 style={{
                   width: '100%',
                   height: 'clamp(300px, 42vw, 460px)',
@@ -565,6 +565,21 @@ export const HomePage = () => {
                 caption: 'Custom Backdrop & Traditional Artistry',
               },
               {
+                url: '/images/events/stage-lighting-night-concert.jpg',
+                category: 'Lighting & Concert Stage',
+                caption: 'Live Beam Lighting & Concert Production',
+              },
+              {
+                url: '/images/events/musical-instruments-stage.jpg',
+                category: 'Live Band Backline',
+                caption: 'Acoustic Backline & Stage Keyboards',
+              },
+              {
+                url: '/images/events/public-address-system-concert.jpg',
+                category: 'Sound & Acoustics',
+                caption: 'Concert PA Towers & Line Array System',
+              },
+              {
                 url: '/images/events/IMG-20260915-WA0008.jpg',
                 category: 'MC & Protocol',
                 caption: 'MC Titoe Directing Ceremony Pacing',
@@ -573,11 +588,6 @@ export const HomePage = () => {
                 url: '/images/events/IMG-20260915-WA0011.jpg',
                 category: 'Guest Experience',
                 caption: 'High-Energy Celebration & Dance Pacing',
-              },
-              {
-                url: '/images/events/IMG-20260915-WA0020.jpg',
-                category: 'Sound & Acoustics',
-                caption: 'Live Vocal Address & Wireless PA',
               },
             ].map((img, i) => (
               <div 

@@ -49,10 +49,38 @@ const GALLERY_ITEMS = [
   },
   {
     id: 7,
-    title: 'Imperial Gala Banquet Staging',
+    title: 'Live Concert Stage & Atmospheric Beam Lighting',
+    category: 'lighting',
+    imageUrl: '/images/events/stage-lighting-night-concert.jpg',
+    description: 'Night concert stage with illuminated multicolored beam lighting, live performance staging, and concert sound reinforcement.',
+  },
+  {
+    id: 8,
+    title: 'Live Band Backline & Musical Instruments',
+    category: 'sound',
+    imageUrl: '/images/events/musical-instruments-stage.jpg',
+    description: 'Complete band backline setup including Yamaha keyboards, acoustic drum kit, Peavey amplification, and monitor staging.',
+  },
+  {
+    id: 9,
+    title: 'Outdoor Concert PA Towers & Heavy Line Array',
+    category: 'sound',
+    imageUrl: '/images/events/public-address-system-concert.jpg',
+    description: 'Concert-grade outdoor sound system featuring dual ground-stacked subwoofers, line array cabinets, and weatherproof stage canopy.',
+  },
+  {
+    id: 10,
+    title: 'Aluminum Box Trussing & Roofing Structure',
+    category: 'lighting',
+    imageUrl: '/images/events/aluminum-stage-trussing-rig.jpg',
+    description: 'Heavy-duty structural aluminum truss canopy with overhead par can illumination, chain blocks, and modular stage engineering.',
+  },
+  {
+    id: 11,
+    title: 'Complete Outdoor Festival Stage Production',
     category: 'galas',
-    imageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
-    description: 'Precision table geometry and warm ambient lighting for corporate delegates.',
+    imageUrl: '/images/events/festival-stage-production-wide.jpg',
+    description: 'Full-scale outdoor production with structural truss towers, VIP hospitality canopies, and high-impact acoustic coverage.',
   },
 ];
 
