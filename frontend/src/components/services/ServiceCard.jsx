@@ -35,6 +35,12 @@ export const ServiceCard = ({ service }) => {
           }}
           onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.06)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+          onError={(e) => {
+            if (service.image_url && !e.currentTarget.src.includes('eventer-iota.vercel.app')) {
+              const path = service.image_url.startsWith('/') ? service.image_url : `/${service.image_url}`;
+              e.currentTarget.src = `https://eventer-iota.vercel.app${path}`;
+            }
+          }}
         />
         <div style={{
           position: 'absolute',

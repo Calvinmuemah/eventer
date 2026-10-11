@@ -121,6 +121,12 @@ export const ServicesAdminPage = () => {
                         src={service.image_url} 
                         alt={service.name} 
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        onError={(e) => {
+                          if (service.image_url && !e.currentTarget.src.includes('eventer-iota.vercel.app')) {
+                            const path = service.image_url.startsWith('/') ? service.image_url : `/${service.image_url}`;
+                            e.currentTarget.src = `https://eventer-iota.vercel.app${path}`;
+                          }
+                        }}
                       />
                     </div>
                   </td>
