@@ -20,6 +20,8 @@ import ErrorState from '../components/common/ErrorState';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
 import { normalizeKenyanPhone, isValidKenyanPhone, KENYAN_PHONE_PLACEHOLDER } from '../utils/phone';
+import posthog from '../posthog';
+import { posthogLogger } from '../posthogLogger';
 
 const EVENT_TYPES = [
   'Wedding Reception',
@@ -166,6 +168,16 @@ export const PlanEventPage = () => {
       };
 
       const res = await eventRequestsApi.create(payload);
+      posthog?.capture('event_request_submitted', {
+        event_type: formData.eventType,
+        guest_count: payload.guestCount,
+        selected_service_count: payload.serviceIds.length,
+      });
+      posthogLogger.info('event request submitted', {
+        event_type: formData.eventType,
+        guest_count: payload.guestCount,
+        selected_service_count: payload.serviceIds.length,
+      });
       setSubmitSuccess(res.data);
     } catch (err) {
       setSubmitError(err.message || 'Submission failed. Please check your network connection.');

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { 
   ShieldCheck, 
@@ -20,6 +20,7 @@ import ErrorState from '../components/common/ErrorState';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
 import { normalizeKenyanPhone, KENYAN_PHONE_PLACEHOLDER } from '../utils/phone';
+import posthog from '../posthog';
 
 export const PaymentPage = () => {
   const { id } = useParams();
@@ -57,6 +58,7 @@ export const PaymentPage = () => {
   const paymentReference = searchParams.get('reference') || searchParams.get('trxref');
   const [verifying, setVerifying] = useState(false);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
+  const paymentVerifiedCaptured = useRef(false);
 
   // Assistance modal/form
   const [showAssistance, setShowAssistance] = useState(false);
@@ -105,6 +107,10 @@ export const PaymentPage = () => {
           setPayError(null);
           const res = await paymentsApi.verify(id, { reference: paymentReference });
           if (res.success && (res.data?.status === 'success' || res.status === 'success')) {
+            if (!paymentVerifiedCaptured.current) {
+              posthog?.capture('payment_verified', { verification_source: 'payment_redirect' });
+              paymentVerifiedCaptured.current = true;
+            }
             setVerificationSuccess(true);
             setTimeout(() => {
               navigate(`/booking-confirmation/${id}`, { replace: true });
@@ -162,6 +168,10 @@ export const PaymentPage = () => {
       try {
         const res = await paymentsApi.verify(id, { reference: stkReference });
         if (res.success && (res.data?.status === 'success' || res.status === 'success')) {
+          if (!paymentVerifiedCaptured.current) {
+            posthog?.capture('payment_verified', { verification_source: 'stk_polling' });
+            paymentVerifiedCaptured.current = true;
+          }
           clearInterval(timerInterval);
           clearInterval(pollInterval);
           setStkStatus('success');
@@ -221,6 +231,7 @@ export const PaymentPage = () => {
         amount: amountToPay,
         phone: mpesaPhone ? normalizeKenyanPhone(mpesaPhone) : undefined,
       });
+      posthog?.capture('payment_initiated', { payment_method: selectedMethod });
 
       // 1. Direct Safaricom M-Pesa STK Push
       if (res.data?.isDirectStkPush) {
@@ -270,6 +281,10 @@ export const PaymentPage = () => {
       setManualChecking(true);
       const res = await paymentsApi.verify(id, { reference: stkReference });
       if (res.success && (res.data?.status === 'success' || res.status === 'success')) {
+        if (!paymentVerifiedCaptured.current) {
+          posthog?.capture('payment_verified', { verification_source: 'manual_check' });
+          paymentVerifiedCaptured.current = true;
+        }
         setStkStatus('success');
         setStkMessage('Payment verified successfully!');
         setTimeout(() => {
@@ -308,6 +323,7 @@ export const PaymentPage = () => {
         phone: normalizeKenyanPhone(assistanceData.phone),
         bookingReference: paymentData?.bookingReference || id,
       });
+      posthog?.capture('payment_assistance_requested', { payment_method: selectedMethod });
       setAssistanceSuccess(true);
     } catch (err) {
       setAssistanceError(err.message || 'Could not submit assistance request.');

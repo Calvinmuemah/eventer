@@ -4,6 +4,8 @@ import { contactApi } from '../api/contactApi';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
 import { normalizeKenyanPhone, isValidKenyanPhone, KENYAN_PHONE_PLACEHOLDER } from '../utils/phone';
+import posthog from '../posthog';
+import { posthogLogger } from '../posthogLogger';
 
 export const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -46,6 +48,8 @@ export const ContactPage = () => {
         ...formData,
         phone: formData.phone.trim() ? normalizeKenyanPhone(formData.phone) : '',
       });
+      posthog?.capture('contact_inquiry_submitted');
+      posthogLogger.info('contact inquiry submitted', { source: 'contact_form' });
       setSuccess(true);
       setFormData({
         fullName: '',

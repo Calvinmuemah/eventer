@@ -17,6 +17,8 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorState from '../components/common/ErrorState';
 import MetaTags from '../components/common/MetaTags';
 import { BRAND } from '../constants/branding';
+import posthog from '../posthog';
+import { posthogLogger } from '../posthogLogger';
 
 export const QuotePage = () => {
   const { id } = useParams();
@@ -57,6 +59,12 @@ export const QuotePage = () => {
       setActionError(null);
       const res = await quotesApi.accept(id);
       const bookingId = res.data?.booking?.id;
+      posthog?.capture('quote_accepted', {
+        selected_service_count: quote?.items?.length || 0,
+      });
+      posthogLogger.info('quote accepted', {
+        selected_service_count: quote?.items?.length || 0,
+      });
       if (bookingId) {
         navigate(`/payment/${bookingId}`);
       } else {
@@ -76,6 +84,7 @@ export const QuotePage = () => {
       setRequestingChanges(true);
       setActionError(null);
       await quotesApi.requestChanges(id, changeNotes.trim());
+      posthog?.capture('quote_change_requested');
       setChangeSubmitted(true);
       setShowChangeModal(false);
       fetchQuote();
